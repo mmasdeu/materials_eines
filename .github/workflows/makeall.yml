@@ -18,7 +18,7 @@ jobs:
         run: sudo apt-get update && pip install jupytext
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename $file`_solutions.ipynb && ./make-student-version solutions/`basename $file`_solutions.ipynb > exercises/`basename $file.ipynb;done;
+        run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename $file`_solutions.ipynb && ./make-student-version solutions/`basename $file`_solutions.ipynb > exercises/`basename $file`.ipynb;done;
 
       - name: Upload exercises
         uses: actions/upload-artifact@v2
