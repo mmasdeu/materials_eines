@@ -9,8 +9,11 @@ on:
 jobs:
   archive-build-artifacts:
     runs-on: ubuntu-latest
+    
     steps:
-
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        
       - name: Create a temporary artifact downloads folder
         run: mkdir -p exercises solutions
 
@@ -21,7 +24,7 @@ jobs:
         run: pwd; ls
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb && make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;done;
+        run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb && ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;done;
 
       - name: Upload exercises
         uses: actions/upload-artifact@v2
