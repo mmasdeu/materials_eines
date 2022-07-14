@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Create a temporary artifact downloads folder
-        run: mkdir -p exercises solutions
+        run: mkdir -p exercises solutions html
 
       - name: Install dependencies
         run: sudo apt-get update && pip install jupytext
@@ -25,23 +25,17 @@ jobs:
       - name: Add artifacts to publish to the temp folder
         run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb && ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;done;
 
-      - name: Upload exercises
-        uses: actions/upload-artifact@v2
-        with:
-          name: exercises
-          path: exercises
+      - name: Move folders
+        run: mv exercises solutions html/
 
       - name: Upload solutions
         uses: actions/upload-artifact@v2
         with:
-          name: solutions
-          path: solutions
-          
-      - name: Nextcloud Artifact
-        uses: trympet/nextcloud-artifacts-action@v2
+          name: artifacts
+          path: html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: 'my-artifact'                                   # Name of the artifact
-          path: 'exercises/*'                                  # Globbing supported
-          nextcloud-url: 'https://mat.uab.cat/nextcloud/remote.php/dav/files/masdeu/'        # Nextcloud URL
-          nextcloud-username: "${{ secrets.NEXTCLOUD_USERNAME }}" # Username from repository secret
-          nextcloud-password: "${{ secrets.NEXTCLOUD_PASSWORD }}" # Password from repository secret
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./html
