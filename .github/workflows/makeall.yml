@@ -13,11 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - shell: bash
-        env:
-          NEXTCLOUD_USERNAME: ${{ secrets.NEXTCLOUD_USERNAME }}
-          NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
-          
       - name: Checkout main branch
         uses: actions/checkout@v2
         
@@ -44,6 +39,9 @@ jobs:
           
       - name: Nextcloud Artifact
         uses: trympet/nextcloud-artifacts-action@v2
+        env:
+          NEXTCLOUD_USERNAME: ${{ secrets.NEXTCLOUD_USERNAME }}
+          NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
         with:
           name: 'my-artifact'                                   # Name of the artifact
           path: 'exercises/*'                                  # Globbing supported
