@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - shell: bash
+        env:
+          NEXTCLOUD_USERNAME: ${{ secrets.NEXTCLOUD_USERNAME }}
+          NEXTCLOUD_PASSWORD: ${{ secrets.NEXTCLOUD_PASSWORD }}
+          
       - name: Checkout main branch
         uses: actions/checkout@v2
         
@@ -21,11 +26,6 @@ jobs:
 
       - name: Install dependencies
         run: sudo apt-get update && pip install jupytext
-        
-      - name: Print debugging info
-        run: pwd; ls
-      - name: Print username
-        run: echo ${{ secrets.NEXTCLOUD_USERNAME }}
         
       - name: Add artifacts to publish to the temp folder
         run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb && ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;done;
@@ -48,5 +48,5 @@ jobs:
           name: 'my-artifact'                                   # Name of the artifact
           path: 'exercises/*'                                  # Globbing supported
           nextcloud-url: 'https://mat.uab.cat/nextcloud'        # Nextcloud URL
-          nextcloud-username: ${{ secrets.NEXTCLOUD_USERNAME }} # Username from repository secret
-          nextcloud-password: ${{ secrets.NEXTCLOUD_PASSWORD }} # Password from repository secret
+          nextcloud-username: '$NEXTCLOUD_USERNAME' # Username from repository secret
+          nextcloud-password: '$NEXTCLOUD_PASSWORD' # Password from repository secret
