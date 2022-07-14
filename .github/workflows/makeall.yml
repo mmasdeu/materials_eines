@@ -1,0 +1,31 @@
+# Workflow to publish all notebooks
+
+name: Publish Notebooks
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  archive-build-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Step 1 - Create a temporary artifact downloads folder
+        run: mkdir -p exercises solutions
+
+      - name: step 2 - Add artifacts to publish to the temp folder
+        run: |
+	for file in src/*md;do jupytext --to ipynb src/$file -o solutions/"${file%_solutions.ipynb}" && ./make-student-version solutions/"${file%_solutions.ipynb}" > exercises/"${file%.ipynb}";done;
+
+      - name: Step 3 - Upload exercises
+        uses: actions/upload-artifact@v2
+        with:
+          name: exercises
+          path: exercises
+
+      - name: Step 4 - Upload solutions
+        uses: actions/upload-artifact@v2
+        with:
+          name: solutions
+          path: solutions
