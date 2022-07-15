@@ -23,9 +23,9 @@ jobs:
         run: sudo apt-get update -y && sudo apt-get install -y pandoc && pip install jupytext
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*md;
+        run: for file in src/*.md;
               do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb;
-              ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;
+              ./make-student-version solutions/`basename $file .md`_solutions.ipynb > exercises/`basename $file .md`.ipynb;
               done;
               
       - name: Upload exercises to Nextcloud
