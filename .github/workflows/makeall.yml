@@ -20,7 +20,11 @@ jobs:
         run: mkdir -p exercises solutions html
 
       - name: Install dependencies
-        run: sudo apt-get update -y && sudo apt-get install -y pandoc && pip install jupytext
+        run: |
+          wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
+          sudo apt-get update -y && sudo apt-get install -y pandoc && pip install jupytext
+          sudo dpkg -i pandoc-2.18-1-amd64.deb
+          sudo apt-get install -f
         
       - name: Add artifacts to publish to the temp folder
         run: for file in src/*.md;
