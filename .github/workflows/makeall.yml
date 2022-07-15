@@ -27,10 +27,13 @@ jobs:
           sudo apt-get install -f
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*.md;
-              do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb;
-              ./make-student-version solutions/`basename $file .md`_solutions.ipynb > exercises/`basename $file .md`.ipynb;
+        run: |
+            cd src
+            for file in *.md;
+              do jupytext --to ipynb $file -o ../solutions/`basename -s .md $file`_solutions.ipynb;
+              ../make-student-version ../solutions/`basename $file .md`_solutions.ipynb > ../exercises/`basename $file .md`.ipynb;
               done;
+            cd ..
               
       - name: Upload exercises to Nextcloud
         run: for file in exercises/*.ipynb;
