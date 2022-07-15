@@ -14,5 +14,7 @@ Repositori que conté material per l'assignatura del grau de matemàtiques "Eine
 1. `mkdir -p "nbexercises" "nbsolutions"`
 
 2. `jupytext --to ipynb src/$file.md -o nbsolutions/$file.ipynb`
+
 3. `./make-student-version nbsolutions/$file.ipynb > nbexercises/$file.ipynb`
 
+4. `curl -X PUT -u username:password -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/username/EIM/exercicis/`
