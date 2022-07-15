@@ -20,7 +20,7 @@ jobs:
         run: mkdir -p exercises solutions html
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install pandoc && pip install jupytext
+        run: sudo apt-get update -y && sudo apt-get install -y pandoc && pip install jupytext
         
       - name: Add artifacts to publish to the temp folder
         run: for file in src/*md;
