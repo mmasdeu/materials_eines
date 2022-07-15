@@ -36,16 +36,12 @@ jobs:
             cd ..
               
       - name: Upload exercises to Nextcloud
-        run: for file in exercises/*.ipynb;
+        run: for file in exercises/*;
               do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
               done;
               
       - name: Upload solutions to Nextcloud
-        run: for file in solutions/*.ipynb;
+        run: for file in solutions/*;
               do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions/;
               done;
 
-      - name: Upload extra materials to Nextcloud
-        run: for file in solutions/*.ipynb;
-              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
-              done;
