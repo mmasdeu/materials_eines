@@ -20,12 +20,16 @@ jobs:
         run: mkdir -p exercises solutions html
 
       - name: Install dependencies
-        run: sudo apt-get update && pip install jupytext
+        run: |
+          wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
+          sudo apt-get update -y && sudo apt-get install -y pandoc && pip install jupytext
+          sudo dpkg -i pandoc-2.18-1-amd64.deb
+          sudo apt-get install -f
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*md;
+        run: for file in src/*.md;
               do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb;
-              ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;
+              ./make-student-version solutions/`basename $file .md`_solutions.ipynb > exercises/`basename $file .md`.ipynb;
               done;
               
       - name: Upload exercises to Nextcloud
@@ -38,3 +42,7 @@ jobs:
               do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions/;
               done;
 
+      - name: Upload extra materials to Nextcloud
+        run: for file in solutions/*.ipynb;
+              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
+              done;
