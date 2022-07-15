@@ -27,12 +27,14 @@ jobs:
               do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb;
               ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;
               done;
+              
       - name: Upload exercises to Nextcloud
         run: for file in exercises/*.ipynb;
-              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis;
+              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
               done;
+              
       - name: Upload solutions to Nextcloud
         run: for file in solutions/*.ipynb;
-              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions;
+              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions/;
               done;
 
