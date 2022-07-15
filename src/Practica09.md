@@ -695,8 +695,6 @@ Antoni Soto-Riera, Marc Vigo-Anglada, Sebastià Vila-Marta, Jordi Vives
     per la base i l'altura, definida a partir de la classe Triangle
     definida a dalt.
 
-    ![Triangles Isòsceles](isosceles.png){#fig:Isoceles width="30%"}
-
 6.  Definiu una classe dels Quadrilàters (convexos), determinada donant
     $4$ punts del pla.
 
