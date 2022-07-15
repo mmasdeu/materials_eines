@@ -39,3 +39,12 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./html
+          
+      - name: Nextcloud Artifact
+        uses: trympet/nextcloud-artifacts-action@v2
+        with:
+          name: 'artifacts'                                   # Name of the artifact
+          path: 'html/**/*.*'                                  # Globbing supported
+          nextcloud-url: 'https://mat.uab.cat/nextcloud'        # Nextcloud URL
+          nextcloud-username: ${{ secrets.NEXTCLOUD_USERNAME }} # Username from repository secret
+          nextcloud-password: ${{ secrets.NEXTCLOUD_PASSWORD }} # Password from repository secret
