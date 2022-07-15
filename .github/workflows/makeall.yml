@@ -23,8 +23,18 @@ jobs:
         run: sudo apt-get update && pip install jupytext
         
       - name: Add artifacts to publish to the temp folder
-        run: for file in src/*md;do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb && ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;done;
-
+        run: for file in src/*md;
+              do jupytext --to ipynb $file -o solutions/`basename -s .md $file`_solutions.ipynb;
+              ./make-student-version solutions/`basename -s .md $file`_solutions.ipynb > exercises/`basename -s .md $file`.ipynb;
+              done;
+      - name: Upload exercises to Nextcloud
+        run: for file in exercises/*;
+              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file "https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis";
+              done;
+      - name: Upload solutions to Nextcloud
+        run: for file in solutions/*;
+              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file "https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions";
+              done;
       - name: Move folders
         run: mv exercises solutions html/
 
@@ -39,7 +49,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./html
-          
+      
       - name: Nextcloud Artifact
         uses: trympet/nextcloud-artifacts-action@v2
         with:
