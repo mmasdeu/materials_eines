@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Create a temporary artifact downloads folder
-        run: mkdir -p exercises solutions html
+        run: mkdir -p output
 
       - name: Install dependencies
         run: |
@@ -26,22 +26,18 @@ jobs:
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
         
-      - name: Add artifacts to publish to the temp folder
+      - name: Make notebooks
         run: |
             cd src
             for file in *.md;
-              do jupytext --to ipynb $file -o ../solutions/`basename -s .md $file`_solutions.ipynb;
-              ../make-student-version ../solutions/`basename $file .md`_solutions.ipynb > ../exercises/`basename $file .md`.ipynb;
+              do jupytext --to ipynb $file -o ../output/`basename -s .md $file`_solucions.ipynb;
+              ../make-student-version ../output/`basename $file .md`_solucions.ipynb > ../output/`basename $file .md`.ipynb;
               done;
             cd ..
               
-      - name: Upload exercises to Nextcloud
-        run: for file in exercises/*;
+      - name: Upload to Nextcloud
+        run: for file in output/* src/*.pdf src/*.png src/*.gif src/*.jpg;
               do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
               done;
-              
-      - name: Upload solutions to Nextcloud
-        run: for file in solutions/*;
-              do curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/solucions/;
-              done;
+
 
