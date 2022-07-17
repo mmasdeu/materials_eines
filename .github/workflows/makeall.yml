@@ -20,19 +20,12 @@ jobs:
         
       - name: Create a temporary artifact downloads folder
         run: mkdir -p output
-
-      - name: Test environment
-        run: |
-          sudo find /usr -iname kernel.json
-          echo $SAGE_ROOT
           
       - name: Install dependencies
         run: |
           sudo apt-get update -y
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget python3-pip curl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
           sudo pip install jupytext nbconvert ipython ipykernel
-          sudo ipython kernel install
-          sudo jupyter kernelspec install /usr/share/jupyter/kernels/sagemath
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
