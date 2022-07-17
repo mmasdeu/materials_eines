@@ -494,7 +494,7 @@ print(total)
     
 <font color=blue>      (iv)  Definiu una funció \texttt{projeccio(S,R)} tal que, donat un conjunt \texttt{S} i una relació \texttt{R} retorni un diccionari on les claus siguin els elements de \texttt{S} i els valor sigui l'element de \texttt{quocient(S,R)} que està relacionat amb ell, després de comprovar si $R$ és una relació d'equivalència de $S$.
     
-<font color=blue>      (v)  Apliqueu aquestes funcions al conjunts $S=set([1..5])$ amb la relació $(a,b)\in R \Leftrightarrow a\lt b$ i a la relació $(a,b)\in R \Leftrightarrow a\le b$, i al conjunt $set(Zmod(10))$ amb la relació $(a,b)\in R  \Leftrightarrow 2a=2b$. 
+<font color=blue>      (v)  Apliqueu aquestes funcions al conjunts $S=set([1..5])$ amb la relació corresponent a $a<b$ i a la relació corresponent a $a \leq b$, i al conjunt $set(Zmod(10))$ amb la relació $(a,b)\in R  \Leftrightarrow 2a=2b$. 
 
 
 
@@ -907,9 +907,9 @@ plotvermell + plotblau + plotverd
 
 ```
 
-<font color= blue> 10. (a) Definiu una funció SumaDivisorsSenars(n) que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n\gt 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\le 0$). Calculeu SumaDivisorsSenars(15) i SumaDivisorsSenars(1890).
+<font color= blue> 10. (a) Definiu una funció SumaDivisorsSenars(n) que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu SumaDivisorsSenars(15) i SumaDivisorsSenars(1890).
     
-<font color= blue> (b) Definiu una funció Func(n) per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\le n$ tals que SumaDivisorsSenars$(k)$ és $\ge k$. Calculeu Func(100). 
+<font color= blue> (b) Definiu una funció Func(n) per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\leq n$ tals que SumaDivisorsSenars$(k)$ és $\ge k$. Calculeu Func(100). 
     
 <font color= blue> (c) Feu una llista $L$ de longitut 15 que comenci amb $L[0]=1069$ i de manera que $L[i+1]$ sigui igual a  SumaDivisorsSenars$(L[i])$ per a $i\ge 0$.
 
@@ -968,10 +968,3 @@ print(L)
 print(len(L))
 ```
 
-```sage
-
-```
-
-```sage
-
-```
