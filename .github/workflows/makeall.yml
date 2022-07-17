@@ -21,6 +21,10 @@ jobs:
       - name: Create a temporary artifact downloads folder
         run: mkdir -p output
 
+      - name: Test environment
+        run: |
+          sudo which sage
+          
       - name: Install dependencies
         run: |
           sudo apt-get update -y
@@ -31,10 +35,7 @@ jobs:
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
-      - name: Test environment
-        run: |
-          jupyter kernelspec list
-          sudo which sage
+
         
       - name: Make notebooks
         run: |
