@@ -5,8 +5,10 @@ outfolder="../output"
 file=$(basename -s .md $1)
 sols=${outfolder}/${file}_solucions.ipynb
 exercici=${outfolder}/${file}.ipynb
+outtex=${outfolder}/${file}.tex
 outpdf=${outfolder}/${file}.pdf
 
 jupytext --to ipynb $file.md -o $sols
 sed '/begin hide/,/end hide/c# SOLUCIÓ' $sols > $exercici
-pandoc --from ipynb $exercici -o  $outpdf
+jupyter nbconvert --to latex --execute $exercici --allow-errors --output=$outtex
+for i in 1 2 3; do pdflatex --output-directory $outfolder $outtex; done;
