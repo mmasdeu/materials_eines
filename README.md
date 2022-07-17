@@ -1,3 +1,5 @@
+![Tests](https://github.com/mmasdeu/materials_eines/actions/workflows/makeall.yml/badge.svg)
+
 # Material per Eines
 
 Repositori que conté material per l'assignatura del grau de matemàtiques "Eines Informàtiques per les Matemàtiques".
