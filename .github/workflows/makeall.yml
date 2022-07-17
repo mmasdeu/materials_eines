@@ -26,11 +26,15 @@ jobs:
           sudo apt-get update -y
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget python3-pip curl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
           sudo pip install jupytext nbconvert
+          sudo ipython kernel install
+          sudo jupyter kernelspec install ./SageMath/local/share/jupyter/kernels/sagemath
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
       - name: Test environment
-        run: jupyter kernelspec list
+        run: |
+          jupyter kernelspec list
+          sudo which sage
         
       - name: Make notebooks
         run: |
