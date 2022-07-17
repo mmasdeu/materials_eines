@@ -23,8 +23,8 @@ jobs:
         run: |
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo apt-get update -y
-          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
-          sudo pip install jupytext
+          sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+          sudo pip install jupytext nbconvert
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
         
