@@ -23,7 +23,7 @@ jobs:
 
       - name: Test environment
         run: |
-          sudo which sage
+          sudo find /usr -iname sagemath
           
       - name: Install dependencies
         run: |
