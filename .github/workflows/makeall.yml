@@ -25,7 +25,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget python3-pip curl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
-          sudo pip install jupytext nbconvert ipython
+          sudo pip install jupytext nbconvert ipython ipykernel
           sudo ipython kernel install
           sudo jupyter kernelspec install ./SageMath/local/share/jupyter/kernels/sagemath
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
