@@ -10,5 +10,6 @@ outpdf=${outfolder}/${file}.pdf
 
 jupytext --to ipynb $file.md -o $sols
 sed '/begin hide/,/end hide/c# SOLUCIÓ' $sols > $exercici
-jupyter nbconvert --to latex --execute $exercici --allow-errors --output=$outtex
+
+jupyter nbconvert --to latex --ExecutePreprocessor.kernel_name=sagemath --execute $exercici --allow-errors --output=$outtex
 for i in 1 2 3; do pdflatex --output-directory $outfolder $outtex; done;
