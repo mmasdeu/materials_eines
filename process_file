@@ -1,0 +1,12 @@
+#!/bin/bash
+
+outfolder="../output"
+
+file=$(basename -s .md $1)
+sols=${outfolder}/${file}_solucions.ipynb
+exercici=${outfolder}/${file}.ipynb
+outpdf=${outfolder}/${file}.pdf
+
+jupytext --to ipynb $file.md -o $sols
+sed '/begin hide/,/end hide/c# SOLUCIÓ' $sols > $exercici
+pandoc --from ipynb $exercici -o  $outpdf
