@@ -12,7 +12,7 @@ objecte d'aquest tipus quan es fa una assignació com, per exemple, la
 següent:
 
 ```sage
-f(x)=cos(pi\*x)+3
+f(x)=cos(pi*x)+3
 show(f)
 ```
 
@@ -81,7 +81,7 @@ v
 ```
 
 ```sage
-F(u,v)=u\*v
+F(u,v)=u*v
 ```
 ```sage
 u
