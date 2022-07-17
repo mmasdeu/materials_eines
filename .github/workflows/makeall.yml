@@ -24,6 +24,7 @@ jobs:
       - name: Test environment
         run: |
           sudo find /usr -iname kernel.json
+          echo $SAGE_ROOT
           
       - name: Install dependencies
         run: |
