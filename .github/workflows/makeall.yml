@@ -7,14 +7,13 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-
 jobs:
   archive-build-artifacts:
     runs-on: ubuntu-latest
     container:
       image : sagemath/sagemath:latest
       options: --user root
-    
+
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v2
@@ -25,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y wget curl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
           sudo pip install jupytext nbconvert
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
