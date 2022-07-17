@@ -11,6 +11,9 @@ on:
 jobs:
   archive-build-artifacts:
     runs-on: ubuntu-latest
+    container:
+      image : sagemath/sagemath:latest
+      options: --user root
     
     steps:
       - name: Checkout main branch
