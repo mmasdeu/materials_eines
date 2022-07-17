@@ -32,6 +32,7 @@ jobs:
             for file in *.md;
               do jupytext --to ipynb $file -o ../output/`basename -s .md $file`_solucions.ipynb;
               ../make-student-version ../output/`basename $file .md`_solucions.ipynb > ../output/`basename $file .md`.ipynb;
+              pandoc --from ipynb ../output/`basename $file .md`.ipynb -o  ../output/`basename $file .md`.pdf
               done;
             cd ..
               
