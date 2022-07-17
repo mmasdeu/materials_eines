@@ -23,7 +23,7 @@ jobs:
 
       - name: Test environment
         run: |
-          sudo find /usr -iname sagemath
+          sudo find /usr -iname kernel.json
           
       - name: Install dependencies
         run: |
