@@ -15,7 +15,7 @@ jupyter:
 ## Exercicis Pràctica 8
 
 
-<font color=red> Exercici 1. </font> <font color=green> Definiu una funció de SageMath  que si li dones una llista finita de nombres et retorna una llista ordenada i sense repeticions (Indicació: transformeu-la a un conjunt, i retorneu la llista ordenada amb sorted). 
+Exercici 1. Definiu una funció de SageMath  que si li dones una llista finita de nombres et retorna una llista ordenada i sense repeticions (Indicació: transformeu-la a un conjunt, i retorneu la llista ordenada amb sorted). 
 
 ```sage
 def OrdNR(L):
@@ -35,7 +35,7 @@ OrdNR([randint(1,30) for _ in range(30)])
 (He usat _ com a nom de la variable que s mou en el range, doncs no ens cal per res, només per repetir una cosa 30 cops). 
 
 
-<font color=red> Exercici 2. </font> <font color=green>Com que les llistes de Python comencen pel zero, el que és a vegades un inconvenient,
+Exercici 2. Com que les llistes de Python comencen pel zero, el que és a vegades un inconvenient,
 ens aniria molt bé poder usar una 'nova' versió de les llistes que comenci per l'1.
 Expliqueu com podem fer això amb diccionaris, i creeu una funció tal que, donada
 una llista ens retorni un diccionari amb la mateixa llista però ara començant per 1.
@@ -53,7 +53,7 @@ nL=nova_llista([1,2,3,4])
 nL[3]
 ```
 
-<font color=red> Exercici 3. <font color=green>  Es diu que un parell d'enters positius $m$ i $n$ són *amics* si la suma dels divisors (propis) de cada un és igual a l'altre. Definiu una funció que permeti decidir si una parella $(m,n)$ és una parella d'amics o no. Utilitzeu la funció per a localitzar totes les parelles d'amics menors que $1000$.
+Exercici 3.  Es diu que un parell d'enters positius $m$ i $n$ són *amics* si la suma dels divisors (propis) de cada un és igual a l'altre. Definiu una funció que permeti decidir si una parella $(m,n)$ és una parella d'amics o no. Utilitzeu la funció per a localitzar totes les parelles d'amics menors que $1000$.
 
 ```sage
 def Amics(a,b):
@@ -81,7 +81,7 @@ for a in srange(2,1000):
             print(a,b)
 ```
 
-<font color=black> Si voleu que no surtin els nombres perfectes (i per tant que les parelles siguin $a\lt b$), canvieu el segon bucle
+Si voleu que no surtin els nombres perfectes (i per tant que les parelles siguin a < b), canvieu el segon bucle
 
 ```sage
 for a in srange(2,1000):
@@ -90,7 +90,7 @@ for a in srange(2,1000):
             print(a,b)
 ```
 
-<font color=red> Exercici 4: <font color=green>  Definiu una funció de SageMath, anomenada **xxgcd**, que accepti tres enters $a$, $b$, $c$ com a argument, i retorni el màxim comú divisor $d=\text{mcd}(a,b,c)$ i els coeficients $\lambda$, $\mu$ i $\nu$ d'una identitat de Bézout per a aquests números de forma que
+Exercici 4:  Definiu una funció de SageMath, anomenada **xxgcd**, que accepti tres enters $a$, $b$, $c$ com a argument, i retorni el màxim comú divisor $d=\text{mcd}(a,b,c)$ i els coeficients $\lambda$, $\mu$ i $\nu$ d'una identitat de Bézout per a aquests números de forma que
 \[
 d=\lambda\times a+\mu\times b+\nu\times c
 \] 
@@ -133,7 +133,7 @@ print(S)
 sum([L[i]*S[i] for i in range(len(L))])==d
 ```
 
-<font color=red> Exercici 5: <font color=green>  Tenint en compte que *crt()* només dóna una solució particular del problema de congruències que es plantegi, definiu una extensió d'aquesta funció (*xcrt*) que, amb les mateixes dades, doni com a resultat una llista de dos elements: el valor de la solució particular i el mínim comú múltiple dels mòduls.
+Exercici 5:  Tenint en compte que *crt()* només dóna una solució particular del problema de congruències que es plantegi, definiu una extensió d'aquesta funció (*xcrt*) que, amb les mateixes dades, doni com a resultat una llista de dos elements: el valor de la solució particular i el mínim comú múltiple dels mòduls.
 
 
 ```sage
@@ -151,7 +151,7 @@ xcrt([2,4,8,18],[6,8,20,50])
 
 ```
 
-<font color=red> Exercici 6: <font color=green>  Definiu una funció de SageMath que accepti com a arguments dos enters $a$ i $m$, i doni com resultat la llista de potències $\{{\overline a}^k \mid k\geq 0 \}\subseteq \mathbb{Z}/m\mathbb{Z}$.
+ Exercici 6:  Definiu una funció de SageMath que accepti com a arguments dos enters $a$ i $m$, i doni com resultat la llista de potències $\{{\overline a}^k \mid k\geq 0 \}\subseteq \mathbb{Z}/m\mathbb{Z}$.
 
 ```sage
 # He distingit entre el cas que es unitat, doncs aleshores la maxima k que surt és el ordre multiplicatiu, de quan no ho és (però de fet no calia). Al enunciat diu "llista de les potencies", però escriu un conjunt, així que he decidit que doni una llista ordenada. He assumit que a partir que surt una potencia repetida, les següent potències també son repetides, però aixó caldria demostrar-ho, no? 
@@ -187,7 +187,7 @@ potenciesmodm(10,100)
 potenciesmodm(5,100)
 ```
 
-<font color=red> Exercici 7: <font color=green>  Feu una llista dels elements invertibles a $\mathbb{Z}/24\mathbb{Z}$ amb l'ordre multiplicatiu de cadascun d'ells. 
+ Exercici 7:   Feu una llista dels elements invertibles a $\mathbb{Z}/24\mathbb{Z}$ amb l'ordre multiplicatiu de cadascun d'ells. 
 
 ```sage
 Z24=Zmod(24)
@@ -199,10 +199,10 @@ L
 [[l,Z24(l).multiplicative_order()] for l in L]
 ```
 
-<font color=red> Exercici 8: <font color=green>  Considereu l'anell $\mathbb{Z}/257\mathbb{Z}$.
+Exercici 8:  Considereu l'anell $\mathbb{Z}/257\mathbb{Z}$.
 
 
-<font color=green>  (a) Comproveu que 257 és primer i que, per tant, tots els elements no nuls de $\mathbb{Z}/257\mathbb{Z}$ són invertibles.
+(a) Comproveu que 257 és primer i que, per tant, tots els elements no nuls de $\mathbb{Z}/257\mathbb{Z}$ són invertibles.
 
 
 Comprovem que és primer.
@@ -218,7 +218,7 @@ ZN=Zmod(257)
 ZN.is_field()
 ```
 
-<font color=green>  (b) Trobeu un element $\bar a\in \mathbb{Z}/257\mathbb{Z}\setminus\{\bar 0\}$ amb ordre multiplicatiu màxim. 
+(b) Trobeu un element $\bar a\in \mathbb{Z}/257\mathbb{Z}\setminus\{\bar 0\}$ amb ordre multiplicatiu màxim.
 
 
 Calculem el màxim dels ordres del grup d'unitats (=invertibles) de l'anell $\mathbb{Z}/257\mathbb{Z}$, que com que és un cos, són tots execepte el $0$. Hi ha un teorema que ens diu que, per $\mathbb{Z}/p\mathbb{Z}$ amb $p$ un primer, l'ordre sempre  és un divisor de $p-1=257-1=256$, i un altre teorema (més difícil) que diu que hi ha sempre algun element d'ordre $p-1$. Per tant l'ordre màxim ha de sortir $256$. 
@@ -258,7 +258,7 @@ while(a == 0 or a.multiplicative_order()!=256):
 print(a)
 ```
 
-<font color=red> Exercici 9: <font color=green>  Hi ha molts jocs de màgia que estan basats en propietats de divisibilitat. Un d'aquests és la possibilitat de recuperar la data de naixement d'algú a partir del resultat de l'operació següent: si aquesta data és $d$-$m$ on $d$ representa el dia i $m$ el mes calcula 
+Exercici 9:  Hi ha molts jocs de màgia que estan basats en propietats de divisibilitat. Un d'aquests és la possibilitat de recuperar la data de naixement d'algú a partir del resultat de l'operació següent: si aquesta data és $d$-$m$ on $d$ representa el dia i $m$ el mes calcula 
 $$
 v= 12\times d + 31\times m
 $$
