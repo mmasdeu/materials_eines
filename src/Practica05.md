@@ -26,13 +26,13 @@ objecte d'aquest tipus quan es fa una assignació com, per exemple, la
 següent:
 
 ```sage
-f(x)=cos(pi*x)+3
+f(x)=cos(pi*x)+7
 show(f)
 ```
 
 (que generarà un símbol `f` que reacciona com la funció definida per la
-condició $f(x)=\cos(\pi\, x)+3$ o, més concretament, qualsevol expressió
-de la forma `f(v)` s'avaluarà com `cos(pi*v)+3`). De forma que es poden
+condició $f(x)=\cos(\pi\, x)+7$ o, més concretament, qualsevol expressió
+de la forma `f(v)` s'avaluarà com `cos(pi*v)+7`). De forma que es poden
 avaluar expressions del tipus:
 
 ```sage

@@ -387,12 +387,12 @@ A=matrix(QQ,[[1,0,0],[0,0,1],[0,0,0]])
 InterseccioColumnesFiles(A)
 ```
 
-<font color=red> Exercici 8: </font> Determineu bases pels subespais de $\mathbb{Q}^5$ següents, les seves sumes i les seves interseccions.
-\begin{gather*}
+Exercici 8: Determineu bases pels subespais de $\mathbb{Q}^5$ següents, les seves sumes i les seves interseccions.
+$$
 V_1=\langle (1,1,1,1,1),(-1,0,1,0,-1),(1,2,1,2,1),(0,2,0,2,0)\rangle \\
 V_2=\langle (1,2,3,4,5),(5,4,3,2,1)\rangle\\
-V_3=\{ (x,y,z,t,u)\in \mathbb{Q}^5\mid x+y=z+t=3\,u\}
-\end{gather*}
+V_3=\{ (x,y,z,t,u)\in \mathbb{Q}^5\mid x+y=z+t=3 u \}
+$$
 
 
 ```sage
