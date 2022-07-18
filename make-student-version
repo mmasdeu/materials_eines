@@ -1,2 +1,2 @@
 #!/bin/bash
-sed '/begin hide/,/end hide/c# SOLUCIÓ' $1
+sed '/begin hide/,/end hide/c"# SOLUCIÓ"' $1

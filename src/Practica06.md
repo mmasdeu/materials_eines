@@ -12,16 +12,14 @@ jupyter:
     name: sagemath
 ---
 
-::: center
-**Càlcul infinitesimal bàsic.**
-:::
+# Càlcul infinitesimal bàsic
 
-# Límit d'una expressió
+## Límit d'una expressió
 
 Per tal de calcular límits, tant si es tracta d'expressions que depenen
 d'un índex que tendeix a infinit (successions) o d'una variable contínua
 que tendeix a un cert valor (funcions d'una variable)
-[**SageMath**]{style="color: blue"} proporciona la funció `limit`. La
+**SageMath**  proporciona la funció `limit`. La
 construcció més simple d'una instrucció `limit` serà de la forma
 `limit(expr,x=lmt)`, on `expr` és l'expressió de la qual se'n vol
 obtenir un límit, `x` la variable i `lmt` el punt cap on tendeix aquesta
@@ -29,10 +27,9 @@ variable (pot ser infinit, que es representa per `infinity` o, si voleu
 ser curts, amb `oo`, dues `o` minúscules, amb el signe `+`/`-`
 corresponent si cal). En els exemples següents podeu veure alguns casos
 en els que obtindreu directament el resultat que, segurament, ja us
-espereu: ``
+espereu:
 
-::: list
-
+```sage
 var('k')
 
 limit(k/(k+1),k=infinity)
@@ -50,12 +47,11 @@ limit((k\^3-8\*k+7)/(200\*k+1024),k=-oo)
 limit(e\^k,k=oo)
 
 limit(e\^k,k=-oo)
-:::
+```
 
-I en alguns casos en què la variable no tendeix a infinit: ``
+I en alguns casos en què la variable no tendeix a infinit:
 
-::: list
-
+```sage
 limit(sin(x)/x,x=0)
 
 limit((x-sin(x))/x\^3,x=0)
@@ -65,18 +61,17 @@ limit((1-cos(x))/x\^2),x=0)
 limit((x\^3 + 3\*x\^2-x-3)/(x-1),x=1)
 
 limit(e\^(-1/x\^2)/x\^5,x=0)
-:::
+```
 
 Probablement haureu notat que, per defecte,
-[**SageMath**]{style="color: blue"} (ni cap altre programari de càlcul
+**SageMath** (ni cap altre programari de càlcul
 simbòlic) no té mecanismes *per veure* en els límits amb la variable
 tendint a infinit si el problema correspon a una variable contínua o a
-un índex enter. És per això que si calculeu una expressió del tipus ``
+un índex enter. És per això que si calculeu una expressió del tipus
 
-::: list
-
+```sage
 limit(cos(2\*pi\*k), k=infinity)
-:::
+```
 
 pensant que els múltiples de $2\,\pi$ tenen el cosinus igual a $1$ i,
 per tant, esperant que el resultat sigui aquest, veureu que la resposta
@@ -85,16 +80,13 @@ vàlida si $k$ és un enter. Per tal de poder tractar aquestes situacions
 cal *fer suposicions* sobre el contingut de les variables o dels
 paràmetres que apareixen en el càlcul. La funció que permet fer això és
 `assume` i en l'exemple anterior es podria utilitzar de la forma
-següent: ``
+següent:
 
-::: list
-
+```sage
 var('k')
-
 assume(k,'integer')
-
 limit(cos(2\*pi\*k),k=oo)
-:::
+```
 
 Cada cop que s'executa una instrucció `assume` s'afegeix una restricció
 nova sense oblidar les anteriors. Si es vol conèixer en qualsevol moment
@@ -119,9 +111,9 @@ límits per la dreta o per l'esquerra n'hi haurà prou afegint l'opció
 corresponent.
 
 Les línies següents mostren una situació on l'ús d'aquests mecanismes
-mostra les diferents situacions que poden aparèixer ``
+mostra les diferents situacions que poden aparèixer
 
-::: list
+```sage
 
 var('a')
 
@@ -148,34 +140,31 @@ limit(f(x),x=0,dir='+')
 limit(f(x),x=0,dir='-')
 
 forget(a\<0)
-:::
+```
 
 **Nota:** Teniu en compte que el mecanisme del `assume` no és
 infał.lible. Hi ha moltes situacions en les que resulta molt difícil
 incloure dins els càlculs d'una funció concreta aquestes restriccions.
 
-# Derivades
+## Derivades
 
 La funció `diff` permet obtenir la derivada d'una expressió qualsevol
-respecte de la variable que es vulgui. Així, per exemple, es pot fer ``
+respecte de la variable que es vulgui. Així, per exemple, es pot fer
 
-::: list
-
+```sage
 diff(x\^3-2\*x\^2+4\*x-5,x)
-
 (x\^3-2\*x\^2+4\*x-5).diff(x)
-:::
+```
 
 Encara que, en realitat, si l'expressió només conté una variable, no cal
 especificar respecte què es vol derivar ja que
-[**SageMath**]{style="color: blue"} ja ho dedueix pel seu compte. ``
+**SageMath** ja ho dedueix pel seu compte.
 
-::: list
-
+```sage
 diff(x\^3-2\*x\^2+4\*x-5)
 
 (x\^3-2\*x\^2+4\*x-5).diff()
-:::
+```
 
 També es poden derivar *funcions* i el resultat és la *funció derivada*
 ``
@@ -189,7 +178,7 @@ df=f.diff()
 show(df)
 :::
 
-(Noteu que, com que [**SageMath**]{style="color: blue"} *recorda* que la
+(Noteu que, com que **SageMath** *recorda* que la
 variable de la funció `f` és `x` no cal especificar-ho a la instrucció
 que calcula la derivada).
 
@@ -273,12 +262,12 @@ resultats força satisfactoris però, en realitat, la raó de ser d'un
 exercici d'aquest tipus és el fet que sense fer alguns límits,
 solucionar algunes equacions i calcular unes quantes derivades no serà
 possible obtenir de forma precisa aquest tipus d'informació. Com heu
-vist, [**SageMath**]{style="color: blue"} (i qualsevol eina de càlcul
+vist, **SageMath** (i qualsevol eina de càlcul
 simbòlic d'un cert nivell) proporciona totes les eines necessàries per
 realitzar una tasca d'aquest tipus.
 
 Per tal de veure com es van utilitzant els recursos de
-[**SageMath**]{style="color: blue"} de forma sistemàtica mirem d'obtenir
+**SageMath** de forma sistemàtica mirem d'obtenir
 les característiques del gràfic de la funció $f$ determinada per la
 fórmula
 $f(x)= \dfrac{x^{3} + 6 \, x^{2} + 12 \, x + 8}{x^{2} + 4 \, x + 3}$.
@@ -318,7 +307,7 @@ solve(x\^7-2\*x+1==0, x, to_poly_solve=True)
 on en surten totes les arrels, també les arrels que no són nombres
 reals.
 
-Per evitar això podem dir-li al [**SageMath**]{style="color: blue"}que
+Per evitar això podem dir-li al [**SageMath** ]{style="color: blue"}que
 la variable x només prendrà valors reals posant: ``
 
 ::: list
@@ -519,7 +508,7 @@ han anat sortint al llarg dels càlculs anteriors.
 
 # Integrals
 
-El càlcul integral amb [**SageMath**]{style="color: blue"} és prou
+El càlcul integral amb **SageMath** és prou
 intuïtiu. Donada, per exemple, la funció determinada per
 $f(x)=x\,\sin(x)$, per calcular la integral definida
 $\displaystyle\int_a^b f(x)\, dx$ es pot fer ``
@@ -587,7 +576,7 @@ d'integració $C$, de forma que, si el que volem és una primitiva
 concreta, l'haurem d'ajustar. Per exemple, sabem que la funció
 $F(x)=\displaystyle\int_0^x f(t)\, dt$ és la primitiva de $f(x)$ que
 compleix $F(0)=0$. Observem que això no és cert per a la primitiva que
-calcula [**SageMath**]{style="color: blue"} en l'exemple anterior, però
+calcula **SageMath** en l'exemple anterior, però
 que es pot ajustar fàcilment. ``
 
 ::: list
@@ -653,7 +642,7 @@ integral(x\^(-1),x)
 
     (d) La *funció* que s'obté derivant `h` respecte `x` dues vegades.
 
-5.  Creeu una funció de [**SageMath**]{style="color: blue"} anomenada
+5.  Creeu una funció de **SageMath** anomenada
     `tangent`, que accepti com a paràmetres una funció $f(x)$, un punt
     $a$ i una distància $h>0$, i doni com a resultat el gràfic de la
     funció $f(x)$ junt amb la seva recta tangent en el punt $(a,f(a))$

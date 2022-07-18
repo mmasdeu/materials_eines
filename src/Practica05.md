@@ -717,6 +717,7 @@ la funció.
     després fent-ho.
 
 ```sage
+# begin hide
 # Una solució amb el for
 
 s=0
@@ -739,6 +740,7 @@ print(s)
 # Una solució més compacte amb comprensió de llistes 
 
 sum(p for p in srange(100) if p.is_prime() and p%4==1)
+# end hide
 ```
 
 2.  Recordeu que la successió de Fibonacci, $(f_n)_n$, es defineix de
@@ -838,9 +840,9 @@ sum(p for p in srange(100) if p.is_prime() and p%4==1)
     funció $f(x)=2.9\,x\,(1-x)$.
 
     ::: center
-    ![image](cobweblog.pdf)
+    ![teranyina log](cobweblog.png)
     :::
 
     ::: center
-    ![image](cobwebcos.pdf)
+    ![teranyina cos](cobwebcos.png)
     :::
