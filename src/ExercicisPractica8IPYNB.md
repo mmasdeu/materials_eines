@@ -91,9 +91,9 @@ for a in srange(2,1000):
 ```
 
 Exercici 4:  Definiu una funció de SageMath, anomenada **xxgcd**, que accepti tres enters $a$, $b$, $c$ com a argument, i retorni el màxim comú divisor $d=\text{mcd}(a,b,c)$ i els coeficients $\lambda$, $\mu$ i $\nu$ d'una identitat de Bézout per a aquests números de forma que
-\[
+$$
 d=\lambda\times a+\mu\times b+\nu\times c
-\] 
+$$ 
 Sabeu modificar **xxgcd** per tal que accepti com argument una llista d'enters, de longitud arbitrària i doni com a resultat els coeficients d'una identitat de Bézout?
 
 

@@ -1,3 +1,17 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.14.0
+  kernelspec:
+    display_name: SageMath 9.6
+    language: sage
+    name: sagemath
+---
+
 ::: center
 **Càlcul infinitesimal bàsic.**
 :::
