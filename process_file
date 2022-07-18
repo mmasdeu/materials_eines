@@ -11,5 +11,5 @@ outpdf=${outfolder}/${file}.pdf
 jupytext --to ipynb $file.md -o $sols
 sed '/begin hide/,/end hide/c# SOLUCIÓ' $sols > $exercici
 
-sage -jupyter nbconvert --to latex --execute --allow-errors $exercici || (sage -jupyter nbconvert --to latex --allow-errors $exercici
+(sage -jupyter nbconvert --to latex --execute --allow-errors $exercici) || (sage -jupyter nbconvert --to latex --allow-errors $exercici)
 for i in 1 2 3; do pdflatex --output-directory $outfolder $outtex; done;
