@@ -330,6 +330,21 @@ print(L)
 **Exercici:** Podeu pensar alguna manera de fer això amb un simple
 `for`? I amb comprensió de llistes?
 
+```sage
+# begin hide
+L = []
+for p in srange(20,1,-1):
+    if p.is_prime():
+        L.append(p)
+L
+# end hide
+```
+
+```sage
+# begin hide
+[p for p in srange(20,1,-1) if p.is_prime()]
+# end hide
+```
 
 Un altre exemple més sofisticat: és ben conegut que l'equació
 $x=\cos(x)$ té una solució que es pot aproximar tant com es vulgui
@@ -438,6 +453,30 @@ Proveu de fer el mateix per a trobar el nombre primer immediatement
 superior a `a = 524`, o sigui el més petit dels que són més grans que
 `524`. La funció de **SageMath** corresponent és
 `next_prime`.
+
+```sage
+# begin hide
+# Opció 1: amb un while. Aquí cal saber que hi ha infinits primers,
+# i per tant el while s'acaba algun dia.
+
+a = 1009
+p = a+1
+while not p.is_prime():
+    p += 1
+print(p)
+
+# Opció 2: amb un for; el problema és saber fins a on hem d'anar
+# per a torbar un nombre primer. Aquí podem fer servir per exemple
+# un resultat que diu que per a tot $n>1$, hi ha sempre un nombre
+# primer $p>n$ amb $p\le 2n$ (es diu postulat de Bertrand, i podeu
+# buscar informació per internet).  
+
+for p in srange(a+1,2*a+1):
+    if p.is_prime():
+        break
+print(p)
+# end hide
+```
 
 ## Funcions de tipus programa
 
@@ -654,8 +693,7 @@ prop de $x_{0}=0$ (recordeu que $f(0)$ no tindria sentit però que el
 límit dels valors de $f(x)$ quan $x$ tendeix a $0$ és $1$) podeu fer
 
 ```sage
-
-f(x)=sin(x)/x
+f(x) = sin(x)/x
 aprox(f,0.,25,True)
 ```
 
@@ -677,6 +715,31 @@ la funció.
     als restar-los 1 siguin múltiples de 4 utlitzant bucles i
     condicionals. Feu-ho primer sense usar la funció `next_prime`, i
     després fent-ho.
+
+```sage
+# Una solució amb el for
+
+s=0
+for p in [3..100]:
+    if p.is_prime() and (p-1)%4==0:
+            s += p
+print(s)
+
+# Una solució amb el while, on hem usat que és el mateix dir
+# que al restar 1 sigui múltiple de 4 que al dividir per 4 doni reste 1
+
+s=0
+p=2
+while(p<101):
+    if p%4==1:
+        s+=p
+    p=p.next_prime() 
+print(s)
+
+# Una solució més compacte amb comprensió de llistes 
+
+sum(p for p in srange(100) if p.is_prime() and p%4==1)
+```
 
 2.  Recordeu que la successió de Fibonacci, $(f_n)_n$, es defineix de
     forma iterativa a partir de $f_0=1$, $f_1=1$ i la regla
