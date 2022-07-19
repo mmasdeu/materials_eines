@@ -4,16 +4,13 @@ outfolder="../output" # Folder used for results
 
 file=$(basename -s .md $1) # Base name for file
 outfile=${outfolder}/${file}
-sols=${outfile}_solucions.ipynb
-
-# Convert source to jupyter notebook
-jupytext --to ipynb $file.md -o $sols
+sols=${outfile}_solucions
 
 # Make exercise by removing blocks between "begin hide" and "end hide"
-sed '/begin hide/,/end hide/c"###### SOLUCIÓ AQUÍ ######"' $sols > ${outfile}.ipynb
+sed '/begin hide/,/end hide/c"###### SOLUCIÓ AQUÍ ######"' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb
 
 # Make solutions by removing lines containing "begin hide" and "end hide" markers
-grep -v "begin hide" $sols | grep -v "end hide" > ${sols}.tmp; mv ${sols}.tmp ${sols}
+grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${sols}.ipynb
 
 # Convert notebook (once executed, if possible) to LaTeX
 (sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb)
