@@ -1,15 +1,19 @@
 #!/bin/bash
 
-outfolder="../output"
+outfolder="../output" # Folder used for results
 
-file=$(basename -s .md $1)
-sols=${outfolder}/${file}_solucions.ipynb
-exercici=${outfolder}/${file}.ipynb
-outtex=${outfolder}/${file}.tex
-outpdf=${outfolder}/${file}.pdf
+file=$(basename -s .md $1) # Base name for file
+outfile=${outfolder}/${file}
+sols=${outfile}_solucions.ipynb
 
+# Convert source to jupyter notebook
 jupytext --to ipynb $file.md -o $sols
-sed '/begin hide/,/end hide/c"# SOLUCIÓ"' $sols > $exercici
 
-(sage -jupyter nbconvert --to latex --execute --allow-errors $exercici) || (sage -jupyter nbconvert --to latex --allow-errors $exercici)
-for i in 1 2 3; do pdflatex --output-directory $outfolder $outtex; done;
+# Make exercise by removing blocks between "begin hide" and "end hide"
+sed '/begin hide/,/end hide/c"###### SOLUCIÓ AQUÍ ######"' $sols > ${outfile}.ipynb
+
+# Convert notebook (once executed, if possible) to LaTeX
+(sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb)
+
+# Run pdflatex to obtain pdf
+latexmk -output-directory=$outfolder -silent -pdf ${outfile}.tex
