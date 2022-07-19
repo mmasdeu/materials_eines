@@ -17,7 +17,7 @@ jupyter:
 ## Posada en marxa
 
 Arrenqueu `SageMath Notebook`, des del menú inici o de la manera
-adequada segons la instal·lació. S'obrirà el navegador d'internet per
+adequada segons la vostra instal·lació. S'obrirà el navegador d'internet per
 omissió que tinguem a l'ordinador (o es crearà una nova pestanya si ja
 estava obert). Dins el navegador veureu funcionant *Jupyter Notebook*, que és un programari per editar i executar *notebooks*.
 
