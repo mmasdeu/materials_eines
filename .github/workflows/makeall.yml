@@ -36,7 +36,8 @@ jobs:
         run: |
           cd src
           for file in src/*.md; do
-            ../process_file $file || true
+            echo "Processing ${file}..."
+            ([ -f "$file" ] && ../process_file $file) || true
           done
 
       - name: Upload to Nextcloud
