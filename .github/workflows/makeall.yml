@@ -35,10 +35,11 @@ jobs:
       - name: Make notebooks
         run: |
           cd src
-          for file in src/*.md; do
+          for file in *.md; do
             echo "Processing ${file}..."
             ([ -f "$file" ] && ../process_file $file) || true
           done
+          cd ..
 
       - name: Upload to Nextcloud
         run: for file in output/*.pdf output/*.ipynb; do
