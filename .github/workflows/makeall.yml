@@ -23,6 +23,11 @@ jobs:
       - name: Create a temporary artifact downloads folder
         run: mkdir -p output
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git
+          
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v23.2
@@ -41,16 +46,14 @@ jobs:
             *.png
             *.jpg
             
-      - name: Install dependencies
+      - name: Install more dependencies
         run: |
-          sudo apt-get update -y
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git wget python3-pip curl texlive-latex-extra
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget python3-pip curl texlive-latex-extra
           sudo pip install jupytext nbconvert ipython ipykernel
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
           sudo apt-get install -f
 
-            
       - name: Make notebooks
         run: |
           cd src
