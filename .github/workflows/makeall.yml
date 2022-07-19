@@ -26,7 +26,7 @@ jobs:
       - name: Install more dependencies
         run: |
           sudo apt-get update -y
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git wget python3-pip curl texlive-latex-extra
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git wget latexmk python3-pip curl texlive-latex-extra
           sudo pip install jupytext nbconvert ipython ipykernel
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
