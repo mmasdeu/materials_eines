@@ -16,4 +16,4 @@ grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${
 (sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb)
 
 # Run pdflatex to obtain pdf
-latexmk -output-directory=$outfolder -silent -pdf ${outfile}.tex
+latexmk -output-directory=$outfolder -silent -f -pdf ${outfile}.tex
