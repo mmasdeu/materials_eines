@@ -12,6 +12,9 @@ jupytext --to ipynb $file.md -o $sols
 # Make exercise by removing blocks between "begin hide" and "end hide"
 sed '/begin hide/,/end hide/c"###### SOLUCIÓ AQUÍ ######"' $sols > ${outfile}.ipynb
 
+# Make solutions by removing lines containing "begin hide" and "end hide" markers
+grep -v "begin hide" $sols | grep -v "end hide" > ${sols}.tmp; mv ${sols}.tmp ${sols}
+
 # Convert notebook (once executed, if possible) to LaTeX
 (sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb)
 

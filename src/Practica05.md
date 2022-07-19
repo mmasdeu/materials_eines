@@ -454,29 +454,33 @@ superior a `a = 524`, o sigui el més petit dels que són més grans que
 `524`. La funció de **SageMath** corresponent és
 `next_prime`.
 
-```sage
-# begin hide
-# Opció 1: amb un while. Aquí cal saber que hi ha infinits primers,
-# i per tant el while s'acaba algun dia.
+###### begin hide
 
+**Opció 1:** amb un `while`. Aquí cal saber que hi ha infinits primers,
+i per tant el `while` s'acaba algun dia.
+
+```sage
 a = 1009
 p = a+1
 while not p.is_prime():
     p += 1
 print(p)
+```
 
-# Opció 2: amb un for; el problema és saber fins a on hem d'anar
-# per a torbar un nombre primer. Aquí podem fer servir per exemple
-# un resultat que diu que per a tot $n>1$, hi ha sempre un nombre
-# primer $p>n$ amb $p\le 2n$ (es diu postulat de Bertrand, i podeu
-# buscar informació per internet).  
+**Opció 2:** amb un `for`; el problema és saber fins a on hem d'anar
+per a trobar un nombre primer. Aquí podem fer servir per exemple
+un resultat que diu que per a tot $n>1$, hi ha sempre un nombre
+primer $p>n$ amb $p\le 2n$ (es diu postulat de Bertrand, i podeu
+buscar informació per internet).
 
+```sage
 for p in srange(a+1,2*a+1):
     if p.is_prime():
         break
 print(p)
-# end hide
 ```
+
+###### end hide
 
 ## Funcions de tipus programa
 
@@ -505,7 +509,6 @@ def primer3(n):
 	else:
 		return False
 ```
-
 
 Com a comentari, vegeu que rere la instrucció `return` hi ha el que
 volem que retorni la funció, en cada cas. Un cop executa un `return` la
@@ -712,36 +715,46 @@ la funció.
 # Exercicis
 
 1.  Calculeu la suma de tots els nombres primers menors que 100 tals que
-    als restar-los 1 siguin múltiples de 4 utlitzant bucles i
+    als restar-los 1 siguin múltiples de 4 utilitzant bucles i
     condicionals. Feu-ho primer sense usar la funció `next_prime`, i
     després fent-ho.
 
-```sage
-# begin hide
-# Una solució amb el for
+###### begin hide
+Una solució amb el `for`:
 
+```sage
 s=0
 for p in [3..100]:
-    if p.is_prime() and (p-1)%4==0:
+    if p.is_prime() and (p-1) % 4 == 0:
             s += p
 print(s)
-
-# Una solució amb el while, on hem usat que és el mateix dir
-# que al restar 1 sigui múltiple de 4 que al dividir per 4 doni reste 1
-
-s=0
-p=2
-while(p<101):
-    if p%4==1:
-        s+=p
-    p=p.next_prime() 
-print(s)
-
-# Una solució més compacte amb comprensió de llistes 
-
-sum(p for p in srange(100) if p.is_prime() and p%4==1)
-# end hide
 ```
+
+Una solució amb el `while`, on hem usat que és el mateix dir
+que al restar 1 sigui múltiple de 4 que al dividir per 4 doni residu 1
+
+```sage
+s = 0
+p = 2
+while p < 101:
+    if p % 4 == 1:
+        s += p
+    p = p.next_prime() 
+print(s)
+```
+
+Una solució més compacta amb comprensió de llistes:
+
+```sage
+sum(p for p in srange(100) if p.is_prime() and p % 4 == 1)
+```
+
+Una solució on directament prenem els enters mòdul 4:
+```sage
+sum(p for p in srange(1,100,4) if p.is_prime())
+```
+
+###### end hide
 
 2.  Recordeu que la successió de Fibonacci, $(f_n)_n$, es defineix de
     forma iterativa a partir de $f_0=1$, $f_1=1$ i la regla
@@ -751,9 +764,39 @@ sum(p for p in srange(100) if p.is_prime() and p%4==1)
         $k$ (`Fib(k)`) i doni com a resultat la llista dels primers $k$
         termes de la successió de Fibonacci.
 
+```sage
+# begin hide
+def Fib(k):
+    '''Calcula la llista dels nombres de Fibonacci fins el k-èssim'''
+    if type(k) != Integer or k<0:
+        print("No és un valor admissible")
+        return                # Si no és un enter >=0, fem que no retorni res
+    if k == 0:
+        return [1]            #Per a k=0 retorna només la llista amb el 1. 
+    F=[1,1]                   #Inicialitzem la llista amb els dos primers valors
+    for i in range(k-1):      #El bucle va fins a k-1 ja que el 0 i el 1 ja estan
+        f=F[i]+F[i+1]
+        F.append(f)
+    return(F)
+# end hide
+```
+
     2.  Donat un valor $k$, representeu gràficament una línia que mostri
         l'evolució dels valors dels quocients $f_{k}/f_{k-1}$.
         Observareu que aquests tendeixen a un valor fix, sabeu quin és?
+
+		###### begin hide
+		```sage
+		def llistaFib(N):
+			F=Fib(N)
+			llista=[(k,F[k]/F[k-1]) for k in [1..N]]
+			return points(llista)
+		```
+
+		```sage
+		llistaFib(20)
+		```
+		###### end hide
 
 3.  Suposeu que, sigui on sigui, tenim 100 portes tancades i numerades.
     Fem una passada per totes les portes d'una en una i les anem obrint.
@@ -767,6 +810,48 @@ sum(p for p in srange(100) if p.is_prime() and p%4==1)
     **SageMath** llistant al final quines portes
     estaran obertes. Podeu dir per què surt el que surt?
 
+###### begin hide
+Farem una llista anomenada Portes de manera que tindra un 0 en el lloc $i$ si la porta $i+1$ està tancada, i un 1 si està oberta. Recordem que les llistes comencen amb el 0, però nosaltres volem enumerar les portes del 1 al 100.
+
+```sage
+Portes=[0 for a in range(100)]
+```
+
+Farem un bucle amb el for per a fer les 100 passades. Si el iterador es diu $i$, que es mourà de $0$ a $99$, recordem que haurem de fer els passos de llargada $i+1$. Després anomenem $r$ la porta en que començarem, i anem canviant el valor de la porta $r+j*(i+1)$ fins que surti més gran que 100. Fixeu-vos que si $a$ és 0 o 1, aleshores $1-a$ té el valor oposat. 
+
+```sage
+for i in range(100):
+    r=i                        #La primera porta en el primer pas en la iteració i està en el lloc i de la llista
+    while(r<100):
+        Portes[r]=1-Portes[r]  #Obrim o tanquem la porta en el lloc r
+        r+=i+1                 #Saltem anem a buscar la porta que està i+1 llocs de distància
+print(Portes)
+```
+
+Observeu que les úniques portes que queden obertes són les que corresponen als nombres quadrats.
+
+```sage
+[i+1 for i in range(100) if Portes[i] == 1]
+```
+
+Fixeu-vos que el nombre de vegades que passem per una porta és igual al nombre de divisors que té (incloent el 1 i ell mateix). 
+
+```sage
+[number_of_divisors(i+1).mod(2) for i in range(100)] == Portes
+```
+
+Hem fet una nova versió utilitzant dos bucles `for`: el primer controla les passades, el segon el procés de tancar i obrir portes. Noteu que 
+
+```sage
+PortesN=[0 for a in range(100)]
+for i in [1..100]:
+    for r in [i..100,step=i]:        #la r es mou des del lloc i al lloc 100 de i en i.
+        PortesN[r-1]=1-PortesN[r-1]  #Obrim o tanquem la porta r-èssima, que es troba en el lloc r-1 de la llista
+print(PortesN)
+print("Comprovem que surt la mateixa llista : ",PortesN==Portes)
+```
+###### end hide
+
 4.  (*Passeig aleatori*) Suposeu que ens trobem a la posició $(0,0)$ del
     pla i successivament fem passos (de longitud 1) escollint a l'atzar
     (recordeu l'exemple de les llistes de tirades de daus?) si fem el
@@ -777,6 +862,63 @@ sum(p for p in srange(100) if p.is_prime() and p%4==1)
     hagueu fet 1000 passes, dibuixant el camí que s'ha seguit i
     indicant, si és el cas, les passes que s'han realitzat.
 
+###### begin hide
+
+Com que volem fer un pas aleatori, escollim un nombre aleatori entre 1 i 4, i després assinem el pas corresponent al nombre. El que hem fet és definir una variable que sigui un boobleà (bo), i que passi a ser False quan retornem al (0,0) o bé haguem fet el nombre de passos que hem dit previament (=1000).
+
+```sage
+pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
+llista=[pt]                #Llista de punts per on passarem
+fi=1000                    #Nombre màxim de passos a fer.
+bo=True                    #Boobleà que val True mentre no tornem a (0,0) o fem fi passos
+while(bo):                 
+    pas=randint(1,4)
+    if pas ==1: 
+        pt[0]=pt[0]+1
+    elif pas==2:
+        pt[1]=pt[1]+1
+    elif pas==3:
+        pt[0]=pt[0]-1
+    else:
+        pt[1]=pt[1]-1
+    llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
+    bo=(pt!=[0,0]) and (len(llista)< fi)       #El booleà valdrà False si pt=[0,0] o hem fet fi o més passos. 
+print(len(llista))
+```
+
+**Penseu:** perquè hem fet així i no hem posat directament 
+
+```sage
+while ((pt!=[0,0]) and (len(llista)< fi) ): ?
+```
+
+Proveu de fer el mateix amb un `for` i un `break`.
+
+```sage
+line(llista)
+```
+
+Poso una altra manera per veure si ho veieu més clar
+
+
+Podriem fer el mateix creant una llista de passos i fent un primer pas abans. 
+
+```sage
+pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
+llista=[pt]                #Llista de punts per on passarem
+fi=1000                    #Nombre màxim de passos a fer.
+passos=[[1,0],[0,1],[-1,0],[0,-1]]
+pas=randint(0,3)           #Fem un primer pas fora del while per poder posar el boobleà al while
+pt = [pt[i]+passos[pas][i] for i in range(2)]
+llista.append(copy(pt))                    
+while((pt!=[0,0]) and (len(llista)< fi)):                 
+    pas=randint(0,3)
+    pt = [pt[i]+passos[pas][i] for i in range(2)]
+    llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
+print(len(llista))
+```
+
+###### end hide
 5.  Com podeu comprovar, el fet que el procés iteratiu $x\to \cos(x)$
     que heu usat anteriorment convergeixi cap a una solució de
     $x=\cos(x)$ no es pot generalitzar a qualsevol altra funció.
