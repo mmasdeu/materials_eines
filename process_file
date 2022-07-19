@@ -7,7 +7,7 @@ outfile=${outfolder}/${file}
 sols=${outfile}_solucions
 
 # Make exercise by removing blocks between "begin hide" and "end hide"
-sed '/begin hide/,/end hide/c"###### SOLUCIÓ AQUÍ ######"' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb
+sed '/begin hide/,/end hide/c###### (solució)' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb
 
 # Make solutions by removing lines containing "begin hide" and "end hide" markers
 grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${sols}.ipynb
