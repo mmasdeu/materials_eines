@@ -22,33 +22,11 @@ jobs:
         
       - name: Create a temporary artifact downloads folder
         run: mkdir -p output
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update -y
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git
-          
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v23.2
-        with:
-          path: src
-          files: |
-            *.md
-
-      - name: Get extra changed files
-        id: changed-files-extra
-        uses: tj-actions/changed-files@v23.2
-        with:
-          path: src
-          files: |
-            *.png
-            *.png
-            *.jpg
             
       - name: Install more dependencies
         run: |
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wget python3-pip curl texlive-latex-extra
+          sudo apt-get update -y
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git wget latexmk python3-pip curl texlive-latex-extra
           sudo pip install jupytext nbconvert ipython ipykernel
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
           sudo dpkg -i pandoc-2.18-1-amd64.deb
@@ -57,18 +35,18 @@ jobs:
       - name: Make notebooks
         run: |
           cd src
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in src/*.md; do
             ../process_file $file || true
           done
 
       - name: Upload to Nextcloud
         run: for file in output/*.pdf output/*.ipynb; do
-             ([ -f "$file" ] && curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/) || true;
+             ([ -f "$file" ] && echo "Uploading ${file}..." && curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/) || true;
              done;
 
       - name: Upload extra files to Nextcloud
-        run: for file in ${{ steps.changed-files-extra.outputs.all_changed_files }}; do
-             ([ -f "$file" ] && curl -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/) || true;
+        run: for file in src/*.jpg src/*.png src/*.gif; do
+             ([ -f "$file" ] && echo "Uploading ${file}..." && curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/) || true;
              done;
 
 
