@@ -1,19 +1,22 @@
 #!/bin/bash
 
-outfolder="../output" # Folder used for results
+outfolder=$2 # Folder used for results
+if [[ $outfolder = "" ]]; then
+    outfolder="../output"
+fi
 
 file=$(basename -s .md $1) # Base name for file
 outfile=${outfolder}/${file}
 sols=${outfile}_solucions
 
 # Make exercise by removing blocks between "begin hide" and "end hide"
-sed '/begin hide/,/end hide/c###### (solució)' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb
+(sed '/begin hide/,/end hide/c###### (solució)' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb) || echo "Could not run jupytext on ${file}.md (1)"
 
 # Make solutions by removing lines containing "begin hide" and "end hide" markers
-grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${sols}.ipynb
+(grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${sols}.ipynb) || echo "Could not run jupytext on ${file}.md (2)"
 
 # Convert notebook (once executed, if possible) to LaTeX
-(sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb)
+(sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb) || echo "Problem with converting ${outfile}.ipynb to LaTeX"
 
 # Run pdflatex to obtain pdf
-latexmk -output-directory=$outfolder -silent -pdf ${outfile}.tex
+latexmk -output-directory=$outfolder -silent -pdf ${outfile}.tex || echo "Problem with LaTeXing ${outfile}.tex"
