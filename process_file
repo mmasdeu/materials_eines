@@ -19,4 +19,4 @@ sols=${outfile}_solucions
 (sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb) || echo "Problem with converting ${outfile}.ipynb to LaTeX"
 
 # Run pdflatex to obtain pdf
-latexmk -output-directory=$outfolder -silent -pdf ${outfile}.tex || echo "Problem with LaTeXing ${outfile}.tex"
+latexmk -output-directory=$outfolder -silent -f -pdf ${outfile}.tex || echo "Problem with LaTeXing ${outfile}.tex"
