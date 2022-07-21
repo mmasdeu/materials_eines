@@ -878,13 +878,13 @@ Observeu primer que si els quadrilàters no són convexos aleshores
 els vèrtexs no determinen el quadrilàter.
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex1.png){#fig:Noconvex width="\\textwidth"}
+vèrtexs](quadnconvex1.png)
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex2.png){#fig:Noconvex width="\\textwidth"}
+vèrtexs](quadnconvex2.png)
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex3.png){#fig:Noconvex width="\\textwidth"}
+vèrtexs](quadnconvex3.png)
 
 Per tant el primer que hem de fer és comprovar si els 4 punts formen
 o no un quadrilàter convex, i a més ordenar bé els vèrtexs. Tot això
@@ -893,10 +893,10 @@ determinats pels vèrtexs oposats es tallen en un punt
 (necessàriament a l'interior del quadrilàter).
 
 ![Quadrilàter convex amb les diagonals
-dibuixades](quadconvex.png){width="\\textwidth"}
+dibuixades](quadconvex.png)
 
 ![El mateix però amb els vèrtexs mal
-posats](quadconvexn.png){width="\\textwidth"}
+posats](quadconvexn.png)
 
 La classe pot tenir una funció àrea, i funcions que comprovin si el
 quadrilàter és un trapezi, si és un parał.lelogram, si és un rombe,

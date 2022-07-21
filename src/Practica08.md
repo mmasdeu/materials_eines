@@ -583,8 +583,8 @@ d'elements s'està treballant, sent `ZZ` els enters, `QQ` els racionals,
 s'adapten al context corresponent. Si es vol treballar directament en
 l'aritmètica *mòdul $n$* es pot fer una cosa equivalent a través de la
 instrucció `Zmod()`. Per exemple, podem assignar com valor a la variable
-`Z26` (o qualsevol altre nom que ens agradi) el de *l'anell
-$\mathbb{Z}/26\mathbb{Z}$*:
+`Z26` (o qualsevol altre nom que ens agradi) el de l'anell
+$\mathbb{Z}/26\mathbb{Z}$:
 
 ```sage
 Z26 = Zmod(26) # És equivalent a Integer(26)
@@ -592,7 +592,7 @@ Z26
 ```
 
 Ara ja hi ha funcions que permeten veure algunes propietats de
-$\mathbb{Z}/(26)$ com per exemple
+$\mathbb{Z}/26\mathbb{Z}$ com per exemple
 
 ```sage
 Z26.cardinality()
