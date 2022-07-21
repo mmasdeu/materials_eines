@@ -1117,8 +1117,8 @@ M*P
 
 - $M\cdot v_{1}$, $M\cdot v_{2}$, $P\cdot v_{1}$ i $P\cdot v_{2}$
 
+-- begin hide
 ```sage
-# begin hide
 M*v1
 ```
 
@@ -1132,20 +1132,21 @@ P*v1
 
 ```sage
 P*v2
-# end hide
 ```
+-- end hide
 
 - $v_{1}\cdot M$ i $v_{2}\cdot M$
 
+-- begin hide
 ```sage
-# begin hide
 v1*M
 ```
 
 ```sage
 v2*M
-# end hide
 ```
+-- end hide
+
 - Hi ha algun patró en els valors dels productes de les matrius pels
   vectors?
 

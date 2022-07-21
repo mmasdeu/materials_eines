@@ -454,21 +454,18 @@ print(L)
 **Exercici:** Podeu pensar alguna manera de fer això amb un simple
 `for`? I amb comprensió de llistes?
 
+-- begin hide
 ```sage
-# begin hide
 L = []
 for p in srange(20,1,-1):
     if p.is_prime():
         L.append(p)
 L
-# end hide
 ```
-
 ```sage
-# begin hide
 [p for p in srange(20,1,-1) if p.is_prime()]
-# end hide
 ```
+-- end hide
 
 Un altre exemple més sofisticat: és ben conegut que l'equació
 $x=\cos(x)$ té una solució que es pot aproximar tant com es vulgui
@@ -892,8 +889,9 @@ $$f_k=f_{k-1}+f_{k-2}\quad \text{ per a tot }k\geq 2.$$
 - Construïu un programa `Fib()` que tingui com argument un enter
  $k$ (`Fib(k)`) i doni com a resultat la llista dels primers $k$
  termes de la successió de Fibonacci.
+
+-- begin hide
 ```sage
-# begin hide
 def Fib(k):
     '''Calcula la llista dels nombres de Fibonacci fins el k-èssim'''
     if type(k) != Integer or k<0:
@@ -906,21 +904,24 @@ def Fib(k):
         f=F[i]+F[i+1]
         F.append(f)
     return(F)
-# end hide
 ```
+-- end hide
+
 - Donat un valor $k$, representeu gràficament una línia que mostri
   l'evolució dels valors dels quocients $f_{k}/f_{k-1}$.
   Observareu que aquests tendeixen a un valor fix, sabeu quin és?
+
+-- begin hide
 ```sage
-# begin hide
 def llistaFib(N):
     F=Fib(N)
     llista=[(k,F[k]/F[k-1]) for k in [1..N]]
     return points(llista)
 
 llistaFib(20)
-# end hide
 ```
+-- end hide
+
 ### Exercici 3
 Suposeu que, sigui on sigui, tenim 100 portes tancades i numerades.
 Fem una passada per totes les portes d'una en una i les anem obrint.
@@ -1097,7 +1098,7 @@ sistema (vegeu els exemples al final).
   sigui el diagrama de teranyina corresponent.  
 
 
---- begin hide
+-- begin hide
 
 He fet la funció amb un "docstring" (o sigui, una breu descripció del que fa al principi), i també que vagi comprovant que els valors donats compleixin el que es demana, i en cas contrari no retorni res. 
 
@@ -1134,7 +1135,7 @@ def verh(alpha,x0,np):
   successius de $x_k$ (fent una línia que uneixi els punts
   $(k,x_k)$).
 
---- begin hide
+-- begin hide
 ```sage
 verh(2.3,0.1,10)
 ```

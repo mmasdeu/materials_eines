@@ -316,11 +316,11 @@ def esperfecte(k):
 
 Sabríeu fer, ara, una llista amb els números perfectes menors que 1000?
 
+-- begin hide
 ```sage
-# begin hide
 [esperfecte(k) for k in [1..1000]]
-# end hide
 ```
+-- end hide
 
 Per acabar aquest apartat, si en un problema interessen igualment el
 quocient i el residu de la divisió entre dos enters es poden obtenir les
@@ -840,15 +840,15 @@ diccionaris, i creeu una funció tal que, donada una llista ens
 retorni un diccionari amb la mateixa llista però ara començant per
 1.
 
+-- begin hide
 ```sage
-# begin hide
 def nova_llista(L):
     return { i+1:L[i] for i in range(len(L))}
 
 nL = nova_llista([1,2,3,4])
 show(nL[3])
-# end hide
 ```
+-- end hide
 
 
 ### Exercici 3
@@ -983,9 +983,8 @@ accepti com a arguments dos enters $a$ i $m$, i doni com resultat la
 llista de potències
 $\{{\overline a}^k \mid k\geq 0 \}\subseteq \mathbb{Z}/m\mathbb{Z}$.
 
-
+-- begin hide
 ```sage
-# begin hide
 def potenciesmodm(a,m):
     Zm=Zmod(m)
     ab=Zm(a)
@@ -1004,13 +1003,9 @@ show(potenciesmodm(3,100))
 show(potenciesmodm(1,100))
 show(potenciesmodm(10,100))
 show(potenciesmodm(5,100))
-# end hide
 ```
 
--- begin hide
-
 He distingit entre el cas que és unitat, doncs aleshores la màxima $k$ que surt és l'ordre multiplicatiu, de quan no ho és (però de fet no calia). A l'enunciat diu "llista de les potències", però escriu un conjunt, així que he decidit que doni una llista ordenada. He assumit que a partir que surt una potencia repetida, les següent potències també son repetides, però aixó caldria demostrar-ho!
-
 -- end hide
 ### Exercici 7
 
@@ -1018,17 +1013,16 @@ He distingit entre el cas que és unitat, doncs aleshores la màxima $k$ que sur
 Feu una llista dels elements invertibles a $\mathbb{Z}/24\mathbb{Z}$
 amb l'ordre multiplicatiu de cadascun d'ells.
 
-
+-- begin hide
 ```sage
-# begin hide
 R = Zmod(24)
 L1 = [(o, R(o).multiplicative_order()) for o in R.list_of_elements_of_multiplicative_group()] # El més ràpid
 
 L2 = [(o, R(o).multiplicative_order()) for o in Zmod(24).unit_group()]
 
 L3 = [(o, o.multiplicative_order()) for o in Zmod(24) if o.is_unit()] # Més clar, potser
-# end hide
 ```
+-- end hide
 
 
 ### Exercici 8
@@ -1039,13 +1033,13 @@ Considereu l'anell $\mathbb{Z}/257\mathbb{Z}$.
 - Comproveu que 257 és primer i que, per tant, tots els elements
   no nuls de $\mathbb{Z}/257\mathbb{Z}$ són invertibles.
 
+-- begin hide
 ```sage
-# begin hide
 print(f'{is_prime(257) = }')
 ZN = Zmod(257)
 print(f'{ZN.is_field() = }')
-# end hide
 ```
+-- end hide
 
 - Trobeu un element
   $\bar a\in \mathbb{Z}/257\mathbb{Z}\setminus\{\bar 0\}$ amb

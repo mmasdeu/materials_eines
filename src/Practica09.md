@@ -852,8 +852,8 @@ Definiu una classe `Isosceles`, formada per triangles isòsceles donats
 per la base i l'altura, definida a partir de la classe `Triangle`
 definida a dalt.
 
+-- begin hide
 ```sage
-# begin hide
 class TriangleIsosceles(Triangle):
     def __init__(self, base, altura):
         Triangle.__init__(self, (0, 0), (0, base), (altura, base/2))
@@ -864,8 +864,8 @@ class TriangleIsosceles(Triangle):
 
 T = TriangleIsosceles(10,10)
 show(T.area())
-# end hide
 ```
+-- end hide
 
 
 ### Exercici 6

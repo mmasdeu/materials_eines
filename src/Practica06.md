@@ -566,12 +566,12 @@ $$
 \lim_{k\to \infty} \left( \frac{\ln(k+1)}{\ln(k)}\right)^{(k \ln(k))}
 $$
 
+-- begin hide
 ```sage
-# begin hide
 var('k')
 lim((ln(k+1)/ln(k))(k*ln(k)),k=infinity)
-# end hide
 ```
+-- end hide
 
 ### Exercici 2
 
@@ -774,8 +774,8 @@ $a$ i una distància $h>0$, i doni com a resultat el gràfic de la
 funció $f(x)$ junt amb la seva recta tangent en el punt $(a,f(a))$
 en l'interval $[a-h,a+h]$.
 
+-- begin hide
 ```sage
-# begin hide
 def tangent(f,a,h):
     f=f.function(x)
     dfa=diff(f(x),x).subs(x==a)
@@ -786,9 +786,8 @@ def tangent(f,a,h):
 
 show(tangent(x^3,3,1))
 show(tangent(exp(x^-2),5,.5))
-
-# end hide
 ```
+-- end hide
 
 ### Exerici 6
 
