@@ -47,7 +47,7 @@ jobs:
         run: for file in output/*.pdf output/*.ipynb; do
               if [ -f "$file" ]; then
                 echo "Uploading ${file}...";
-                curl --progress-bar -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
+                curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/ || echo "Problem uploading ${file}";
               fi;
              done;
 
@@ -55,6 +55,6 @@ jobs:
         run: for file in src/*.jpg src/*.png src/*.gif; do
               if [ -f "$file" ]; then
                 echo "Uploading ${file}...";
-                curl --progress-bar -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/;
+                curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/ || echo "Problem uploading ${file}";
               fi;
              done;
