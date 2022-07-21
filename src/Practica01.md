@@ -171,8 +171,15 @@ Noteu que les constants famoses ja venen predefinides: $\pi$ s'escriu
 imaginària $i=\sqrt{-1}$ es pot introduir com `i` o `I`.
 
 
+**Nota:** En les instruccions de **SageMath** els
+espais en blanc no solen tenir importància. És el mateix `3*5 + 2*7` que
+`3*5+2*7`, o que `3 * 5 + 2 * 7`. O també que `3 * 5+2 * 7`, però
+aquesta última versió és de molt mal estil, perquè visualment sembla que
+estiguem fent una altra cosa.
 
-## Aproximació decimal {#approxDec}
+
+
+## Aproximació decimal
 
 En qualsevol càlcul on apareguin valors amb decimals s'obtindrà un
 resultat també amb decimals. L'aproximació decimal d'una expressió
@@ -235,6 +242,9 @@ print(R)
 R
 ```
 
+I ja que estem aquí, hi ha també la funció `latex()` que transforma la
+resposta de **SageMath** en instruccions de LaTeX, que
+us pot ser útil més endavant. De fet, la instrucció `view()` ens mostra el resultat visual compilar l'expressió LaTeX.
 
 
 Cada cop que es fa una assignació nova a una variable s'oblida el valor
@@ -335,8 +345,7 @@ Sovint volem conèixer el valor d'una expressió quan un dels símbols que
 conté pren un valor concret. La funció de
 [**SageMath**]{style="color: blue"} que permet fer això és `subs( )` i
 s'aplica com una *propietat* o *mètode* de l'expressió, de la manera que
-hem vist a l'apartat [3](#approxDec){reference-type="ref"
-reference="approxDec"} amb els dígits de $\pi$.
+ja hem vist abans amb els dígits de $\pi$.
 
 La funció `subs( )` no modifica ni l'expressió ni el valor de les
 variables que se substitueixen. Només ens dóna el valor resultant si es

@@ -15,19 +15,20 @@ jupyter:
 # Exercicis de consolidació
 
 
-<font color=blue> 1. L'objectiu d'aquest exercici és obtenir un gràfic dels punts del pla $(x,y)$ determinats per l'equació $x^{2} + x\, y + y^{2} - 6 \, x=0$ (una el·lipse). Per tal d'aconseguir això seguiu l'esquema següent:
+## Exercici 1
+L'objectiu d'aquest exercici és obtenir un gràfic dels punts del pla $(x,y)$ determinats per l'equació $x^{2} + x\, y + y^{2} - 6 \, x=0$ (una el·lipse). Per tal d'aconseguir això seguiu l'esquema següent:
 
-<font color=blue>     (i) Calculeu quins són els valors de $y$ que solucionen aquesta equació per a cada valor de $x$ donat utilitzant la instrucció solve. (Obtindreu dues solucions possibles per a cada $x$).
+1. Calculeu quins són els valors de $y$ que solucionen aquesta equació per a cada valor de $x$ donat utilitzant la instrucció solve. (Obtindreu dues solucions possibles per a cada $x$).
 
-<font color=blue>     (ii) Convertiu aquestes solucions en funcions per tal de poder avaluar, en funció d'un $x$ donat, els valors de $y$ que donen punts de la corba que es vol representar.
+2. Convertiu aquestes solucions en funcions per tal de poder avaluar, en funció d'un $x$ donat, els valors de $y$ que donen punts de la corba que es vol representar.
 
-<font color=blue>     (iii) Ja haureu notat que, com que l'equació és de grau $2$, les funcions anteriors no es podran avaluar per a $x$ arbitraris (hi ha una arrel quadrada que, segons el valor de $x$, no es podrà calcular). Determineu els valors de $x$ per als que és possible avaluar les funcions que heu introduït a l'apartat anterior (és a dir els valors de $x$ per als que hi ha algun punt de la forma $(x,y)$ que pertany a la corba).
+3. Ja haureu notat que, com que l'equació és de grau $2$, les funcions anteriors no es podran avaluar per a $x$ arbitraris (hi ha una arrel quadrada que, segons el valor de $x$, no es podrà calcular). Determineu els valors de $x$ per als que és possible avaluar les funcions que heu introduït a l'apartat anterior (és a dir els valors de $x$ per als que hi ha algun punt de la forma $(x,y)$ que pertany a la corba).
 
-<font color=blue>     (iv) Combineu en un sol dibuix el gràfic de les dues funcions, restringint el domini de les $x$ a la regió on té sentit fer els càlculs.
+4. Combineu en un sol dibuix el gràfic de les dues funcions, restringint el domini de les $x$ a la regió on té sentit fer els càlculs.
 
+-- begin hide
 
-
-(i)
+### Part 1
 
 ```sage
 var('x y')
@@ -39,31 +40,35 @@ sols=solve(f==0,y)
 sols
 ```
 
-(ii)
+### Part 2
 
 ```sage
 F=[y.subs(s).function(x) for s in sols]
 F
 ```
 
-(iii)
+### Part 3
 
 ```sage
 solve(-3*x^2 + 24*x>=0,x)
 ```
 
-(iv)
+### Part 4
 
 ```sage
 plot(F,0,8,color="blue")
 ```
+-- end hide
 
-<font color=blue> 2. Considereu les successions determinades, donats dos nombres positius $a$, $b$, per
+## Exercici 2
+
+Considereu les successions determinades, donats dos nombres positius $a$, $b$, per
 $$
 S_{k}= \sqrt[k]{a^{k}+b^{k}},\qquad T_{k}=\frac{a^{k}-b^{k}}{a^{k}+b^{k}}
 $$
 Per tal de poder experimentar amb els seus valors definiu dues funcions de tres arguments (a,b,k) que donin, respectivament, els valors de $S_{k}$ i $T_{k}$ per a un parell $(a,b)$ donat. A continuació feu una llista dels $25$ primers termes d'aquestes dues successions triant $2$ o $3$ parelles $(a,b)$ diferents. Finalment, després dels resultats dels experiments, quin límit conjectureu que tenen cada una d'aquestes dues successions?
 
+-- begin hide
 ```sage
 def Sk(a,b,k):
     return ((a**k+b**k)**(1/k)).n()
@@ -118,6 +123,8 @@ Observeu que no ens cal calcular tots els elements de la llista per a trobar l'�
 
 Podem deduïr "experimentalment" que Sk tendeix al major dels dos nombres, mentre que Tk tendeix a -1 si a<b i a 1 si a>b
 
+
+-- end hide
 
 <font color=blue> 3. Considereu la successió $a_{k}$ definida per les condicions
 $$
