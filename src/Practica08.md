@@ -803,7 +803,7 @@ solve_mod(x^3+3*x+1 == 0, 10)
 
 ### Exercici 1
 
-Definiu una funció de [**SageMath**]{style="color: blue"} que si li
+Definiu una funció de **SageMath** que si li
 dones una llista finita de nombres et retorna una llista ordenada i
 sense repeticions (Indicació: transformeu-la a un conjunt, i
 retorneu la llista ordenada amb sorted).

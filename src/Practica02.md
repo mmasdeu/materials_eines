@@ -116,7 +116,7 @@ subdirectoris.
 
 Si ens interessa que el directori base de *Jupyter* sigui un altre, per
 exemple, `D:\Mates`, cal obrir des del menú inici el `SageMath Shell`, i
-escriure, a la consola que s'obre, l'ordre `sage-sethome 'D:\Mates'.
+escriure, a la consola que s'obre, l'ordre `sage-sethome 'D:\Mates'`.
 
 Després tanquem tot el que tinguem obert relacionat amb el
 **SageMath** i el proper cop tindrà efecte el canvi.
@@ -144,8 +144,8 @@ Desenvolupeu les expressions $(a+b)^2$, $(a+b)^3$, $(a+b)^4$,
 $(a+b+c)^2$, $(a+b)(c+d)$, $(a+b)^2(c+d)^2$. Recordeu que aplicant
 `show()`, la sortida serà més agradable de llegir.
 
+-- begin hide
 ```sage
-# begin hide
 var('a b c d')
 show(((a+b)^2).expand())
 show(((a+b)^3).expand())
@@ -153,8 +153,8 @@ show(((a+b)^4).expand())
 show(((a+b+c)^2).expand())
 show(((a+b)(c+d).expand())
 show(((a+b)^2(c+d)^2).expand())
-# end hide
 ```
+-- end hide
 
 # La instrucció `factor`
 
@@ -205,12 +205,13 @@ Aplicat a un nombre primer, naturalment, obtindrem el propi nombre. Però
 també podem preguntar específicament si un nombre és primer o no ho és,
 amb la funció `is_prime()`. Mireu si són primers 138283 i 237761.
 
+-- begin hide
 ```sage
-# begin hide
 show(138283.is_prime())
 show(237761.is_prime())
-# end hide
 ```
+-- end hide
+
 Fixeu-vos que el resultat és True o False. Es diu que aquesta funció
 *retorna un valor booleà (Boolean value, el nom prové de George Boole, matemàtic anglès (1815-1864)).
 
@@ -318,11 +319,11 @@ show(D.simplify_log())
 
 Sou capaços de simplificar encara més l'ultima expressió obtinguda?
 
+-- begin hide
 ```sage
-# begin hide
 show(D.simplify_log().simplify_full())
-# end hide
 ```
+-- end hide
 
 
 ## La instrucció `collect`
@@ -500,14 +501,14 @@ Obteniu una aproximació numèrica per a l'expressió
 $\displaystyle{\frac {3 + \pi }{7 -
 \sqrt{13}}}$ amb 10, 20 i 30 xifres.
 
+-- begin hide
 ```sage
-# begin hide
 a = (3 + pi) / (7 - sqrt(13))
 show(a.n(digits=10))
 show(a.n(digits=20))
 show(a.n(digits=30))
-# end hide
 ```
+-- end hide
 
 ### Exercici 2
 
@@ -518,45 +519,45 @@ B=2\\
 C=3/4\\
 D=0.254\end{gathered}$$
 
+-- begin hide
 ```sage
-# begin hide
 A = 30
 B = 2
 C = 3/4
 D = .254
-# end hide
 ```
+-- end hide
 
 Doneu el valor exacte i una aproximació
 numèrica per a les expressions:
 
 - $(2A-B)^{-2}$
 
+-- begin hide
 ```sage
-# begin hide
 show((2*A-B)^(-2))
 show(((2*A-B)^(-2)).n(digits=10))
-# end hide
 ```
+-- end hide
 
 - $\cos(A+2C)$
 
+-- begin hide
 ```sage
-# begin hide
 show(cos(A+2*C))
 show(cos(A+2*C).n(digits=10))
-# end hide
 ```
+-- end hide
 
 
-- $\left(\dfrac{1}{A+3D}\right)$
+- $\dfrac{1}{A+3D}$
 
+-- begin hide
 ```sage
-# begin hide
 show(1 / (A + 3*D))
 show((1 / (A + 3*D)).n(digits=10))
-# end hide
 ```
+-- end hide
 
 
 ### Exercici 3
@@ -566,16 +567,15 @@ Utilitzeu la funció de substitució o d'aproximació numèrica per a
 verificar si algun dels nombres $1$, $2$ o $3$ és solució de
 l'equació $x^3-16x^2+51x-36=0$.
 
+-- begin hide
 ```sage
-# begin hide
 var('x')
 f = x^3 - 16*x^2 + 51*x - 36
 show(f.subs(x = 1)) # És solució
 show(f.subs(x = 2)) # No - val 10
 show(f.subs(x = 3)) # És solució
-# end hide
 ```
-
+-- end hide
 
 ### Exercici 4
 
@@ -588,8 +588,8 @@ Substituint la indeterminada $x$ del polinomi $p(x)$ per $s_1$ i
 $s_2$ (i fent la manipulació addicional que calgui), verifiqueu
 l'afirmació anterior.
 
+-- begin hide
 ```sage
-# begin hide
 var('x A')
 p = x^2 - 2*A*x + 1
 s1 = A + sqrt(A^2-1)
@@ -598,8 +598,8 @@ show(p.subs(x=s1))
 show(p.subs(x=s2))
 show(p.subs(x=s1).simplify_full())
 show(p.subs(x=s1).simplify_full())
-# end hide
 ```
+-- end hide
 
 ### Exercici 5
 
@@ -607,12 +607,13 @@ show(p.subs(x=s1).simplify_full())
 Doneu el desenvolupament de $(x+1)^n$ per a
 $n=1,\ 2,\ 3,\ 4\ \text{i }23$.
 
+
+-- begin hide
 ```sage
-# begin hide
 var('x')
 show([((x+1)^n).expand() for n in [1, 2, 3, 4, 23]])
-# end hide
 ```
+-- end hide
 
 ### Exercici 6
 
@@ -642,20 +643,19 @@ Amb aquesta última llista:
 
 - Determineu quants elements té.
 
+-- begin hide
 ```sage
-# begin hide
 show(len(L))
-# end hide
 ```
+-- end hide
 
 - Feu dues llistes, a partir dels elements de `L`, una amb els
   elements de les tirades parells i l'altre amb els de les tirades
   imparells.
 
+-- begin hide
 ```sage
-# begin hide
 Lp = [o for o in L if o % 2 == 0]
 Li = [o for o in L if o % 2 == 1]
-# end hide
 ```
-
+-- end hide

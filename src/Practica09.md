@@ -571,14 +571,6 @@ consultar
 3](http://openbookproject.net/thinkcs/python/english3e/) de Peter
 Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
 
-Hi ha una versió (molt versionada) en català
-
-[Introducció a la
-programació](https://ocwitic.epsem.upc.edu/assignatures/inf/Apunts/introduccio-a-la-programacio/at_download/file)
-
-Jefrey Elkner, Allen B. Downey, Chris Meyers\
-Antoni Soto-Riera, Marc Vigo-Anglada, Sebastià Vila-Marta, Jordi Vives
-
 ## Exercicis
 
 

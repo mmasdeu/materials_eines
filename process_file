@@ -10,13 +10,14 @@ outfile=${outfolder}/${file}
 sols=${outfile}_solucions
 
 # Make exercise by removing blocks between "begin hide" and "end hide"
-(sed '/begin hide/,/end hide/c###### (solució)' ${file}.md | jupytext --to ipynb -o ${outfile}.ipynb) || echo "Could not run jupytext on ${file}.md (1)"
+# and adding a code cell for where the solution is to be typed
+(sed '/begin hide/,/end hide/c\\n\n```sage\n# (solucio)\n```\n\n' ${file}.md | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/ \n\n/' | jupytext --to ipynb -o ${outfile}.ipynb) || (echo "Could not run jupytext on ${file}.md (1)" && echo "${file}.md (1)" >> problems.txt)
 
-# Make solutions by removing lines containing "begin hide" and "end hide" markers
-(grep -v "begin hide" ${file}.md | grep -v "end hide" | jupytext --to ipynb -o ${sols}.ipynb) || echo "Could not run jupytext on ${file}.md (2)"
+# Make solutions by removing lines containing "begin hide" and "end hide" markers, and adding a blue "SOLUTION" header on top
+(sed '/begin hide/c\\n\n####<span style="color:blue">SOLUCIÓ</span>\n\n' ${file}.md | grep -v "end hide" | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/\n\n/' | jupytext --to ipynb -o ${sols}.ipynb) || (echo "Could not run jupytext on ${file}.md (2)" && echo "${file}.md (1)" >> problems.txt)
 
-# Convert notebook (once executed, if possible) to LaTeX
-(sage -jupyter nbconvert --to latex --execute --allow-errors ${outfile}.ipynb) || (sage -jupyter nbconvert --to latex --allow-errors ${outfile}.ipynb) || echo "Problem with converting ${outfile}.ipynb to LaTeX"
+# Make LaTeX by completely removing blocks between "begin hide" and "end hide"
+(sed '/begin hide/,/end hide/d' ${file}.md | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/ \n\n/' | jupytext --to ipynb --output - | sage -jupyter nbconvert --to latex --execute --allow-errors --stdin --output ${outfile}.tex ) || (echo "Problem with converting ${outfile}.ipynb to LaTeX" && echo "${file}.md (LaTeX)" >> problems.txt)
 
 # Run pdflatex to obtain pdf
-latexmk -output-directory=$outfolder -silent -f -pdf ${outfile}.tex || echo "Problem with LaTeXing ${outfile}.tex"
+latexmk -output-directory=$outfolder -silent -f -pdf ${outfile}.tex || (echo "Problem with creating PDF of ${outfile}.tex" && echo "${file}.md (PDF)" >> problems.txt)

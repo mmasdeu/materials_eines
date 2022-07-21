@@ -343,7 +343,7 @@ dir, són' equivalents `'a b'  "a b"  'a,b'  "a,b"`
 
 Sovint volem conèixer el valor d'una expressió quan un dels símbols que
 conté pren un valor concret. La funció de
-[**SageMath**]{style="color: blue"} que permet fer això és `subs( )` i
+**SageMath** que permet fer això és `subs( )` i
 s'aplica com una *propietat* o *mètode* de l'expressió, de la manera que
 ja hem vist abans amb els dígits de $\pi$.
 

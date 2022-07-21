@@ -12,7 +12,7 @@ jupyter:
     name: sagemath
 ---
 
-# Resoldre equacions
+# Resoldre equacions amb `solve`
 
 
 ## Equacions i inequacions
@@ -129,7 +129,7 @@ eq3.subs(solucions[0])
 
 O bé
 
-```
+```sage
 bool(eq3.subs(solucions[0]))
 ```
 
