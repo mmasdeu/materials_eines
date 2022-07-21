@@ -43,10 +43,11 @@ jobs:
             fi;
           done;
           cp problems.txt ../output
+          cat ../output/*.log > ../output/all_logs.txt
           cd ..
 
       - name: Upload to Nextcloud
-        run: for file in output/*.pdf output/*.ipynb output/problems.txt; do
+        run: for file in output/*.pdf output/*.ipynb output/all_logs.txt output/problems.txt; do
               if [ -f "$file" ]; then
                 echo "Uploading ${file}...";
                 curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/ || echo "Problem uploading ${file}";
