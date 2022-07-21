@@ -35,16 +35,18 @@ jobs:
       - name: Make notebooks
         run: |
           cd src
+          touch ../output/problems.txt
           for file in *.md; do
             if [ -f "$file" ]; then
               echo "Processing ${file}...";
               ../process_file $file || true;
             fi;
           done;
+          cp problems.txt ../output
           cd ..
 
       - name: Upload to Nextcloud
-        run: for file in output/*.pdf output/*.ipynb; do
+        run: for file in output/*.pdf output/*.ipynb output/problems.txt; do
               if [ -f "$file" ]; then
                 echo "Uploading ${file}...";
                 curl --silent -X PUT -u ${{ secrets.NEXTCLOUD_USERNAME }}:${{ secrets.NEXTCLOUD_PASSWORD }} -T $file https://mat.uab.cat/nextcloud/remote.php/dav/files/${{ secrets.NEXTCLOUD_USERNAME }}/EIM/exercicis/ || echo "Problem uploading ${file}";
