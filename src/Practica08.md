@@ -671,7 +671,7 @@ exemple, no hi ha cap element a $\mathbb{Z}/3\mathbb{Z}$ tal que
 $x^2=\bar 2$. Tot i això, **SageMath** no té cap
 problema en realitzar les comandes següents:
 
-```
+```sage
 Z17 = Zmod(17)
 z = sqrt(Z17(5))
 show(z)
