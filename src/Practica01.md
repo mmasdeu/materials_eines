@@ -351,7 +351,7 @@ s'aplica com una *propietat* o *mètode* de l'expressió, de la manera que
 ja hem vist abans amb els dígits de $\pi$.
 
 La funció `subs( )` no modifica ni l'expressió ni el valor de les
-variables que se substitueixen. Només ens dóna el valor resultant si es
+variables que se substitueixen. Només ens dona el valor resultant si es
 fa la substitució.
 
 ```sage

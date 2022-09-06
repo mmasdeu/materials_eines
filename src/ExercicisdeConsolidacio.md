@@ -190,7 +190,7 @@ A
 (a-1)^2-a
 ```
 
-Podeu veure que la resposta és sempre una arrel de (x-1)^2-x, si es comença amb un nombre més gran que 3/2 ens dona la gran, i si és més petit dóna la petita (si es comença amb 1.5 dona error (o infinit))
+Podeu veure que la resposta és sempre una arrel de (x-1)^2-x, si es comença amb un nombre més gran que 3/2 ens dona la gran, i si és més petit dona la petita (si es comença amb 1.5 dona error (o infinit))
 
 ```sage
 a=1.5
@@ -237,7 +237,7 @@ primersbessons(20)
 primersbessons(100)
 ```
 
-Observeu que si li passem un senar o un nombre que no sigui del tipus enter, dóna un error.
+Observeu que si li passem un senar o un nombre que no sigui del tipus enter, dona un error.
 
 ```sage
 primersbessons(7)
@@ -399,7 +399,7 @@ Unaaltrephi(n)
 ## Exercici 7
 
 
-Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,$\ldots$) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dóna per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
+Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,$\ldots$) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
 
 Un exercici més complet consisteix a repetir moltes vegades l'experiment comptant al final la proporció de vegades que s'acaba guanyant la quantitat que satisfà al jugador.
 

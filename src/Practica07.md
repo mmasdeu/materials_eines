@@ -536,7 +536,7 @@ A.trace()
 ```
 
 
-Si la matriu no és quadrada ens dóna un error
+Si la matriu no és quadrada ens dona un error
 
 ```sage
 Mc=matrix(2,3,[1,2,3,4,5,6])
@@ -719,7 +719,7 @@ procés de reducció sobre una matriu `Am` i s'arriba a un cert resultat
 que s'han fet en els sentit que es té la igualtat
 $$\mathtt{P\cdot Am=Ar}$$ Si es vol saber quina és aquesta matriu `P`
 només cal utilitzar `extended_echelon_form()` i extreure del resultat
-que dóna les parts corresponents.
+que dona les parts corresponents.
 
 ```sage
 GJP = Am.extended_echelon_form(subdivide=True); show(GJP)
@@ -730,7 +730,7 @@ show(P)
 ```
 
 Podeu comprovar, fent la multiplicació, com el producte de `P` per la
-matriu original `Am` dóna la forma reduïda `Ar`.
+matriu original `Am` dona la forma reduïda `Ar`.
 
 ### Esgalonament de matrius amb paràmetres
 
@@ -783,7 +783,7 @@ serà un zero del mcm), i surt $k$.
 ### Exemple 2 (Reducció pas per pas).
 Quan interessa anar controlant
 quines operacions de reducció es fan, el mètode anterior no serveix, ja
-que només dóna el resultat final. En aquests casos caldrà anar
+que només dona el resultat final. En aquests casos caldrà anar
 realitzant les operacions de forma manual, cosa que es pot aconseguir
 utilitzant: `.swap_rows()`, `.rescale_row()` i `.add_multiple_of_row()`
 (el que fa cada una d'aquestes funcions resulta obvi a partir del seu

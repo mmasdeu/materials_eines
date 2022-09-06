@@ -343,7 +343,7 @@ darrera de l'`if` i, per tant, no cal indentar explícitament el
 bloc ja que el format apareix per ell mateix).
 
 Naturalment, la instrucció `if` també permet definir quines instruccions
-s'executen quan el test dóna un valor fals (posant un `else`) i, fins i
+s'executen quan el test dona un valor fals (posant un `else`) i, fins i
 tot, encadenar dos o més blocs condicionals.
 
 Per exemple, el següent programa ``
@@ -361,7 +361,7 @@ de 2 a la variable `a`. Si canviem la primera instrucció per `a = 5`,
 respondrà "5 no és menor que 3".
 
 Un exemple una mica més complet que els anteriors consisteix a definir
-un bloc d'instruccions que emula la funció *signe* (dóna com a resultat
+un bloc d'instruccions que emula la funció *signe* (dona com a resultat
 $1$ si el seu argument és positiu, $-1$ si és negatiu i $0$ si aquest
 argument és $0$). Aquí hem usat la funció `elif`, que és una contracció
 de `else if`.
@@ -621,7 +621,7 @@ utilitzant l'estructura `def`.
 
 Veiem un exemple d'aquesta estructura. La següent funció retornarà
 `True` or `False` (els booleans) depenent de si el nombre que li passem
-és primer i dóna residu 1 si el dividim per 3 (equivalentment, al
+és primer i dona residu 1 si el dividim per 3 (equivalentment, al
 restar-li 1 és divisible per 3). Hem utilitzat una funció de Python molt
 important que és `a % b`, que si $a$ i $b$ són dos nombres enters $>0$,
 retorna el residuu de dividir $a$ entre $b$ (en una propera pràctica
@@ -693,7 +693,7 @@ de la funció cosinus que ja han aparegut anteriorment defininint una
 funció designada com `ICos`. Aquesta funció acceptarà tres arguments (el
 primer serà el punt inicial de les iteracions, el segon el control de
 precisió i el tercer el nombre màxim d'iteracions que es preveuen), va
-escrivint els resultats intermedis i dóna com a valor resultant (aquesta
+escrivint els resultats intermedis i dona com a valor resultant (aquesta
 és la missió de la instrucció `return`) el de l'última iteració (de
 forma que, a part de veure tot el procés dels càlculs, es pot assignar a
 la variable `valor` aquest resultat final). Fixeu-vos que, tot i que

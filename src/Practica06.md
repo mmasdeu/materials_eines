@@ -93,7 +93,7 @@ limit(cos(2 * pi * k),k = oo)
 Cada cop que s'executa una instrucció `assume` s'afegeix una restricció
 nova sense oblidar les anteriors. Si es vol conèixer en qualsevol moment
 quines són les restriccions actives es pot utilitzar `assumptions()`
-(que amb una llista de variables com argument dóna les restriccions
+(que amb una llista de variables com argument dona les restriccions
 corresponents a aquestes variables). Si s'han de modificar les
 *suposicions* que s'han fet, convé *oblidar* les que hi hagi en un
 determinat moment per tal de crear les noves. Si no es fa així, i mentre

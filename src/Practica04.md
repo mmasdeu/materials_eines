@@ -346,7 +346,7 @@ solve(eq5, x, to_poly_solve=True)
 ```
 
 Observeu que la segona línia fa alguna cosa, però no resol l'equació. I
-l'algorisme invocat per `to_poly_solve` no ens dóna res.
+l'algorisme invocat per `to_poly_solve` no ens dona res.
 
 No queda més remei que usar la funció `find_root()`, que calcula una
 aproximació per *mètodes numèrics*. Els mètodes numèrics habitualment
@@ -369,7 +369,7 @@ anterior aplicada als diferents intervals, les trobarem totes.
 
 
 
-Un altre exemple en el que trobar totes les solucions dóna una mica de
+Un altre exemple en el que trobar totes les solucions dona una mica de
 feina és l'equació $$\frac{x^2}{20}-10 x= 15\cos(x+15)$$ Un gràfic de
 les dues corbes corresponents als dos costats de l'equació, sobre un
 domini més o menys raonable, mostra de forma immediata que cal buscar

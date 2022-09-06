@@ -206,7 +206,7 @@ instància, quan es divideixen dos enters positius $a$ i $b$, el que cal
 determinar és el seu quocient $q$ i el residu $r$ de la divisió. És a
 dir, quan dividim $a$ entre $b$ busquem escriure $$a= q\times b+r$$ amb
 $0\le r<|b|$. En alguna de les sessions anteriors ja ha aparegut, de
-passada, l'operador que dóna la resta de la divisió entre dos enters
+passada, l'operador que dona la resta de la divisió entre dos enters
 (que és `%`) i, en particular, es pot comprovar si un nombre enter `a`
 és parell o senar comprovant si el valor de `a % 2` és igual a $0$ o a
 $1$. Però aquesta mena de resultat es pot aplicar en qualsevol situació.
@@ -281,7 +281,7 @@ quocient pel divisor més el residu.
 
 En molts problemes de divisibilitat l'únic que interessa és saber si
 l'enter $a$ divideix $b$ (o si $b$ és múltiple de $a$). En aquests casos
-es disposa de l'opció `divides` que dóna com a resultat cert o fals
+es disposa de l'opció `divides` que dona com a resultat cert o fals
 segons es verifiqui la condició o no:
 
 ```sage
@@ -962,7 +962,7 @@ sum([L[i]*S[i] for i in range(len(L))])==d
 ### Exercici 5
 
 
-Tenint en compte que `crt()` només dóna una solució particular del
+Tenint en compte que `crt()` només dona una solució particular del
 problema de congruències que es plantegi, definiu una extensió
 d'aquesta funció (`xcrt`) que, amb les mateixes dades, doni com a
 resultat una llista de dos elements: el valor de la solució
