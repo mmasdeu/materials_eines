@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Exercicis de consoolidació'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md
@@ -495,7 +497,7 @@ print(total)
 ```
 -- end hide
 
-## Exercici 7
+## Exercici 8
 
 En aquest exercici veurem que es possible treballar amb relacions d'equivalencia i quocients per a conjunts finits. Considerarem un conjunt finit (de Python, o sigui construït via $\{\ \}$ o be via set( )). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
 
@@ -746,7 +748,7 @@ PS[3]
 PS[5]
 ```
 
-## Exercici 8
+## Exercici 9
 
 Considereu la família de matrius $A_t \in M_{3x4}(\mathbb{Q})$, depenent d'un parametre $t$, donada per
 $$
@@ -861,7 +863,7 @@ show(x1==x2/3+1/3)
 ```
 -- end hide
 
-## Exerici 9
+## Exercici 10
 
 Considereu la funció $f$ definida per $f(x)=1.1 x^3+0.9 x^2-0.02 x-0.1$.
 

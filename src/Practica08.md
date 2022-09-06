@@ -629,6 +629,8 @@ show(b)
 ```
 ```sage
 a^177
+```
+```sage
 b^12
 ```
 
@@ -645,7 +647,7 @@ que les variables `a` i `b` continguin nombres enters,
 considerat el valors continguts com elements mòdul $26$:
 
 ```sage
-show(a.parent())
+a.parent()
 ```
 
 Es pot treballar amb expressions més complexes sempre i quan les
@@ -700,7 +702,7 @@ parent(sqrt(Z17(5)))
 En aquests últims exemples es veu com es poden utilitzar expressions del
 tipus `in Z26`. Això pot servir a l'hora de fer llistes com la que
 apareix en l'exemple següent, on es fabrica la llista dels quadrats a
-$\mathbb{Z}/26\mathbb{Z}$. ``
+$\mathbb{Z}/26\mathbb{Z}$.
 
 ```sage
 [z^2 for z in Z26]
