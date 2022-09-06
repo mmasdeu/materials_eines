@@ -366,7 +366,7 @@ show(a); show(b); show(c)
 
 Com veieu, es poden escriure diverses instruccions en la mateixa línia,
 separades per punt-i-coma. També podem fer línies separades en el mateix
-camp `In[ ]` del notebook, prement la tecla
+camp `In[ ]` del notebook, prement la tecla **Enter**.
 
 ```sage
 show(a)
