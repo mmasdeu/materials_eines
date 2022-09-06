@@ -36,7 +36,7 @@ jobs:
       - name: Make notebooks
         run: |
           cd src
-          touch ../output/problems.txt
+          touch problems.txt
           for file in *.md; do
             if [ -f "$file" ]; then
               echo "Processing ${file}...";
