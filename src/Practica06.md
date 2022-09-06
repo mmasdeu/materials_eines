@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 6: Càlcul infinitesimal bàsic'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md

@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 8: Aritmètica bàsica'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md

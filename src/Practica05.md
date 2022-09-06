@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 5: Funcions i programes'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md

@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 3: Gràfiques'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md

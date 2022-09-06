@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 9: Complements a la programació en Python'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md

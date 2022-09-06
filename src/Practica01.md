@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 1: Manipulacions bàsiques'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md
@@ -10,9 +12,10 @@ jupyter:
     display_name: SageMath 9.6
     language: sage
     name: sagemath
----
 
-# Manipulacions Bàsiques
+---
+# Manipulacions bàsiques
+
 
 ## Posada en marxa
 

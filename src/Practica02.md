@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 2: Més manipulacions bàsiques'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md
@@ -156,7 +158,7 @@ show(((a+b)^2(c+d)^2).expand())
 ```
 -- end hide
 
-# La instrucció `factor`
+## La instrucció `factor`
 
 La operació inversa a l'anterior és descompondre una expressió en
 factors. Per fer això s'utilitza la funció `factor()`. Tingueu en compte

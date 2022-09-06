@@ -17,7 +17,12 @@ sols=${outfile}_solucions
 (sed '/begin hide/c\\n\n####<span style="color:blue">SOLUCIÓ</span>\n\n' ${file}.md | grep -v "end hide" | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/\n\n/' | jupytext --to ipynb -o ${sols}.ipynb) || (echo "Could not run jupytext on ${file}.md (2)" && echo "${file}.md (1)" >> problems.txt)
 
 # Make LaTeX by completely removing blocks between "begin hide" and "end hide"
-(sed '/begin hide/,/end hide/d' ${file}.md | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/ \n\n/' | jupytext --to ipynb --output - | sage -jupyter nbconvert --to latex --execute --allow-errors --stdin --output ${outfile}.tex ) || (echo "Problem with converting ${outfile}.ipynb to LaTeX" && echo "${file}.md (LaTeX)" >> problems.txt)
+(sed '/begin hide/,/end hide/d' ${file}.md | sed -r ':a; /^\s*$/ {N;ba}; s/( *\n *){2,}/ \n\n/' | jupytext --to ipynb --output - | sage -jupyter nbconvert --to latex --execute --allow-errors  --stdin --output ${outfile}.tex ) || (echo "Problem with converting ${outfile}.ipynb to LaTeX" && echo "${file}.md (LaTeX)" >> problems.txt)
+
+
+# Clear date field
+sed -i '/author/a \\\date{}' ${outfile}.tex
+
 
 # Run pdflatex to obtain pdf
 latexmk -output-directory=$outfolder -silent -f -pdf ${outfile}.tex || (echo "Problem with creating PDF of ${outfile}.tex" && echo "${file}.md (PDF)" >> problems.txt)

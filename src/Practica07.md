@@ -1,5 +1,7 @@
 ---
 jupyter:
+  title : 'Pràctica 7: Vectors i matrius'
+  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
       extension: .md
