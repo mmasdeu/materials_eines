@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image : sagemath/sagemath:latest
       options: --user root
@@ -25,7 +25,8 @@ jobs:
             
       - name: Install more dependencies
         run: |
-          sudo apt-get update -y || true
+          sudo sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+          sudo apt-get update && sudo apt-get dist-upgrade
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y git wget latexmk python3-pip curl texlive-latex-extra
           sudo pip install jupytext nbconvert ipython ipykernel
           wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb
