@@ -272,6 +272,11 @@ show(expr)
 reset('a b')
 ```
 
+**Atenció:** Es pot aplicar `reset()` a més d'una variable,
+fent `reset('a,b')`, amb una coma entre les variables o amb un espai,
+fent fent `reset('a b')`, però no amb una coma i un espai:
+`reset('a, b')` no funciona.
+
 ```sage
 show(expr)
 ```
@@ -296,6 +301,22 @@ reset('c')
 ```sage
 c
 ```
+
+La instrucció `reset('b')` deixa el nom `b` indefinit, tant si li havíem
+assignat un valor (per exemple, `b=3`) com si l'havíem declarat variable
+(amb `var('b')`). Si després l'usem en alguna expressió, sortirà el
+missatge d'error `name 'b' is undefined`:
+
+```sage
+reset('b')
+f = b + 3
+```
+
+Fent `reset()` deixem indefinits tots els valors que havíem assignat o
+declarat variables fins al moment.
+
+L'expressió `del b` fa el mateix que `reset('b')`, però només funciona
+amb una variable i sense cometes.
 
 
 Quan es vol treballar amb equacions (on hi apareixen "incògnites") o

@@ -16,22 +16,6 @@ jupyter:
 
 # Més Manipulacions Bàsiques
 
-## Aclariments sobre l'ús de `reset()`
-
-La instrucció `reset('b')` deixa el nom `b` indefinit, tant si li havíem
-assignat un valor (per exemple, `b=3`) com si l'havíem declarat variable
-(amb `var('b')`). Si després l'usem en alguna expressió, sortirà el
-missatge d'error `name 'b' is undefined`.
-
-Es pot aplicar `reset()` a més d'una variable, fent `reset('a,b')`, amb
-una coma entre les variables o amb un espai, fent fent `reset('a b')`,
-però no amb una coma i un espai: `reset('a, b')` no funciona.
-
-Fent `reset()` deixem indefinits tots els valors que havíem assignat o
-declarat variables fins al moment.
-
-La expressió `del b` fa el mateix que `reset('b')`, però només funciona
-amb una variable i sense cometes.
 
 ## Més coses sobre Jupyter Notebook
 
