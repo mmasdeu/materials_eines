@@ -128,9 +128,16 @@ expand(E.subs(a=(u-1)^2))
 Observeu altre cop que les dues sintaxis són equivalents. Hem
 d'acostumar-nos a veure les dues formes.
 
+Amb expressions més complicades pot ser convenient fer servir la comanda
+`show()` en comptes de `print()`. Amb `show()` se'ns mostra una versió
+compilada amb LaTeX:
+
+```sage
+show(expand(E.subs(a=(u-1)^2)))
+```
+
 Desenvolupeu les expressions $(a+b)^2$, $(a+b)^3$, $(a+b)^4$,
-$(a+b+c)^2$, $(a+b)(c+d)$, $(a+b)^2(c+d)^2$. Recordeu que aplicant
-`show()`, la sortida serà més agradable de llegir.
+$(a+b+c)^2$, $(a+b)(c+d)$, $(a+b)^2(c+d)^2$.
 
 -- begin hide
 ```sage
@@ -195,8 +202,8 @@ amb la funció `is_prime()`. Mireu si són primers 138283 i 237761.
 
 -- begin hide
 ```sage
-show(138283.is_prime())
-show(237761.is_prime())
+print(138283.is_prime())
+print(237761.is_prime())
 ```
 -- end hide
 
@@ -280,16 +287,16 @@ Diguem que la funció `simplify()` és prudent, i
 no toca res si no som més específics. En canvi
 
 ```sage
-show(A.simplify_rational())
+A.simplify_rational()
 ```
 
 ```sage
 B = 1 / (x+1) - 1 / (x-1)
-show(B.simplify_rational())
+B.simplify_rational()
 ```
 
 ```sage
-show(B.simplify_trig())
+B.simplify_trig()
 ```
 
 Hi ha moltes més funcions per simplificar de manera específica. Hi ha
@@ -302,7 +309,11 @@ De tota manera, `simplify_full()` no ho fa tot. Per exemple,
 ```sage
 D = 2 * log(sqrt(2) + 1) + 2 * log(sqrt(2) - 1)
 show(D)
+```
+```sage
 show(D.simplify_full())
+```
+```sage
 show(D.simplify_log())
 ```
 
@@ -310,7 +321,7 @@ Sou capaços de simplificar encara més l'ultima expressió obtinguda?
 
 -- begin hide
 ```sage
-show(D.simplify_log().simplify_full())
+D.simplify_log().simplify_full()
 ```
 -- end hide
 
@@ -322,11 +333,7 @@ manipulació d'expressions que contenen símbols indeterminats és la
 d'agrupar llurs sumands en termes de les potències d'una de les
 variables, per tal d'obtenir una representació com a *polinomi* respecte
 aquesta variable. La funció `collect()` intenta fer això, com podeu
-comprovar en les instruccions següents. En aquestes instruccions veureu
-que hi apareix el símbol `_` (guió baix, blanc subratllat,
-*underscore*). Serveix per representar *l'últim resultat que s'ha
-obtingut* i això ens evita introduir una variable per guardar
-expressions si ja no s'utilitzaran més.
+comprovar en les instruccions següents. 
 
 ```sage
 var('y')
@@ -337,13 +344,15 @@ A.collect(y)
 show(_)
 ```
 
-L'expressió de la qual es vol fer "collect" no ha de ser necessàriament
-una variable:
+L'expressió de la qual es vol fer `collect` no ha de ser necessàriament
+una variable.
 
 ```sage
-show((x+y+sin(x))^2)
 ((x+y+sin(x))^2).expand()
-((x+y+sin(x))^2).expand().collect(sin(x))
+```
+
+```sage
+_.collect(sin(x))
 ```
 
 ## Llistes
@@ -368,9 +377,9 @@ individuals de la llista anterior s'obtenen per tant fent `A[0]`,
 ```sage
 var('t')
 A = [cos(t), sin(t), t]
-show(A[0])
-show(A[1])
-show(A[2])
+print(A[0])
+print(A[1])
+print(A[2])
 ```
 
 El **SageMath** ens indicarà
@@ -389,8 +398,8 @@ concatenem-les amb el vector de posicions:
 
 ```sage
 B=[ -sin(t), cos(t), 1]
-C=A+B
-show(C)
+C = A + B
+print(C)
 ```
 
 Naturalment, no és el mateix `A+B` que `B+A`. La "suma" de llistes no és
@@ -401,9 +410,9 @@ d'índexs dins els claudàtors, i si posem una posició negativa accedim
 als elements de la llista començant pel final:
 
 ```sage
-show(C[1:4])
-show(C[1:5:2])
-show(C[-2])
+print(C[1:4])
+print(C[1:5:2])
+print(C[-2])
 ```
 
 Experimenteu més per acabar d'entendre com funciona.
@@ -414,7 +423,7 @@ individualment:
 ```sage
 C[2] = t^2
 C[5] = 2*t
-show(C)
+print(C)
 ```
 
 Es poden afegir elements al final d'una llista amb la funció `append()`,
@@ -424,11 +433,11 @@ eliminar un element amb `remove()`:
 ```sage
 D = [1,t,t^2,t^3]
 D.insert(1,t^(1/2))
-show(D)
+print(D)
 ```
 ```sage
 D.remove(t^2)`
-show(D)
+print(D)
 ```
 ```sage
 D.remove(t^9) # Dona error, l'element no hi és
@@ -455,13 +464,11 @@ amb $a$, $a+t$, $a+2t$,...$b$ amb `[a, a+t,..,b]` (només hi podeu posar **dos**
 (fins al quadrat de $18$) s'obtenen amb:
 
 ```sage
-quadrats_m3 = [ k^2 for k in range(3,19,3) ]
-show(quadrats_m3)
+[ k^2 for k in range(3,19,3) ]
 ```
 o bé amb
 ```sage
-quadrats_m3 = [ k^2 for k in [3, 6,..,19] ]
-show(quadrats_m3)
+[ k^2 for k in [3, 6,..,19] ]
 ```
 
 També es poden afegir restriccions al rang dels índexs. Per exemple, la
@@ -494,9 +501,9 @@ $\displaystyle{\frac {3 + \pi }{7 -
 -- begin hide
 ```sage
 a = (3 + pi) / (7 - sqrt(13))
-show(a.n(digits=10))
-show(a.n(digits=20))
-show(a.n(digits=30))
+print(a.n(digits=10))
+print(a.n(digits=20))
+print(a.n(digits=30))
 ```
 -- end hide
 
@@ -525,8 +532,8 @@ numèrica per a les expressions:
 
 -- begin hide
 ```sage
-show((2*A-B)^(-2))
-show(((2*A-B)^(-2)).n(digits=10))
+print((2*A-B)^(-2))
+print(((2*A-B)^(-2)).n(digits=10))
 ```
 -- end hide
 
@@ -534,8 +541,8 @@ show(((2*A-B)^(-2)).n(digits=10))
 
 -- begin hide
 ```sage
-show(cos(A+2*C))
-show(cos(A+2*C).n(digits=10))
+print(cos(A+2*C))
+print(cos(A+2*C).n(digits=10))
 ```
 -- end hide
 
@@ -544,8 +551,8 @@ show(cos(A+2*C).n(digits=10))
 
 -- begin hide
 ```sage
-show(1 / (A + 3*D))
-show((1 / (A + 3*D)).n(digits=10))
+print(1 / (A + 3*D))
+print((1 / (A + 3*D)).n(digits=10))
 ```
 -- end hide
 
@@ -561,9 +568,9 @@ l'equació $x^3-16x^2+51x-36=0$.
 ```sage
 var('x')
 f = x^3 - 16*x^2 + 51*x - 36
-show(f.subs(x = 1)) # És solució
-show(f.subs(x = 2)) # No - val 10
-show(f.subs(x = 3)) # És solució
+print(f.subs(x = 1)) # És solució
+print(f.subs(x = 2)) # No - val 10
+print(f.subs(x = 3)) # És solució
 ```
 -- end hide
 
@@ -584,10 +591,10 @@ var('x A')
 p = x^2 - 2*A*x + 1
 s1 = A + sqrt(A^2-1)
 s2 = A - sqrt(A^2-1)
-show(p.subs(x=s1))
-show(p.subs(x=s2))
-show(p.subs(x=s1).simplify_full())
-show(p.subs(x=s1).simplify_full())
+print(p.subs(x=s1))
+print(p.subs(x=s2))
+print(p.subs(x=s1).simplify_full())
+print(p.subs(x=s1).simplify_full())
 ```
 -- end hide
 
@@ -601,7 +608,7 @@ $n=1,\ 2,\ 3,\ 4\ \text{i }23$.
 -- begin hide
 ```sage
 var('x')
-show([((x+1)^n).expand() for n in [1, 2, 3, 4, 23]])
+print([((x+1)^n).expand() for n in [1, 2, 3, 4, 23]])
 ```
 -- end hide
 
@@ -635,7 +642,7 @@ Amb aquesta última llista:
 
 -- begin hide
 ```sage
-show(len(L))
+print(len(L))
 ```
 -- end hide
 

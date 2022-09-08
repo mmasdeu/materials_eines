@@ -218,19 +218,20 @@ l'identificador `variable` pel seu valor associat `valor`. Les
 instruccions següents donen un exemple on s'assigna a l'identificador
 `R` el valor de l'arrel quadrada de 2, a continuació es calcula el valor
 numèric del doble
-d'aquest valor i després el seu quadrat.
+d'aquest valor.
 
 ```sage
 R = sqrt(2)
 2*R
 ```
-```sage
-(2*R).n()
-```
-```sage
-R^2
-```
+A vegades és útil utilitzar el símbol `_` (guió baix, blanc subratllat,
+*underscore*). Serveix per representar *l'últim resultat que s'ha
+obtingut* i això ens evita introduir una variable per guardar
+expressions si ja no s'utilitzaran més.
 
+```sage
+_.n()
+```
 
 Haureu vist que la instrucció d'assignació no produeix cap resultat en
 pantalla. Aquest és el comportament normal. Si es vol veure quin valor
@@ -273,10 +274,6 @@ fent fent `reset('a b')`, però no amb una coma i un espai:
 `reset('a, b')` no funciona.
 
 ```sage
-print(expr)
-```
-
-```sage
 a
 ```
 
@@ -284,12 +281,11 @@ a
 c
 ```
 
-```sage
-reset('c')
-```
+Tot i així, la següent instrucció sí que funciona, ja que l'assignació
+s'havia produït abans del `reset`:
 
 ```sage
-c
+print(expr)
 ```
 
 La instrucció `reset('b')` deixa el nom `b` indefinit, tant si li havíem
@@ -302,7 +298,7 @@ reset('b')
 f = b + 3
 ```
 
-L'expressió `del b` fa el mateix que `reset('b')`, però només funciona
+L'expressió `del b` té el mateix efecte que `reset('b')`, però només funciona
 amb una variable i sense cometes.
 
 
