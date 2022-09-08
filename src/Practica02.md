@@ -116,6 +116,8 @@ $(u-1)^2$. Si volem desenvolupar aquest quadrat, necessitem la funció
 `expand()`.
 
 ```sage
+var('a b c u')
+E = 2*a-3*b+c^2
 E.subs(a=(u-1)^2).expand()
 ```
 
@@ -270,7 +272,7 @@ I tampoc "veu" la igualtat $\sin^2 x+\cos^2 x=1$:
 
 ```sage
 var('x y')
-B = (sin x)^2 + (cos x)^2
+B = (sin(x))^2 + (cos(x))^2
 B.simplify()
 ```
 
@@ -282,7 +284,8 @@ show(A.simplify_rational())
 ```
 
 ```sage
-show((1/(x+1)-1/(x-1)).simplify_rational())
+B = 1 / (x+1) - 1 / (x-1)
+show(B.simplify_rational())
 ```
 
 ```sage
@@ -363,6 +366,7 @@ individuals de la llista anterior s'obtenen per tant fent `A[0]`,
 `A[1]`, `A[2]`. Provem-ho:
 
 ```sage
+var('t')
 A = [cos(t), sin(t), t]
 show(A[0])
 show(A[1])

@@ -216,11 +216,15 @@ on el `=` és *l'operador d'assignació*. Un cop feta una assignació,
 *SageMath* substituirà cada aparició de
 l'identificador `variable` pel seu valor associat `valor`. Les
 instruccions següents donen un exemple on s'assigna a l'identificador
-`R` el valor de l'arrel quadrada de 2, a continuació es calcula el doble
+`R` el valor de l'arrel quadrada de 2, a continuació es calcula el valor
+numèric del doble
 d'aquest valor i després el seu quadrat.
 
 ```sage
 R = sqrt(2)
+2*R
+```
+```sage
 (2*R).n()
 ```
 ```sage
@@ -230,24 +234,15 @@ R^2
 
 Haureu vist que la instrucció d'assignació no produeix cap resultat en
 pantalla. Aquest és el comportament normal. Si es vol veure quin valor
-té associat una variable cal demanar-ho de forma explícita, escrivint
-alguna d'aquestes instruccions (noteu la diferència entre `print()` i `show()`).
-
-```sage
-show(R)
-```
+té associat una variable es pot imprimir (per pantalla) el seu valor:
 
 ```sage
 print(R)
 ```
 
-```sage
-R
-```
-
 I ja que estem aquí, hi ha també la funció `latex()` que transforma la
 resposta de **SageMath** en instruccions de LaTeX, que
-us pot ser útil més endavant. De fet, la instrucció `view()` ens mostra el resultat visual compilar l'expressió LaTeX.
+us pot ser útil més endavant. De fet, la instrucció `view()` ens mostra el resultat visual de compilar l'expressió LaTeX.
 
 
 Cada cop que es fa una assignació nova a una variable s'oblida el valor
@@ -260,12 +255,12 @@ el següent:
 a = 2
 b = 2
 c = 4
-show(a, b, c)
+print(a, b, c)
 ```
 
 ```sage
-expr=(x+b)^a+c
-show(expr)
+expr = (x+b)^a+c
+print(expr)
 ```
 
 ```sage
@@ -278,17 +273,12 @@ fent fent `reset('a b')`, però no amb una coma i un espai:
 `reset('a, b')` no funciona.
 
 ```sage
-show(expr)
+print(expr)
 ```
 
 ```sage
 a
 ```
-
-```sage
-b
-```
-
 
 ```sage
 c
@@ -305,15 +295,12 @@ c
 La instrucció `reset('b')` deixa el nom `b` indefinit, tant si li havíem
 assignat un valor (per exemple, `b=3`) com si l'havíem declarat variable
 (amb `var('b')`). Si després l'usem en alguna expressió, sortirà el
-missatge d'error `name 'b' is undefined`:
+missatge d'error `name 'b' is not defined`:
 
 ```sage
 reset('b')
 f = b + 3
 ```
-
-Fent `reset()` deixem indefinits tots els valors que havíem assignat o
-declarat variables fins al moment.
 
 L'expressió `del b` fa el mateix que `reset('b')`, però només funciona
 amb una variable i sense cometes.
@@ -343,7 +330,7 @@ polinomi
 
 
 ```sage
-show(polinomi)
+print(polinomi)
 ```
 
 
@@ -351,9 +338,9 @@ Quan "desassignem" una variable, passa a ser un objecte simbòlic:
 
 ```sage
 a = 5
-show(a)
+print(a)
 var('a')
-show(a)
+print(a)
 ```
 
 
@@ -378,11 +365,11 @@ fa la substitució.
 ```sage
 var('a b c')
 E = 2*a - 3*b + c^2
-show(E)
+print(E)
 E.subs(a=-1)
 E.subs(b=11, c=2)
 E.subs(a=-1, b=2, c=4)
-show(a); show(b); show(c)
+print(a); print(b); print(c)
 ```
 
 Com veieu, es poden escriure diverses instruccions en la mateixa línia,
@@ -390,23 +377,23 @@ separades per punt-i-coma. També podem fer línies separades en el mateix
 camp `In[ ]` del notebook, prement la tecla **Enter**.
 
 ```sage
-show(a)
-show(b)
-show(c)
+print(a)
+print(b)
+print(c)
 ```
 
 Podem substituir variables per altres variables:
 
 ```sage
-show(E.subs(a=b))
-show(E.subs(b=a))
-show(E.subs(a=b, b=a))
-show(E.subs(a=b).subs(b=a))
+print(E.subs(a=b))
+print(E.subs(b=a))
+print(E.subs(a=b, b=a))
+print(E.subs(a=b).subs(b=a))
 ```
 
 ```sage
 var('u')
-show(E.subs(a=(u-1)^2))
+print(E.subs(a=(u-1)^2))
 ```
 
 Opcionalment, però potser queda menys clar, es pot ometre la referència
