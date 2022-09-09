@@ -340,10 +340,10 @@ print(a)
 ```
 
 
-Les llistes de símbols que podem posar com a argument en les funcions
-`var( )`, `del( )` poden ser separades per blancs o per
-comes, i marcades amb cometes simples (tecla d'apòstrof) o dobles. És a
-dir, són' equivalents `'a b'  "a b"  'a,b'  "a,b"`
+Les llistes de símbols que podem posar com a argument en la funció
+`var( )` poden ser separats per blancs o per
+comes, i marcats amb cometes simples (tecla d'apòstrof) o dobles. És a
+dir, són equivalents `'a b'  "a b"  'a,b'  "a,b"`
 
 
 ## Substitucions
@@ -415,7 +415,7 @@ ràpid és fer el següent:
 -   Tancar la consola que se'ns havia obert al principi.
 
 Si heu estat treballant en una aula de la facultat i us voleu guardar el
-fitxer que heu creat, el trobareu a la carpeta `Documents`. Haurà quedat
+fitxer que heu creat, el trobareu al escriptori. Haurà quedat
 guardat amb un nom tipus `Untitled.ipynb` o similar. Podeu canviar el
 nom a `Practica01.ipynb` o al que vulgueu (però no canvieu el final
 `.ipynb`). Copieu-lo a un pen-drive o envieu-vos-el per correu
