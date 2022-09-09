@@ -416,7 +416,7 @@ print(C[-2])
 ```
 
 En general si posem `C[a:b:c]`
-obtenim la subllista `[C[a],C[a+c],..,C[a+d*c]]` on $a+d\cdot c<b\le a+(d+1)\cdot c$. 
+obtenim la subllista `[C[a],C[a+c],..,C[a+d*c]]` on $a+d\cdot c\lt b\le a+(d+1)\cdot c$. 
 Tots els valors poden ser negatius. Si volem començar pel principi de la llista, o arribar fins el 
 final, podeu deixar buit l'espai. Vegeu per exemple que fa
 
@@ -469,7 +469,7 @@ els "dos punts suspensius" entre el principi i el final.
 
 Les fórmules per a la construcció de llistes poden ser molt complicades.
 Es pot fer que l'índex `k` avanci des de $a$ fins a $b$ (o sigui, es mogui 
-dins de $\text a\le k<b$), incrementant-se cada pas en $c$ unitats, utilitzant
+dins de $\text a\le k\lt b$), incrementant-se cada pas en $c$ unitats, utilitzant
 l'expressió `range(a,b,c)`, i també indicant una progressió aritmètica
 amb $a$, $a+t$, $a+2t$,...$b$ amb `[a, a+t,..,b]` (només hi podeu posar 
 **dos** punts, ni un ni tres tres). Així els quadrats dels múltiples de $3$
