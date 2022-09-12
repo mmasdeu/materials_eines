@@ -112,7 +112,7 @@ sqrt(72)
 
 -- begin hide
 ```sage
-64^(1/3)
+64.nth_root(3)
 ```
 -- end hide
 
@@ -120,7 +120,7 @@ sqrt(72)
 
 -- begin hide
 ```sage
-902.8654^(1/4)
+902.8654.nth_root(4)
 ```
 -- end hide
 
@@ -314,9 +314,17 @@ té associat una variable es pot imprimir (per pantalla) el seu valor:
 print(R)
 ```
 
-I ja que estem aquí, hi ha també la funció `latex()` que transforma la
+Aprofitem per introduir aquí la funció `latex()`, que transforma la
 resposta de **SageMath** en instruccions de LaTeX, que
-us pot ser útil més endavant. De fet, la instrucció `view()` ens mostra el resultat visual de compilar l'expressió LaTeX.
+us pot ser útil més endavant. De fet, la instrucció `view()` ens mostra el resultat visual de compilar l'expressió LaTeX:
+
+```sage
+latex(R)
+```
+
+```sage
+view(R)
+```
 
 
 Cada cop que es fa una assignació nova a una variable s'oblida el valor
@@ -397,12 +405,6 @@ polinomi = x^3 + 3*x^2*y^3 - 2*y^2*x + 3*y + 5
 polinomi
 ```
 
-
-```sage
-print(polinomi)
-```
-
-
 Quan "desassignem" una variable, passa a ser un objecte simbòlic:
 
 ```sage
@@ -435,10 +437,11 @@ fa la substitució.
 var('a b c')
 E = 2*a - 3*b + c^2
 print(E)
-E.subs(a=-1)
-E.subs(b=11, c=2)
-E.subs(a=-1, b=2, c=4)
-print(a); print(b); print(c)
+print(E.subs(a=-1))
+print(E.subs(b=11, c=2))
+print(E.subs(a=-1, b=2, c=4))
+print(E)
+print(a, b, c)
 ```
 
 Com veieu, es poden escriure diverses instruccions en la mateixa línia,
