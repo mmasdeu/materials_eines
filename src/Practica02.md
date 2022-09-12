@@ -291,8 +291,8 @@ A.simplify_rational()
 ```
 
 ```sage
-B = 1 / (x+1) - 1 / (x-1)
-B.simplify_rational()
+C = 1 / (x+1) - 1 / (x-1)
+C.simplify_rational()
 ```
 
 ```sage
@@ -415,7 +415,18 @@ print(C[1:5:2])
 print(C[-2])
 ```
 
-Experimenteu més per acabar d'entendre com funciona.
+En general si posem `C[a:b:c]`
+obtenim la subllista `[C[a],C[a+c],..,C[a+d*c]]` on $a+d\cdot c\lt b\le a+(d+1)\cdot c$. 
+Tots els valors poden ser negatius. Si volem començar pel principi de la llista, o arribar fins el 
+final, podeu deixar buit l'espai. Vegeu per exemple que fa
+
+```sage
+print(C[:3])
+print(C[::2])
+print(C[::-1])
+```
+
+Experimenteu amb més opcions per acabar d'entendre com funciona, doncs és un procediment molt útil. 
 
 Com és d'esperar, cadascun dels elements d'una llista es pot modificar
 individualment:
@@ -457,10 +468,11 @@ naturals de 1 a 10, que podem construir d'aquesta manera abreviada amb
 els "dos punts suspensius" entre el principi i el final.
 
 Les fórmules per a la construcció de llistes poden ser molt complicades.
-Es pot fer que l'índex `k` avanci des de $a$ fins a $b$ (amb
-$\text a\le k<b$), incrementant-se cada pas en $c$ unitats, utilitzant
+Es pot fer que l'índex `k` avanci des de $a$ fins a $b$ (o sigui, es mogui 
+dins de $\text a\le k\lt b$), incrementant-se cada pas en $c$ unitats, utilitzant
 l'expressió `range(a,b,c)`, i també indicant una progressió aritmètica
-amb $a$, $a+t$, $a+2t$,...$b$ amb `[a, a+t,..,b]` (només hi podeu posar **dos** punts, ni un ni tres tres). Així els quadrats dels múltiples de $3$
+amb $a$, $a+t$, $a+2t$,...$b$ amb `[a, a+t,..,b]` (només hi podeu posar 
+**dos** punts, ni un ni tres tres). Així els quadrats dels múltiples de $3$
 (fins al quadrat de $18$) s'obtenen amb:
 
 ```sage
