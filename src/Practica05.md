@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 5: Funcions i programes'
+  title : 'Pràctica 9: Complements a la programació en Python'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,1324 +14,1167 @@ jupyter:
     name: sagemath
 ---
 
-# Funcions i programes
-
-## Definir funcions
-
-Per tal de definir un objecte de **SageMath** que
-reaccioni com una funció tal i com s'entén des del punt de vista
-matemàtic (un objecte $f$ que admet arguments, com per exemple $x$, i
-tal que, en funció del valor d'aquest argument, produeix un valor $f(x)$
-lligat a fer una sèrie de càlculs dependents de $x$), la construcció més
-senzilla és la de les que es denominen *funcions simbòliques*. S'obté un
-objecte d'aquest tipus quan es fa una assignació com, per exemple, la
-següent:
+# Complements a la programació en Python
 
-```sage
-f(x)=cos(pi*x)+7
-show(f)
-```
-
-(que generarà un símbol `f` que reacciona com la funció definida per la
-condició $f(x)=\cos(\pi\, x)+7$ o, més concretament, qualsevol expressió
-de la forma `f(v)` s'avaluarà com `cos(pi*v)+7`). De forma que es poden
-avaluar expressions del tipus:
-
-```sage
-f(1/2)
-```
-
-```sage
-f(1/3)
-```
-
-```sage
-f(0.5)
-```
-```sage
-f(0.5).n()
-```
-
-Noteu que aquesta construcció és molt semblant, però no del tot
-equivalent, a escurçar la substitució (`subs`) d'una variable simbòlica
-per un valor concret dins d'una expressió. Teniu en compte, no obstant,
-que en la definició d'una funció no cal que la variable sigui una
-variable simbòlica ja definida amb una instrucció `var` (el que
-s'interpreta i queda guardat és el mecanisme de càlcul del valor
-resultant en funció del valor introduït). Per tant, no hi ha haurà cap
-inconvenient en definir una funció utilitzant com a nom de la seva
-variable qualsevol que es vulgui. Per exemple:
-
-```sage
-g(t)=2*t^2 - 1
-show(g)
-```
-```sage
-g(x)
-```
-```sage
-g(2)
-```
-```sage
-g(1.345)
-```
-
-```sage
-v=3.01
-g(v)
-```
-
-Tot i això, aquesta construcció crea la variable que s'usa per definir
-la funció. En particular, si aquesta variable està emmagatzemant un
-valor, aquest es perdrà.
-
-```sage
-v = 5
-```
-```sage
-u
-```
-
-```sage
-v
-```
-
-```sage
-F(u,v)=u*v
-```
-```sage
-u
-```
-```sage
-v
-```
-
-
-Evidentment, si es vol avaluar la funció prenent com argument un nom
-sense valor assignat o sense haver declarat el símbol formal, apareix un
-error fins que no donem una opció vàlida per a l'argument.
-
-```sage
-g(y)
-```
-```sage
-var('y')
-g(y)
-```
-
-El nombre d'arguments (variables) d'una funció és arbitrari i, per tant,
-és perfectament raonable fer la definició següent:
-
-```sage
-h(x,y)=x^2-xy+ln(x^2+y^2)
-show(h)
-```
-```sage
-h(2,3)
-```
-```sage
-h(1,x)
-```
-
-## Gràfics de funcions
 
-La instrucció `plot` és prou flexible com per saber si l'argument que
-s'introdueix és una funció. El seu mecanisme intern ja s'ocupa d'avaluar
-aquest argument de la forma convenient. Per posar un exemple senzill:
+## Mòduls
 
-```sage
-reset()
-f(x)= x*e^-x
+Un mòdul és un fitxer que conté definicions i sentències de **Python** que
+es poden utilitzar en d'altres programes **Python**. Hi ha molts mòduls de
+**Python** que formen part de la biblioteca estàndard de **Python**, i
+que tenim disponibles des de **SageMath** (també en podem instal·lar d'altres, si ens cal).
 
-plot(f,(-1,4))
-```
+Els mòduls s'han de carregar si es volen utilitzar en un programa de
+Python. La instrucció per a fer-ho és `import`. El mòdul contindrà
+moltes funcions, i si es vol es pot importar sols una funció, utilitzant
+`from` [mòdul]{.underline} `import` [funció]{.underline}. Les funcions
+de dins del mòdul s'utilitzen posant
+[mòdul]{.underline}.[funció]{.underline}. Una pràctica força usual és
+abreujar el nom del mòdul (o canviar-lo), que es pot fer posant `import`
+[mòdul]{.underline} ` as ` [nou nom]{.underline}.
 
-donarà el mateix resultat que fer
+Un mòdul important de conèixer és **time**, que permet comptar el temps
+d'execució d'un procés. Per exemple, si volem veure quants segons triga
+a executar-se una funció podem fer
 
 ```sage
-plot(x*e^-x,(-1,4))
+from time import perf_counter
 ```
-o també
-```sage
-f(x)= x*e^-x
-plot(f(x),(x,-1,4))
-```
-
-## Convertir expressions en funcions
 
-Hi ha situacions en les que s'ha obtingut una certa expressió, que depèn
-d'un o més paràmetres, i es vol utilitzar aquest resultat com una funció
-d'aquests paràmetres (o, potser, només d'alguns d'ells). La instrucció
-que permet obtenir aquest resultat és la que apareix a la plantilla
-`expresssio.function(variables)` (que es podria llegir com: *l'expressió
-"tal" com a funció de les variables "qual"*) i es pot comprovar el seu
-funcionament en els exemples que venen a continuació. ``
-
-```sage
-expr = ln(3*x^3 + sqrt(x-1))
-f = expr.function(x)
-show(f)
-```
-```sage
-f(1.2)
-```
 ```sage
-var('y')
-show(f(y^2+1))
+inici = perf_counter()
+G = Goldbach(100000)
+final = perf_counter()
+temps_execucio = final-inici
+print(temps_execucio)
 ```
 
-El mecanisme també és vàlid amb més d'una variable com a:
-
+Tot i que també es pot fer servir:
 ```sage
-g=(x^2-y^2+sin(x*y)).function(x,y)
-show(g)
+%time G = Goldbach(100000)
 ```
 
-```sage
-show(g(2,pi))
-```
+Ara farem amb el mateix però amb una implimentació diferent
 
-L'ordre és important !
 ```sage
-g=(x^2-y^2+sin(x*y)).function(y,x)
-show(g(2,pi))
+def Goldbach2(n):
+    """ Retorna la llista de parelles de primers senars que sumen n """
+    if type(n)! = Integer:
+        raise TypeError('No és un enter de Sage')
+    elif is_odd(n):
+        raise ValueError(f'El nombre {n} és senar')
+    elif n < 6:
+        raise ValueError(f'El nombre {n} és menor que 6')
+    return [(p,n-p) for p in xsrange(3,n//2+1) if p.is_prime() and (n-p).is_prime()]
 ```
 
 ```sage
-show(g)
+inici = perf_counter()
+G = Goldbach2(100000)
+final = perf_counter()
+temps_execucio2 = final - inici
+print(temps_execucio2)
 ```
 
+Observeu que aquesta triga més del doble.
 
-I no cal que tots els paràmetres es converteixin en arguments de la
-funció.
-
-```sage
-h = (x+y)*sin(pi*x)-cos(y)
-hf = h.function(y)
-show(hf)
-```
 ```sage
-show(hf(pi/2))
+print(temps_execucio2 / temps_execucio)
 ```
-
 
-## Diferències entre expressions on hi apareixen indeterminades i funcions
-
-Tot i que en molts casos no hi ha cap diferència pràctica entre definir
-una funció o introduir una expressió que depèn de variables simbòliques
-cal tenir en compte que aquests dos tipus d'objecte no són equivalents i
-el seu comportament pot ser totalment diferent. Noteu, per exemple, com
-els resultats d'aquestes instruccions semblen una mica contradictoris:
-
-```sage
-reset()
-var('y z')
+També es pot fer amb `perf_counter_ns` per comptar el temps en nanosegons.
+Això ho podem utilitzar per a veure quina de les opcions que tinguem
+per a fer un càlcul triga menys en executar-se.
 
-fyz = y^2 - 3*y*z + 2*z^2
+Un mòdul que també es pot utilitzar per a mirar el temps d'execució
+d'una funció és `timeit`. El que fa es executar moltes (les que el
+usuari li indiqui) vegades el que li demanes i en calcula el temps
+mitjà.
 
-f(y,z) = y^2 - 3*y*z + 2*z^2
+Es recomanable conèixer alguns dels mòduls més utilitzats, tot i que
+alguns no ens caldran normalment si utilitzem
+**SageMath**, com la majoria de mòduls de
+matemàtiques (`math`, `numpy`, etc).
 
-show(fyz)
-```
-```sage
-show(f)
-```
+## Classes
 
-```sage
-y=2
-z=3
-show(fyz)
-```
-```sage
-show(f(y,z))
-```
-```sage
-show(f(2,3))
-```
 
-ja que, encara que assignem respectivament els valors $2$ i $3$ a les
-variables `y` i `z` l'expressió `fyz` no reflecteix aquesta situació. És
-més, si considereu una operació del tipus
+### Preliminars: zip
 
-```sage
-y * fyz
-```
 
-podeu quedar una mica sorpresos. De fet, descobrireu que la definició
-del símbol `fyz` *recorda* que els símbols `y` i `z` són variables
-simbòliques i, aleshores, en l'expressió `y * fyz` hi ha dues `y`
-diferents: la que té assignat el valor $2$ i la simbòlica que està
-*dins* `fyz`. Naturalment, tal i com calia esperar, l'expressió `f(y,z)`
-produeix el mateix resultat que `f(2,3)` encara que en el moment de la
-seva definició s'utilitzin les variables simbòliques `y`, `z` per a
-designar els arguments.
-
-## Elements d'un *programa*
-
-Hi ha moltes situacions en les que una funció del tipus anterior
-(`x -> f(x)`) no és suficient per al problema que s'està tractant. És
-força normal que per tal d'obtenir un resultat es necessitin una sèrie
-d'instruccions encadenades, que produeixen alguns valors intermedis (que
-cal tenir guardats en variables locals), que aquest flux d'instruccions
-requereixi la comprovació de certes condicions per tal d'executar blocs
-diferents, que un mateix bloc d'instruccions es repeteixi un cert nombre
-de cops (o fins que es verifiqui una certa condició), etc.
-
-En aquests casos s'hauran de definir funcions de tipus programa. La
-sintaxi per tal d'introduir aquests objectes és la de Python (ja que, en
-el fons, és el que utilitza **SageMath** per a
-totes les seves instruccions).
-
-En qualsevol cas, independentment del llenguatge que s'utilitzi els
-ingredients necessaris, com a mínim, per a fabricar un programa són
-instruccions que permetin realitzar tests i decidir, en funció del
-resultat, executar una acció o una altra (comparacions) i algun
-mecanisme que repeteixi tants cops com sigui necessari un cert bloc
-d'instruccions (bucles de repetició).
-
-Un fet molt important del Python és que els espais són molt importants
-(i no com amb el LaTeX, que posar un espai o mil és el mateix). Quan es
-fa una nova linea dins d'un condicional, un bucle, una funció tipus
-programa, etc, s'ha de posar indentada: el
-**SageMath** ho fa automàticament normalment,
-però és important saber que aquesta indentació és clau i està definida
-com formada per 4 espais.
-
-## Execució condicional (`if`)
-
-Com en gairebé tots els llenguatges de programació, la instrucció que
-realitza un test i, en funció del resultat executa una instrucció o una
-altra és `if`. Ja s'ha vist una versió d'aquesta instrucció com a part
-del constructor de llistes. L'exemple que ve a continuació mostra com
-s'ha d'escriure una instrucció d'aquest tipus per tal de realitzar una
-acció o una altra segons el resultat d'un test:
+La funció zip s'aplica a n llistes o tuples o cadenes, i en fa un iterable de n-tuples, agafant el ièssim de cada llista, des de i=0 fins que s'acaba alguna tupla.
 
 ```sage
-var('a b')
-a = 3
-if a == 4:
-    b = a + 1
-    print("Modificant b")
-show(a)
-show(b)
+print([x for x in zip([1,2],[3,4])])
 ```
-
-En aquest cas es veu que, en ser el valor de `a` igual a 3, no es
-produeix cap canvi. Mentre que en aquesta altra situació
 
 ```sage
-var('a b')
-a = 4
-if a == 4:
-    b = a + 1
-    print("Modificant b")
-show(a)
-show(b)
+print([x for x in zip([1,2,5],[3,4])])
 ```
-
-es veu com apareix el text `Modificant b` i el valor de `b` passa a ser
-5 ja que s'executen les dues instruccions corresponents.
-
-Segurament queda clar, després d'aquests dos exemples, que just darrera
-del `if` apareix la condició que es comprovarà, en forma d'equació, per
-tal d'executar la llista d'instruccions que va a continuació dels ` : `.
-Aquesta llista queda determinada (Python) pel fet que les instruccions
-corresponents s'escriuen indentades i quan s'acaben les instruccions
-d'execució condicional es tornen a escriure sense aquesta indentació
-(les interfícies de **SageMath** solen indentar automàticament tot el que va
-darrera de l'`if` i, per tant, no cal indentar explícitament el
-bloc ja que el format apareix per ell mateix).
-
-Naturalment, la instrucció `if` també permet definir quines instruccions
-s'executen quan el test dona un valor fals (posant un `else`) i, fins i
-tot, encadenar dos o més blocs condicionals.
 
-Per exemple, el següent programa ``
-
 ```sage
-a = 2
-if a < 3:
-    print (f'{a} és menor que 3")
-else:
-    print (f'{a} no és menor que 3")
+print([x for x in zip([1,2],[3,4],[5,6])])
 ```
-
-respon "2 és menor que 3" ja que la primera instrucció dona el valor
-de 2 a la variable `a`. Si canviem la primera instrucció per `a = 5`,
-respondrà "5 no és menor que 3".
 
-Un exemple una mica més complet que els anteriors consisteix a definir
-un bloc d'instruccions que emula la funció *signe* (dona com a resultat
-$1$ si el seu argument és positiu, $-1$ si és negatiu i $0$ si aquest
-argument és $0$). Aquí hem usat la funció `elif`, que és una contracció
-de `else if`.
-
 ```sage
-a = 3
-if a > 0:
-    print(1)
-elif a < 0:
-    print(-1)
-elif a == 0:
-    print(0)
-else:
-    print("No s'ha pogut comparar")
+print([x for x in zip('abc',[1,2,3])])
 ```
-
-Per tal de comprovar el funcionament d'aquestes instruccions en
-diferents situacions, canvieu el `a = 3` per `a = -pi`, per `a = 0` o per un
-`var(’a’)` i noteu com canvien els resultats.
-
-## Iteracions/repeticions/bucles
 
-Una altra estructura bàsica de programació és la de les iteracions
-(repetició d'un bloc d'instruccions un cert nombre de cops, utilitzant
-els valors obtingut en cada repetició per tal de realitzar els càlculs
-en la següent,...).Ja hem vist que per a generar llistes podem
-utilitzarel `for`. Fem primer un exemple calculant la suma dels quadrats
-de $1$ i $100$:
+Si apliques zip(*llista) on llista és una llista, el que fa és "esborrar" els parentesis de la llista per poder fer-li el zip. (S'utilita per desfer un zip, per exemple.) Fixeu-vos la diferència entre fer un zip amb * o sense *
 
 ```sage
-suma = 0
-for a in range(1,101):
-    suma += a^2
-print(suma)
+print([a for a in zip(*[(1, 1, 2), (2, 3, 4)])])
 ```
 
-Com en les instruccions `if`, primer marquem quines són les condicions de
-repetició (en particular el rang de variació de l'índex) acabant amb `:`
-i les instruccions que es realitzen en cada repetició s'escriuen
-utilitzant la indentació per tal de definir el bloc. El rang per l'índex
-seran llistes de valors obtingudes amb una instrucció `range` o del
-tipus `[a..b]`.
-
-**Nota:** Ja existeix una funció específica (`sum`) per a sumar una
-llista:
 ```sage
-sum(a^2 for a in range(101))
+print([a for a in zip((1, 1, 2), (2, 3, 4))])
 ```
 
-**Nota2:** Sovint quan treballem amb
-**SageMath** és millor utilitzar la funció
-`srange` que la funció `range`: la diferència és que la primera produeix
-enters de **SageMath** i la segoja enters de
-**Python**.  Amb els enters de Python no hi ha definits certs mètodes per
-decidir, per exemple, si un nombre és primer, o per factoritzar-lo. Per
-exemple, si volem la suma dels quadrats dels nombres primers entre 1 i
-100 i posem
 
-```sage
-sum(a^2 for a in range(101) if is_prime(a))
-```
+Una classe (a Python) és una manera de poder agrupar dades i funcions
+alhora, creant un nou tipus d'objecte i les formes de manipular-lo (i
+per tant forma part del que s'anomena programació orientada objectes).
+El **SageMath** i el **Python** són, de
+fet, en el llenguatge de la programació orientada a objectes. Ja hem
+vist molts exemples en els capítols anteriors: per exemple, els enters
+de Sage són una classe, i tenen molts atributs i mètodes associats com
+.factors(), .is_prime(), etc. Un altre exemple que hem vist és la classe
+de les matrius, la classe dels vectors, i tants d'altres.
 
-no funciona, però sí si posem
-
-```sage
-sum(a^2 for a in srange(101) if is_prime(a))
-```
+En aquesta secció veurem com podem crear nosaltres mateixos una classe
+(senzilla), i com podem assignar-los atributs i mètodes amb ella.
 
-Observeu que quan assigneu un valor enter a una variable,
-**SageMath** el considera un enter de Sage i no de
-Python.
+El que farem serà crear la classe dels triangles en el pla. Primer de
+tot hem de pensar com donarem un triangle. Hem optat per a definir-lo
+com un conjunt de tres punts del pla $\mathbb{R}^2$ (això inclourà els
+triangles "degenerats" formats per tres punts alineats, però en principi
+no ens causarà problemes).
 
+Així un triangle es crearà donant tres punts, com `T1 = Triangle([0,0],[0,12],[16,12])`.
 
-En altres situacions, el bloc d'instruccions que s'ha de repetir, en
-comptes de dependre del valor d'un índex, depèn d'una condició lligada a
-algun dels càlculs que s'estan realitzant: la instrucció és `while`.
+Per a definir una classe posem `class` i el nom de la classe. Per
+exemple, per a definir la classe `Triangle` utilitzarem `class`
+`Triangle`. Després cal inicialitzar la classe amb `__init__` cal dir el
+nom que utilitzarem internament a la classe (tradicionalment s'utilitza
+self, però no caldria!), i les dades que les defineixen (els tres
+punts).
 
+Dins de la mateixa classe podem definir funcions aplicades al objecte.
+Per exemple, en aquest cas la funció `area` calcula l'àrea del triangle
+donat pels tres vèrtexs. ``
 
-Per exemple, si volem fer una llista $L$ dels primers menors que 20 en
-ordre invers (de gran a petit) podem fer
+## Una classe per treballar amb triangles
 
+Considerem el següent codi:
 ```sage
-L = []
-a = 20
-while a > 0:
-    if a.is_prime():
-		L.append(a)
-    a -= 1
-print(L)
-```
-
-**Exercici:** Podeu pensar alguna manera de fer això amb un simple
-`for`? I amb comprensió de llistes?
+class Triangle:
+    def __init__(self, punt1,punt2,punt3):
+        self._p1 = punt1
+        self._p2 = punt2
+        self._p3 = punt3
+        self.vertexs = (punt1, punt2, punt3)
 
--- begin hide
-```sage
-L = []
-for p in srange(20,1,-1):
-    if p.is_prime():
-        L.append(p)
-L
-```
-```sage
-[p for p in srange(20,1,-1) if p.is_prime()]
+    def baricentre(self):
+        return (sum(a)/3 for a in zip(self.vertexs))
 ```
--- end hide
-
-Un altre exemple més sofisticat: és ben conegut que l'equació
-$x=\cos(x)$ té una solució que es pot aproximar tant com es vulgui
-iterant el procés $x\leadsto \cos(x)$. Podem obtenir una aproximació a
-aquesta solució iterant el procés fins que dos valors consecutius
-difereixin en una quantitat fixada prèviament (tolerància). Una forma
-d'implementar aquest càlcul pot ser el següent:
 
 ```sage
-
-di=1e-8 # Grau d'aproximacio entre iteracions consecutives que es busca
-s = 0. # Valor inicial
-sa = s+1 # Valor inicial per a l'aproximacio anterior
-         # (arbitrari i lluny del valor inicial)
-k = 0 #Variable que controla el nombre de repeticions
-
-while abs(s-sa) > di:
-    k += 1; sa = s; s = cos(s)
-    show(f'Iteració {k}, {s = }')
-show(sa, s)
+T = Triangle((0,0), (0,12), (16,12))
+show(f'{T.vertexs = }')
+show(f'{T.baricentre() = }')
 ```
-
-És fàcil que un bucle de repetició `while` es converteixi en un bloc que
-no s'atura mai (si no s'ha controlat bé que la condició de repetició
-realment s'acabi per complir en algun moment raonable). Per tant, el
-càlcul anterior resultarà més correcte si es controla el nombre de cops
-que s'ha de repetir el procés. Per exemple:
-
-```sage
-
-di = 1e-8; s=0.; sa = s+1; k=0
 
-mxi = 20 # Nombre màxim de repeticions del proces
+El que hem fet ha estat crear un triangle format pels vèrtexs a $(0,0)$,
+$(0,12)$ i $(16,12)$, i hem calculat el seu baricentre.
 
-while abs(s-sa) > di and k < mxi:
-    k+=1; sa=s; s=cos(s)
-    show(f'Iteració {k}, {s = }')
 
-# Es controla si s'han esgotat les repeticions previstes
-if k == mxi:
-    show("S'ha arribat al maxim d'iteracions previstes!!!")
-    show("No és segur que el valor sigui prou ajustat")
+A part de calcular l'àrea podem incorporar moltes altres funcions. Per a
+fer-ho primer crearem una funció per a calcular la distància entre dos
+punts de $\mathbb{R}^n$:
 
-show(sa, s)
-```
-
-Encara que si deixem repetir més cops tornem a tenir un resultat prou
-ajustat.
 
 ```sage
-
-di = 1e-8; s = 0.; sa = s + 1; k = 0; mxi = 50
-
-while abs(s-sa) > di and k < mxi:
-    k+=1; sa=s; s=cos(s)
-    if k == mxi:
-        show("S'ha arribat al maxim d'iteracions previstes!!!")
-        show("No és segur que el valor sigui prou ajustat")
-    else:
-        show(f"Despres de {k} iteracions,")
-        show("les dues ultimes aproximacions difereixen en")
-        show(f"{abs(s-sa).n(digits=3)}, i són:")
-        show(sa, s)
+def distancia(P, Q):
+    '''Calcula la distància entre dos punts de R^n'''
+    return((sum((xi-yi)**2 for xi, yi in zip(P, Q))**0.5))
 ```
-
-De forma semblant a l'anterior, es pot aturar l'execució d'un `for`
-abans del nombre de repeticions previst en un principi introduint una
-instrucció `break` en el punt on es vulgui acabar (tot i que hi ha
-programadors que no recomanen la utilització del `break` per ser poc
-estructurada).
-
-Per exemple, podem localitzar el nombre primer que és immediatament
-inferior a $a=1000$ (càlcul que ja realitza la funció `previous_prime`)
-amb les instruccions següents: ``
 
 ```sage
-
-a = 1000
-for p in [a-1, a-2..1]:
-    if p.is_prime():
-        break
-print(p)
+distancia((1,2),(2,3))
 ```
-
-que donarà el mateix resultat que
 
-```sage
-print(a.previous_prime())
-```
+Ara definirem de nou la classe dels `Triangle`:
 
-També ho podem fer utilitzant un `while`:
 
 ```sage
-p = a-1
-while not p.is_prime():
-    p -= 1
-print(p)
-```
+class Triangle:
+    def __init__(self, punt1,punt2,punt3):
+        self._p1 = punt1
+        self._p2 = punt2
+        self._p3 = punt3
+        self.vertexs = (punt1, punt2, punt3)
 
-(fora que la funció del
-**SageMath** `previous_prime` està molt més
-optimitzada i per tant és molt més ràpida).
+    def area(self):
+        p1 = self._p1
+        p2 = self._p2
+        p3 = self._p3
+        p123 = (p2[0] - p1[0]) * (p3[1] - p1[1])
+        p132 = (p2[1] - p1[1]) * (p3[0] - p1[0])
+        return abs((p123-p132) / 2)
 
+    def costats(self):
+        p = self.vertexs
+        pp = [[a for a in p if a != b] for b in p]
+        return sorted([distancia(*a) for a in pp])
 
-**Exercici:** Proveu de fer el mateix per a trobar el nombre primer immediatement
-superior a `a = 524`, o sigui el més petit dels que són més grans que
-`524`. La funció de **SageMath** corresponent és
-`next_prime`.
+    def perimetre(self):
+        return sum(self.costats())
 
+    def baricentre(self):
+        p = self.vertexs
+        return (sum(a)/3 for a in zip(*p))
 
--- begin hide
+    def inradi(self):
+        return 2 * self.area() / self.perimetre()
 
-**Opció 1:** amb un `while`. Aquí cal saber que hi ha infinits primers,
-i per tant el `while` s'acaba algun dia.
+    def circumradi(self):
+        return prod(self.costats()) / (4 * self.area())
 
-```sage
-a = 1009
-p = a+1
-while not p.is_prime():
-    p += 1
-print(p)
-```
+    def __eq__(self, other):
+        return self.costats() == other.costats()
 
-**Opció 2:** amb un `for`; el problema és saber fins a on hem d'anar
-per a trobar un nombre primer. Aquí podem fer servir per exemple
-un resultat que diu que per a tot $n>1$, hi ha sempre un nombre
-primer $p>n$ amb $p\le 2n$ (es diu postulat de Bertrand, i podeu
-buscar informació per internet).
-
-```sage
-for p in srange(a+1,2*a+1):
-    if p.is_prime():
-        break
-print(p)
+    def __ne__(self, other):
+        return not self.__eq__(other)
 ```
-
--- end hide
 
-
-## Funcions de tipus programa
-
-Quan es vol definir una funció que en la seva avaluació necessiti
-combinar més d'una instrucció, combinar blocs en els que hi hagi
-condicionals, repeticions o es necessitin variables temporals per
-guardar resultats que s'han d'utilitzar en alguna fase posterior
-d'aquesta avaluació, el mecanisme de les funcions simbòliques
-(`f(x)=.....`) és clarament insuficient (i, de fet, tampoc es pot
-incloure de forma obvia un condicional `if` dins la definició d'una
-funció). En aquestes situacions cal generar objectes de tipus programa
-utilitzant l'estructura `def`.
-
-Veiem un exemple d'aquesta estructura. La següent funció retornarà
-`True` or `False` (els booleans) depenent de si el nombre que li passem
-és primer i dona residu 1 si el dividim per 3 (equivalentment, al
-restar-li 1 és divisible per 3). Hem utilitzat una funció de Python molt
-important que és `a % b`, que si $a$ i $b$ són dos nombres enters $>0$,
-retorna el residuu de dividir $a$ entre $b$ (en una propera pràctica
-l'estudiarem amb més detall).
-
 ```sage
-def primer3(n):
-    if n.is_prime() and  n % 3 == 1:
-        return True
-    else:
-        return False
+T1 = Triangle([0,0],[0,12],[16,12])
+show(f'{T1.vertexs = }')
+show(f'{T1.costats() = }')
+show(f'{T1.perimetre() = }')
+show(f'{T1.area() = }')
+show(f'{T1.baricentre() = }')
+show(f'{T1.intradi() = }')
+show(f'{T1.circumradi() = }')
 ```
 
-Com a comentari, vegeu que rere la instrucció `return` hi ha el que
-volem que retorni la funció, en cada cas. Un cop executa un `return` la
-funció s'acaba, i per tant també es pot escriure
+Hem definit també igualtat de triangles; comprovem-ho amb un triangle traslladat
 
 ```sage
-def primer3(n):
-    if n.is_prime() and n % 3 ==1:
-        return True
-    return False
+T11 = Triangle([1,0],[1,12],[17,12])
+T11 == T1
 ```
-
-De fet, com que dins del condicional hi ha unes funcions que ja donen un
-booleà, encara ho podriem fer més concís escrivint simplement ``
 
-```sage
-def primer3(n):
-    return n.is_prime() and n % 3 == 1
-```
 
-Quan tenim una funció tan curta, podem escriure-la també en notació *lambda*:
+Una de les propietats interessants de les classes en Python és
+l'herència. Així, un pot definir una classe a partir d'una classe
+prèviament definida. Per exemple, podem definir una nova classe dels
+triangles rectangles donant només els dos catets (que situarem amb un
+vèrtex a l'origen).
 
-```sage
-primer3 = lambda n : n.is_prime() and n % 3 == 1
-```
 
-Cal dir que aquesta funció es podria optimitzar per tal que comproves
-primer si el valor de `n` és un nombre enter de Sage, i retornés `False`
-o un error si no ho fos; això es pot fer usant la funció `type`, que
-retorna el "tipus" del valor passat: en el cas que ens interessa,
-ha de ser de tipus `Integer`.
+Definim triangle rectangle com una classe a partir de la classe dels triangles
 
 ```sage
-def primer3(n):
-    if type(n) != Integer:
-        return False
-    return n.is_prime() and n % 3 == 1
+class TriangleRectangle(Triangle):
+    def __init__(self, catet1, catet2):
+        Triangle.__init__(self,(0,0), (0,catet1), (catet2,catet1))
+        self._catet1 = catet1
+        self._catet2 = catet2
+    def catets(self):
+	    return self._catet1, self._catet2
+    def hipotenusa(self):
+	    c1, c2 = self.catets()
+        return (c1**2 + c2**2)**.5
 ```
-
-Aquesta funció ara la podem utilitzar per a fer la llista dels nombres
-primers menors que 100 i amb resta 1 al dividir per 3:
 
-
 ```sage
-L = [n for n in range(100) if primer3(n)]
+T2 = TriangleRectangle(12,16)
+print(T2.vertexs)
 ```
-
-Les funcions, en principi, poden no necessitar cap dada incial ni tant
-sols retornar res (en aquest cas, retornen un tipus buit, que s'anomena `None`). Per exemple:
 
 ```sage
-def hola():
-    print('Hola que tal!')
+print(T1.vertexs == T2.vertexs)
 ```
-Un altre exemple més sofisticat per a fer els càlculs de les iteracions
-de la funció cosinus que ja han aparegut anteriorment defininint una
-funció designada com `ICos`. Aquesta funció acceptarà tres arguments (el
-primer serà el punt inicial de les iteracions, el segon el control de
-precisió i el tercer el nombre màxim d'iteracions que es preveuen), va
-escrivint els resultats intermedis i dona com a valor resultant (aquesta
-és la missió de la instrucció `return`) el de l'última iteració (de
-forma que, a part de veure tot el procés dels càlculs, es pot assignar a
-la variable `valor` aquest resultat final). Fixeu-vos que, tot i que
-cada cop que executeu una instrucció `ICos` apareixeran els resultats
-intermedis i el resum final, el **resultat** o **valor** de la funció
-corresponent als arguments que heu utilitzat és el valor de `s`.
 
 ```sage
-reset()
-
-def ICos(origen, precisio, maxit):
-    s = origen.n()
-    sa = s+1
-    k = 0
-    print(30 * '*')
-    while abs(s-sa) > precisio and k < maxit:
-        k += 1; sa = s; s = cos(s)
-        show(f'Iteracio {k}, {s = }')
-        if k == maxit:
-            show("S'ha arribat al maxim d'iteracions previstes!!!")
-            show("No es segur que el valor sigui prou ajustat")
-            show("El resultat correspon a l'ultim valor obtingut.")
-        else:
-            show(f"Despres de {k} iteracions,")
-            show("les dues ultimes aproximacions difereixen en")
-            show(f"{abs(s-sa).n(digits=3)}, i son:")
-            show(sa, s)
-    print(30 * '*')
-    return s
+T1 == T2
 ```
-```sage
-valor = ICos(pi/3, 0.000001, 100)
-valor
-```
-
-Noteu que totes les variables que reben valors en la descripció de
-`ICos` només tenen sentit mentre s'està avaluant la funció i que, un cop
-s'ha acabat l'execució del programa, tornen al seu estat anterior. (Se
-sol dir que són variables *locals*.). Per exemple, `k`, `s`, `sa` i
-`origen` en la funció anterior. Si la variable ja tenia un valor
-assignat, no canvia. Per exemple ``
 
 ```sage
-k=10
-ICos(2,0.001,20)
-print(k)
-```
-
-## Fer *experiments* utilitzant programes
-
-Un dels avantatges de tenir un llenguatge de programació a l'abast és
-que es poden realitzar amb facilitat experiments (numèrics) per a
-verificar propietats o plantejar qüestions que poden requerir molts
-càlculs (encara que siguin molt simples en el seu enunciat).
-
-Una qüestió d'aquest tipus molt famosa és la coneguda com Conjectura de
-Collatz (o també Conjectura del $3x+1$) que afirma:
-
-> Independentment del valor inicial que es prengui, el procés iteratiu
-> consistent a dividir per $2$ el valor actual, si és parell, o
-> multiplicar-lo per $3$ i després sumar $1$, si és imparell, acabarà
-> sempre en la successió $4, 2, 1, 4, 2, 1,\ldots$
+print('Hipotenusa =', T2.hipotenusa())
+print('Hipotenusa =', T1.hipotenusa())
 
-Aquesta afirmació encara és manté en l'actualitat com una conjectura (no
-s'ha pogut provar ni obtenir un contraexemple) i el comportament de les
-successions que apareixen s'ha estudiat des de nombrosos punts de vista.
-Un petit programa que permet observar les successions que apareixen quan
-seguim aquest procediment és el de l'exemple següent:
-
-```sage
-def tresxmesun(k):
-    if type(k) != Integer or k <= 0:
-        print "No es poden fer els càlculs."
-        return None
-    valor = k
-    llista= [valor]
-    while valor != 1:
-        valor = valor / 2 if valor % 2 == 0 else 3 * valor + 1
-        llista.append(valor)
-    return llista
 ```
 
-Noteu que no es farà cap càlcul mentre l'argument no sigui un nombre
-enter positiu i que, a no ser que la conjectura acabi resultant falsa,
-el programa sempre donarà una seqüència finita (potser força llarga).
-(Si us trobeu amb un argument que deixa el programa sense acabar podeu
-estar segurs que us fareu famosos).
-
-Amb la funció `tresxmesun` a les mans, podeu provar quins resultats
-apareixen amb `tresxmesun(-2)` (no fa res), `tresxmesun(31)` (surt una
-llista llargueta) o `tresxmesun(401)` (surt una llista més aviat curta).
-Però a part d'això, també podreu comprovar ràpidament com de llarga és
-una seqüència qualsevol d'aquestes (amb `len`) o, quin és el valor més
-gran que arriba a tenir (amb `max`)
+Tot i que tenen els mateixos vèrtexs, i de fet són iguals (com a triangles), el triangle T1 no té definida la hipotenusa, ja que no està definit com a triangle rectangle.
 
-```sage
-len(tresxmesun(31))
-max(tresxmesun(31))
-```
 
-O qualsevol altra característica que us sembli interessant (quants
-parells i senars surten,...).
 
-## Resultats diferents d'una mateixa funció
+### Observacions
 
-La funció de l'exemple següent permet experimentar amb els valors d'una
-funció $f$ qualsevol a prop d'un punt qualsevol $x_{0}$ generant una
-llista de parells de la forma $(x_{0}+1/k, f(x_{0}+1/k))$ per al $k$
-entre $1$ i un número qualsevol que també formarà part dels arguments. A
-més, segons el valor d'un argument que utilitzarem com a control, es pot
-presentar com resultat aquesta llista directament o un gràfic amb dels
-punts.
+- Les variables `_p1`, `_p2` i `_p3` són variables
+privades (no s'haurien de fer servir fora de la classe), tot i que a **Python** es considera que tothom és adult i sap què fa, així que no estan amagades del tot. Les podem fer "més privades" amb un doble guió baix (`__p1`, etc) i aleshores el seu nom real canvia a `__Triangle_p1`, fet que les fa més difícils d'utilitzar accidentalment.
 
-```sage
-def aprox(func,xini,it,ctrl):
-    llista = [(xini+1/k,func(xini+1/k)) for k in [1..it]]
-    return llista if ctrl else points(llista)
-```
+- Per definició dos objectes són iguals si estan formats per les mateixes
+dades. Si volem donar una altra definició d'igualtat dins d'una classe
+(el que de fet vindria a ser matemàticament com definir una relació
+d'equivalència en el conjunt de les classes donades), es pot fer
+expressament definint `__eq__` (i `__ne__` per a diferent).
 
-Si proveu, per exemple, amb la funció determinada per $f(x)=\sin(x)/x$ a
-prop de $x_{0}=0$ (recordeu que $f(0)$ no tindria sentit però que el
-límit dels valors de $f(x)$ quan $x$ tendeix a $0$ és $1$) podeu fer
+- Per exemple, podem voler considerar que dos triangles són el mateix
+triangle si coincideixen al moure un a sobre de l'altre (i girar-lo o
+fer el simètric si cal). Això és equivalent a definir la igualtat entre
+triangles si tenen els mateixos costats (com a llista ordenada de menor
+a major), que és el què hem implementat.
 
-```sage
-f(x) = sin(x) / x
-aprox(f,0.,25,True)
-```
 
-i obtindreu una llista de valors $(x,f(x))$ per a valors de $x$ propers
-a $0$. O podeu fer
 
-```sage
-pts = aprox(f,0.,25,False)
-graf = plot(f,(0,1),color="red")
-(pts+graf).show(aspect_ratio=1,xmin=0,ymin=0)
-```
+## Referències
 
-per obtenir un bonic gràfic amb els punts dibuixats sobre el gràfic de
-la funció.
+Si voleu tenir més informació sobre programació amb Python podeu
+consultar
 
+[How to Think Like a Computer Scientist: Learning with Python
+3](http://openbookproject.net/thinkcs/python/english3e/) de Peter
+Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
 
 ## Exercicis
 
 
 ### Exercici 1
 
-Calculeu la suma de tots els nombres primers menors que 100 tals que
-als restar-los 1 siguin múltiples de 4 utilitzant bucles i
-condicionals. Feu-ho primer sense usar la funció `next_prime`, i
-després fent-ho.
+
+Comproveu, amb l'ús del mòdul time, quina de les dues maneres
+d'ordenar una llista de nombres a l'atzar és més ràpida. Una,
+convertint la llista en conjunt i tornant-la a convertit en llista.
+L'altra, fent una funció que fa una copia de la llista, i creant una
+nova llista escollint el mínim i traient tots els elements de la
+copia de la llista repetits, fins que la llista sigui buida.
 
 
 -- begin hide
 
-Una solució amb el `for`:
 
 ```sage
-s=0
-for p in [3..100]:
-    if p.is_prime() and (p-1) % 4 == 0:
-            s += p
-print(s)
+reset()
 ```
 
-Una solució amb el `while`, on hem usat que és el mateix dir
-que al restar 1 sigui múltiple de 4 que al dividir per 4 doni residu 1
+Funció per ordenar primera
 
 ```sage
-s = 0
-p = 2
-while p < 101:
-    if p % 4 == 1:
-        s += p
-    p = p.next_prime() 
-print(s)
+def ord2(llist):
+    cllist = copy(llist)
+    nllist = []
+    while (len(cllist) > 0):
+        a = min(cllist)
+        nllist.append(a)
+        while (a in cllist):
+            cllist.remove(a)
+    return nllist
 ```
 
-Una solució més compacta amb comprensió de llistes:
+
+Creem una llista a l'atzar de 1000 nombres del 1 al 30
+
 
 ```sage
-sum(p for p in srange(100) if p.is_prime() and p % 4 == 1)
+llist = [randint(1,30) for i in range(1000)]
 ```
 
-Una solució on directament prenem els enters mòdul 4:
+Importem el mòdul time 
+
 ```sage
-sum(p for p in srange(1,100,4) if p.is_prime())
+from time import perf_counter
 ```
+
+Ordenem la llista amb la primera funció comptant el temps
+
+```sage
+inici = perf_counter()
+print (ord1(llist))
+final = perf_counter() 
+print(final-inici)
+```
+
+El mateix amb el segon mètode
+
+```sage
+inici = perf_counter()
+print (ord2(llist))
+final = perf_counter() 
+print(final-inici)
+```
+
 -- end hide
+
 
 ### Exercici 2
-Recordeu que la successió de Fibonacci, $(f_n)_n$, es defineix de
-forma iterativa a partir de $f_0=1$, $f_1=1$ i la regla
-$$f_k=f_{k-1}+f_{k-2}\quad \text{ per a tot }k\geq 2.$$
 
-- Construïu un programa `Fib()` que tingui com argument un enter
- $k$ (`Fib(k)`) i doni com a resultat la llista dels primers $k$
- termes de la successió de Fibonacci.
+
+Donats dos vectors $u=(u_1,\dots,u_n)$ i $v=(v_1,\dots,v_n)$ de
+$\mathbb{R}^n$, diem que $u\le v$ en l'ordre lexicogràfic, si, o bé
+són iguals, o bé $u_1<v_1$, o bé existeix un $i\le n$ tal que
+$u_j=v_j$ per a tot $j<i$ i $u_i<v_i$. Feu una funció `ordlex(u,v)`
+que comprovi que $u$ i $v$ són vectors de la mateixa llargada, i si
+no ho són doni un error `TypeError` i si ho són retorni `True` si
+$u\le v$ en l'ordre lexicogràfic, i si no retorni `False`.
+
 
 -- begin hide
+Una possible manera. Ho he fet amb "llistes de nombres", no vectors
+
 ```sage
-def Fib(k):
-    '''Calcula la llista dels nombres de Fibonacci fins el k-èssim'''
-    if type(k) != Integer or k<0:
-        print("No és un valor admissible")
-        return                # Si no és un enter >=0, fem que no retorni res
-    if k == 0:
-        return [1]            #Per a k=0 retorna només la llista amb el 1. 
-    F=[1,1]                   #Inicialitzem la llista amb els dos primers valors
-    for i in range(k-1):      #El bucle va fins a k-1 ja que el 0 i el 1 ja estan
-        f=F[i]+F[i+1]
-        F.append(f)
-    return(F)
+def ordlex(u,v):
+    '''Retorna cert si u <= v en ordre lexicogràfic'''
+    if type(u)!=list or type(v)!=list:
+        raise TypeError('No són llistes de nombres')
+    if len(u) != len(v):
+        raise TypeError('No tenen la mateixa llargada')
+    for i in range(len(v)):
+        if u[i] < v[i]:
+            return True
+        if u[i] > v[i]: 
+            return False
+    return True
 ```
--- end hide
 
-- Donat un valor $k$, representeu gràficament una línia que mostri
-  l'evolució dels valors dels quocients $f_{k}/f_{k-1}$.
-  Observareu que aquests tendeixen a un valor fix, sabeu quin és?
+Observeu que es cumpleix el que es demana, ja que si $u[1]<v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j<i$ i $u[i]<v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
 
--- begin hide
 ```sage
-def llistaFib(N):
-    F=Fib(N)
-    llista=[(k,F[k]/F[k-1]) for k in [1..N]]
-    return points(llista)
+u = [1,1,1,1]
+v = [1,1,1,2]
+```
 
-llistaFib(20)
+```sage
+ordlex(u,v)
+```
+
+```sage
+u = [1,1,1,1]
+v = [1,1,1,1]
+ordlex(u,v)
+```
+
+```sage
+u = [1,1,1]
+v = [1,1,1,1]
+ordlex(u,v)
+```
+
+```sage
+u = (1,1,1,1)
+v = [1,1,1,1]
+ordlex(u,v)
 ```
 -- end hide
 
 ### Exercici 3
-Suposeu que, sigui on sigui, tenim 100 portes tancades i numerades.
-Fem una passada per totes les portes d'una en una i les anem obrint.
-Després fem una altra passada i anem tancant cada 2 portes (la 2, la
-4, la 6\...). Fem una passada ara cada tres portes tancant les
-obertes i obrint les tancades. Anem repetint, cada 4 portes, cada 5,
-etc. Farem la última passada cada 100 portes, moment en què només
-obrirem o tancarem l'última.
 
-Simuleu aquest procés amb **SageMath** llistant al final quines portes
-estaran obertes. Podeu dir per què surt el que surt?
 
+Definiu una funció tal que, donades dues parelles de punts diferents
+del pla $\mathbb{R}^2$, $\{p_1,p_2\}$ i $\{q_1,q_2\}$, determini si
+el segment obert $r_1$ entre la primera parella talla o no el
+segment obert $r_2$ entre la segona parella. La funció ha d'acceptar
+com a dades dos conjunts formats per dos elements cadascun, i els
+elements han de ser punts de $\mathbb{R}^2$ (com a llistes, o com a
+tuples, etc). La resposta he de ser True si tallen, False si no.
+
+Indicació: Per a fer-ho podeu utilitzar que els punts del segment
+obert que uneix dos punts del pla $p_1$ i $p_2$ són els de la forma
+$tp_1+(1-t)p_2$, on $0< t <1$. Per tant, si tenim ara una altre
+parella de punts $p_3$ i $p_4$, volem comprovar si hi ha o no
+$0<s,t<1$ de manera que $$tp_1+(1-t)p_2=sp_3+(1-s)p_4.$$ Utilitzant
+la regla de Cramer això es tradueix a una desigualtat entre
+determinants: el determinant $A$ de la matriu que té com a columnes
+(o files) $p_1-p_2$ i $p_4-p_3$ ha de ser diferent de $0$ (per tal
+que no siguin parał.els o coincidents), i, si denotem per $B$ el
+determinant de la matriu que té com a columnes (o files) $p_4-p_2$ i
+$p_4-p_3$ i per $C$ el mateix però amb columnes (o files) $p_1-p_2$
+i $p_4-p_2$, llavors $$0<\frac{B}{A}<1 \text{ i } 0<\frac{C}{A}<1$$
+(doncs aquests quocients corresponen a la $t$ i la $s$ de la
+equació).
 
 -- begin hide
 
-Farem una llista anomenada Portes de manera que tindra un 0 en el lloc $i$ si la porta $i+1$ està tancada, i un 1 si està oberta. Recordem que les llistes comencen amb el 0, però nosaltres volem enumerar les portes del 1 al 100.
+He fet una funció que comprova si les dades són conjunts, si tenen dos elements, si cada elements té llargada 2 i després he convertit els "punts" a vectors de $\mathbb{R^2}$. He calculat els determinants i comprovo si $A=0$, després si tenen el mateix signe tots (amb la funció `sign`), i si els quocients són $\ge 1$, i si es compleix alguna d'elles la resposta és `False`, i sino la resposta és `True`.
+
 
 ```sage
-Portes=[0 for a in range(100)]
+def EsTallen(S,T):
+    '''Donats dos conjunts de dos punts del pla,
+    determina si les rectes que formen es tallen o no
+    '''
+    if type(S) != set or type(T) != set:
+        raise TypeError('No són conjunts')
+    if len(S) != 2 or len(T) != 2: 
+        raise TypeError('Els conjunts no tenen dos elements')
+    if any(len(v)!= 2 for v in S.union(T)):
+        raise TypeError('Han de tenir dues coordenades')
+    E = RR^2
+    V = [E(v) for v in S] + [E(v) for v in T]
+    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
+    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
+    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
+    if A == 0: 
+        return False
+    elif A.sign()!=B.sign() or A.sign()!=C.sign(): 
+        return False
+    elif B/A >= 1 or C/A >= 1:
+        return False
+    t = B/A
+    return True
 ```
 
-Farem un bucle amb el for per a fer les 100 passades. Si el iterador es diu $i$, que es mourà de $0$ a $99$, recordem que haurem de fer els passos de llargada $i+1$. Després anomenem $r$ la porta en que començarem, i anem canviant el valor de la porta $r+j*(i+1)$ fins que surti més gran que 100. Fixeu-vos que si $a$ és 0 o 1, aleshores $1-a$ té el valor oposat. 
+A més he fet una funció Tallen que retorni el punt de tall a més (o bé 0 si no)
 
 ```sage
-for i in range(100):
-    r=i                        #La primera porta en el primer pas en la iteració i està en el lloc i de la llista
-    while(r<100):
-        Portes[r]=1-Portes[r]  #Obrim o tanquem la porta en el lloc r
-        r+=i+1                 #Saltem anem a buscar la porta que està i+1 llocs de distància
-print(Portes)
+def Tallen(S,T):
+    '''Donats dos conjunts de dos punts del pla,
+    determina si les rectes que formen es tallen o no
+    '''
+    if type(S) != set or type(T) != set:
+        raise TypeError('No són conjunts')
+    if len(S) != 2 or len(T) != 2: 
+        raise TypeError('Els conjunts no tenen dos elements')
+    if any(len(v)!= 2 for v in S.union(T)):
+        raise TypeError('Han de tenir dues coordenades')
+    E = RR^2
+    V = [E(v) for v in S] + [E(v) for v in T]
+    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
+    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
+    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
+    if A == 0: 
+        return False, 0
+    elif A.sign()!=B.sign() or A.sign()!=C.sign(): 
+        return False, 0
+    elif B/A >= 1 or C/A >= 1:
+        return False, 0 
+    t = B/A
+    return True, t*V[0]+(1-t)*V[1]
 ```
 
-Observeu que les úniques portes que queden obertes són les que corresponen als nombres quadrats.
+Un exemple
 
 ```sage
-[i+1 for i in range(100) if Portes[i] == 1]
+S = {(2.1,2),(2.3,1)}
+T = {(2.1,1),(2.3,2)}
+b,pt = Tallen(S,T)
 ```
 
-Fixeu-vos que el nombre de vegades que passem per una porta és igual al nombre de divisors que té (incloent el 1 i ell mateix). 
-
 ```sage
-[number_of_divisors(i+1).mod(2) for i in range(100)] == Portes
+line([v for v in S])+line([v for v in T])+point(pt,color='red',size=30)
 ```
 
-Hem fet una nova versió utilitzant dos bucles `for`: el primer controla les passades, el segon el procés de tancar i obrir portes. Noteu que 
+```sage
+S = {(2.1,2),(2.3,2)}
+T = {(2.1,1),(2.3,1)}
+b,pt = Tallen(S,T)
+b
+```
 
 ```sage
-PortesN=[0 for a in range(100)]
-for i in [1..100]:
-    for r in [i..100,step=i]:        #la r es mou des del lloc i al lloc 100 de i en i.
-        PortesN[r-1]=1-PortesN[r-1]  #Obrim o tanquem la porta r-èssima, que es troba en el lloc r-1 de la llista
-print(PortesN)
-print("Comprovem que surt la mateixa llista : ",PortesN==Portes)
+line([v for v in S])+line([v for v in T])
 ```
 -- end hide
 
+### Exercici 4
 
-### Exercici 4  (*Passeig aleatori*)
-
-Suposeu que ens trobem a la posició $(0,0)$ del
-pla i successivament fem passos (de longitud 1) escollint a l'atzar
-(recordeu l'exemple de les llistes de tirades de daus?) si fem el
-pas cap amunt, cap avall, cap a l'esquerra o cap a la dreta.
-
-Realitzeu un d'aquest passejos amb
-**SageMath** fins que torneu a l'origen o
-hagueu fet 1000 passes, dibuixant el camí que s'ha seguit i
-indicant, si és el cas, les passes que s'han realitzat.
-
+Definiu una classe `Isosceles`, formada per triangles isòsceles donats
+per la base i l'altura, definida a partir de la classe `Triangle`
+definida a dalt.
 
 -- begin hide
-
-Com que volem fer un pas aleatori, escollim un nombre aleatori entre 1 i 4, i després assinem el pas corresponent al nombre. El que hem fet és definir una variable que sigui un boobleà (bo), i que passi a ser False quan retornem al (0,0) o bé haguem fet el nombre de passos que hem dit previament (=1000).
-
 ```sage
-pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
-llista=[pt]                #Llista de punts per on passarem
-fi=1000                    #Nombre màxim de passos a fer.
-bo=True                    #Boobleà que val True mentre no tornem a (0,0) o fem fi passos
-while(bo):                 
-    pas=randint(1,4)
-    if pas ==1: 
-        pt[0]=pt[0]+1
-    elif pas==2:
-        pt[1]=pt[1]+1
-    elif pas==3:
-        pt[0]=pt[0]-1
-    else:
-        pt[1]=pt[1]-1
-    llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
-    bo=(pt!=[0,0]) and (len(llista)< fi)       #El booleà valdrà False si pt=[0,0] o hem fet fi o més passos. 
-print(len(llista))
+class TriangleIsosceles(Triangle):
+    def __init__(self, base, altura):
+        Triangle.__init__(self, (0, 0), (0, base), (altura, base/2))
+        self.base = base
+        self.altura = altura
+    def area(self):
+        return(self.base * self.altura)
+
+T = TriangleIsosceles(10,10)
+show(T.area())
 ```
-
-**Penseu:** perquè hem fet així i no hem posat directament 
-
-```sage
-while ((pt!=[0,0]) and (len(llista)< fi) ): ?
-```
-
-Proveu de fer el mateix amb un `for` i un `break`.
-
-```sage
-line(llista)
-```
-
-Poso una altra manera per veure si ho veieu més clar
-
-
-Podriem fer el mateix creant una llista de passos i fent un primer pas abans. 
-
-```sage
-pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
-llista=[pt]                #Llista de punts per on passarem
-fi=1000                    #Nombre màxim de passos a fer.
-passos=[[1,0],[0,1],[-1,0],[0,-1]]
-pas=randint(0,3)           #Fem un primer pas fora del while per poder posar el boobleà al while
-pt = [pt[i]+passos[pas][i] for i in range(2)]
-llista.append(copy(pt))                    
-while((pt!=[0,0]) and (len(llista)< fi)):                 
-    pas=randint(0,3)
-    pt = [pt[i]+passos[pas][i] for i in range(2)]
-    llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
-print(len(llista))
-```
-
 -- end hide
 
 
 ### Exercici 5
-Com podeu comprovar, el fet que el procés iteratiu $x\to \cos(x)$
-que heu usat anteriorment convergeixi cap a una solució de
-$x=\cos(x)$ no es pot generalitzar a qualsevol altra funció.
-
-En general, donada una funció contínua
-$f\colon \mathbb{R}\to \mathbb{R}$, el procés iteratiu
-$x\mapsto f(x)$ pot tendir, com ja hem vist, a estabilitzar-se en un
-punt fix, a seguir els valors d'un cicle d'elements, o a mostrar
-comportaments completament caòtics. La diversitat de casos es pot
-veure considerant simplement la funció $f(x)=\alpha\,(1-x)\,x$ i
-fent variar $\alpha$ entre $0$ i $4$.
-
-Una forma il·lustrativa de visualitzar la successió de valors
-$x_{k+1}=f(x_k)$ és el que s'anomena *diagrama de Verhulst* o
-*diagrama de teranyina*. Aquest consisteix a representar el procés
-iteratiu en un gràfic on hi apareix la gràfica $y=f(x)$, la recta
-$y=x$, i una línia que representa l'evolució de la successió $x_k$ i
-que s'obté de la forma següent:
-
-1.  Escollim un valor inicial $x_0$ i comencem al punt $(x_0,0)$.
-
-2.  Seguim l'eix vertical fins la recta $y=x$, és a dir, al punt
-        $(x_0,x_0)$.
-
-3.  Seguim l'eix vertical fins a gràfic de la funció $f(x)$, és a
-        dir, fins al punt $(x_0,f(x_0))$.
-
-4.  Seguim l'eix horitzontal fins la recta $y=x$, és a dir, al punt
-        $(f(x_0),f(x_0))$.
-
-5.  Tornem a repetir des del pas 3, substituint $x_0$ per
-       $x_1=f(x_0)$, i en els passos successius $x_k$ per
-        $x_{k+1}=f(x_k)$.
-
-El procés es repeteix fins que observem quin és el comportament del
-sistema (vegeu els exemples al final).
 
 
-- Feu un programa `verh()` que tingui tres arguments (per tal
-  d'executar la funció es posarà `verh(alpha, x0, np)`): el
-  paràmetre `alpha` corresponent al $\alpha\in[0,4]$ de la funció
-  $f(x)=\alpha(1-x)x$, `x0` que serà un punt inicial de
-  $[0,1]$ i `np` el nombre total de passos; i que el resultat
-  sigui el diagrama de teranyina corresponent.  
+Definiu una classe dels Quadrilàters (convexos), determinada donant
+$4$ punts del pla.
 
+Observeu primer que si els quadrilàters no són convexos aleshores
+els vèrtexs no determinen el quadrilàter.
+
+![Tres quadrilàters no convexos diferents amb els mateixos
+vèrtexs](quadnconvex1.png)
+
+![Tres quadrilàters no convexos diferents amb els mateixos
+vèrtexs](quadnconvex2.png)
+
+![Tres quadrilàters no convexos diferents amb els mateixos
+vèrtexs](quadnconvex3.png)
+
+Per tant el primer que hem de fer és comprovar si els 4 punts formen
+o no un quadrilàter convex, i a més ordenar bé els vèrtexs. Tot això
+ho podem fer usant que en un quadrilàter convex els segments
+determinats pels vèrtexs oposats es tallen en un punt
+(necessàriament a l'interior del quadrilàter).
+
+![Quadrilàter convex amb les diagonals
+dibuixades](quadconvex.png)
+
+![El mateix però amb els vèrtexs mal
+posats](quadconvexn.png)
+
+La classe pot tenir una funció àrea, i funcions que comprovin si el
+quadrilàter és un trapezi, si és un parał.lelogram, si és un rombe,
+si és un rectangle, si és un quadrat, etc. També podeu provar de
+definir igualtat de quadrilàters de manera anàloga a com ho hem fet
+pels triangles però no és fàcil.
 
 -- begin hide
+Hi ha varis problemes tècnics a resoldre. Per exemple, he decidit que els punts siguin tuples, i per tant els transformo a tuples només començar. A més accepto com a quadrilater qualsevol llista de 4 punts, però a l'hora de obtenir els vèrtexs ordenats adequadament, si no determinen un quadrilater convex faig que retorni la llista buida. 
 
-He fet la funció amb un "docstring" (o sigui, una breu descripció del que fa al principi), i també que vagi comprovant que els valors donats compleixin el que es demana, i en cas contrari no retorni res. 
+
+Podríem haver decidit que un quadrilàter és una llista de punts i si surt "degenerat" per haver agafat la llista mal ordenada llavors no tingués les altres instàncies. Però llavors hauríem de decidir que fer amb els quadrilàters no convexos. 
+
+
+Primer he definit una funció similar a la de EsTallen per saber si els costats determinades per dos conjunts de dos punts són paral·lels o no. 
 
 ```sage
-def verh(alpha,x0,np):
-    '''Donats un valor alpha de [0,4], un punt inicial de [0,1]
-    i el nombre d'iteraccions fa la grafica demanada en el Exercici 5'''
-    if alpha < 0 or alpha > 4:
-        print("El primer valor "+ str(alpha) + " està fora del interval [0,4]")
-        return
-    if x0<0 or x0>1:
-        print("El segon valor  "+ str(x0) + "  està fora del interval [0,1]")
-        return
-    if type(np) != Integer and np<1:
-        print("El tercer valor  "+ str(np) + "  no és un enter >0")
-        return
-    f(x)=alpha*(1-x)*x                             # Definició de la funció f(x)
-    llista=[[x0,0],[x0,x0]]                        # La llista de punts comença així segons les condicions 1. i 2.
-    for i in range(np):                            # Fem un for que es repetirà np cops
-        x1=f(x0)                                   # Calculem x1=f(x0)
-        llista.append([x0,x1])                     # Afegim [x0,x1]
-        llista.append([x1,x1])                     # Afegim [x1,x1]
-        x0 = x1                                    # El nou x0 serà el anterior x1
-    funcio=plot(f(x), 0, 1)                        # Plot de la funció
-    recta=plot(x,0,1)                              # Plot de la recta y=x
-    return(funcio+recta+line(llista,color='red'))  # Retornem la suma dels plots incloent el creat de la llista 
+def SonParalels(S,T):
+    '''
+	Donats dos conjunts de dos punts del pla,
+    determina si els costats que formen son paral·lels o no
+    '''
+    if type(S) != set or type(T) != set:
+        raise TypeError('No són conjunts')
+    if len(S) != 2 or len(T) != 2: 
+        raise TypeError('Els conjunts no tenen dos elements')
+    if any(len(v)!= 2 for v in S.union(T)):
+        raise TypeError('Han de tenir dues coordenades')
+    E = RR^2
+    V = [E(v) for v in S] + [E(v) for v in T]
+    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
+    return A == 0
+```
+
+```sage
+class Quadrilater: 
+    def __init__(self, punt1,punt2,punt3,punt4):
+        self._p1 = tuple(punt1)
+        self._p2 = tuple(punt2)
+        self._p3 = tuple(punt3)
+        self._p4 = tuple(punt4)
+    def vertexs(self):
+        V = [self._p1,self._p2,self._p3,self._p4]
+        if EsTallen({V[0],V[2]},{V[1],V[3]}):
+            return(V)
+        elif EsTallen({V[0],V[1]},{V[2],V[3]}):
+            return([V[0],V[2],V[1],V[3]])
+        elif EsTallen({V[0],V[3]},{V[1],V[2]}):
+            return([V[0],V[1],V[3],V[2]])
+        else:
+            return([])
+    def EsConvex():
+        V = self.vertexs()
+        return len(V) != 0
+    def costats(self):
+        V = self.vertexs()
+        if len(V)==0:
+            return []
+        C = [distancia([V[i],V[i+1]]) for i in range(3)] 
+        C.append(distancia([V[3],V[0]]))
+        return C
+    def perimetre(self):
+        return sum(self.costats())
+    def baricentre(self):
+        V = self.vertexs()
+        if len(V)==0:
+            return 
+        b,pt = Tallen({V[0],V[2]},{V[1],V[3]})
+        return pt
+    def area(self):
+        V = self.vertexs()
+        if len(V)==0:
+            return 0
+        A1 = Triangle(V[0],V[1],V[2]).area()
+        A2 = Triangle(V[0],V[3],V[2]).area()
+        return A1+A2
+    def trapezi(self): #Mirem si tenen dos costats oposats paral·lels
+        V = self.vertexs()
+        if len(V)==0:
+            return False
+        return SonParalels({V[0],V[1]},{V[2],V[3]}) or SonParalels({V[0],V[3]},{V[1],V[2]})
+    # He fet dues instancies de paral·lelogram. Les dues van bé.
+    def paralelogramc(self): #Mirem si tenen costats oposats iguals
+        C = self.costats()
+        if len(C)==0:
+            return False
+        return C[0]==C[2] and C[1] == C[3]
+    def paralelogram(self):  #Mirem si tenen costats oposats paral·lels
+        V = self.vertexs()
+        if len(V)==0:
+            return False
+        return SonParalels({V[0],V[1]},{V[2],V[3]}) and SonParalels({V[0],V[3]},{V[1],V[2]})
+    def rombe(self): #Mirem si tenen tots els costats iguals
+        C = self.costats()
+        if len(C)==0:
+            return False
+        return self.paralelogramc() and C[0] == C[1]        
+    def rectangle(self): # Paral·lelogram que té dos costats perpendiculars
+        V = self.vertexs()
+        if len(V)==0:
+            return False
+        # Calculem el producte escalar dels dos costats amb vertex V[0]. Ha de ser 0.
+        esc = (V[1][0]-V[0][0])*(V[3][0]-V[0][0])+(V[1][1]-V[0][1])*(V[3][1]-V[0][1])
+        return self.paralelogram() and esc == 0
+    def quadrat(self): #Un quadrat és un rectangle que és un rombe
+        return self.rectangle() and self.rombe()
+    # He fet una instància que fa un plot del quadrilàter per poder visualitzar el que fem 
+    def plot(self):
+        V = self.vertexs()
+        if len(V)==0:
+            return 
+        pV = points(V,color='red',axes=False,aspect_ratio=1)
+        lV = line(V[:2])
+        lV += line(V[1:3])
+        lV += line(V[2:])
+        lV += line([V[3],V[0]])
+        return pV+lV
+    # Defineixo igualtat entre Quadrilaters si es poden descomposar en dos triangles iguals.
+    # Trenquem el primer d'una manera, i el segon de les 2 possibles maneres
+    # Cal comparar el primer triangle del primer quadrilater amb casacun dels 4 del segon
+    # i el segon triangle del primer quadrilater amb el complementari del segon.
+    def __eq__(self, other):
+            V1 = self.vertexs()
+            V2 = other.vertexs()
+            T111 = Triangle(V1[0],V1[1],V1[2])
+            T112 = Triangle(V1[1],V1[2],V1[3])
+            T211 = Triangle(V2[0],V2[1],V2[2])
+            T212 = Triangle(V2[1],V2[2],V2[3])
+            T221 = Triangle(V2[0],V2[1],V2[3])
+            T222 = Triangle(V2[1],V2[2],V2[3])
+            bo1 = (T111 == T211) and (T112 == T212)
+            bo2 = (T111 == T212) and (T112 == T211)
+            bo3 = (T111 == T221) and (T112 == T212)
+            bo4 = (T111 == T221) and (T112 == T222)
+            return bo1 or bo2 or bo3 or bo4 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+```
+
+Un quadrat
+
+```sage
+punt1 = (0,0)
+punt2 = (0,1)
+punt3 = (1,0)
+punt4 = (1,1)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+Q1.plot()
+```
+
+Un rectangle
+
+```sage
+punt1 = (0,0)
+punt2 = (0,2)
+punt3 = (1,0)
+punt4 = (1,2)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+Q1.plot()
+```
+
+Un paral·lelogram no rectangle
+
+```sage
+punt1 = (0,0)
+punt2 = (1,1)
+punt3 = (3,0)
+punt4 = (4,1)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+Q1.plot()
+```
+
+Un trapeci no paral·lelogram
+
+```sage
+punt1 = (0,0)
+punt2 = (1,1)
+punt3 = (3,0)
+punt4 = (6,1)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+Q1.plot()
+```
+
+Un de no convex
+
+```sage
+punt1 = (0,0)
+punt2 = (1,2)
+punt3 = (3,0)
+punt4 = (1,1)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+points([punt1,punt2,punt3,punt4])
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+
+```
+
+Un rombe no quadrat
+
+```sage
+punt1 = (0,0)
+punt2 = (3,4)
+punt3 = (5,0)
+punt4 = (8,4)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+```sage
+Q1.plot()
+```
+
+Un que no és "res" (de fet és un estel o deltoïde)
+
+```sage
+punt1 = (0,0)
+punt2 = (3,4)
+punt3 = (5,0)
+punt4 = (6,3)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+```
+
+```sage
+Q1.plot()
+```
+
+```sage
+Q1.vertexs()
+```
+
+```sage
+Q1.area()
+```
+
+```sage
+Q1.costats()
+```
+
+```sage
+Q1.baricentre()
+```
+
+```sage
+Q1.trapezi()
+```
+
+```sage
+Q1.rombe()
+```
+
+```sage
+Q1.paralelogram()
+```
+
+```sage
+Q1.paralelogramc()
+```
+
+```sage
+Q1.rectangle()
+```
+
+```sage
+Q1.quadrat()
+```
+
+Algun exemple de comparació
+
+```sage
+punt1 = (0,0)
+punt2 = (3,4)
+punt3 = (5,0)
+punt4 = (6,3)
+Q1 = Quadrilater(punt1,punt2,punt3,punt4)
+Q2 = Quadrilater(punt2,punt3,punt4,punt1)
+```
+
+```sage
+Q1 == Q2
+```
+
+```sage
+punt1 = (1,1)
+punt2 = (5,4)
+punt3 = (1,6)
+punt4 = (4,7)
+Q2 = Quadrilater(punt2,punt3,punt4,punt1)
+```
+
+```sage
+Q1 == Q2
+```
+
+```sage
+Q1.plot()+Q2.plot()
 ```
 -- end hide
-
-
-- Començant pel valor $x_0=0.1$, estudieu el resultat del procés
-  anterior en els casos de $\alpha=2.3$, $2.7$, $3.2$, $3.5$ i
-  $3.8$. Representeu també, en un gràfic diferent, els valors
-  successius de $x_k$ (fent una línia que uneixi els punts
-  $(k,x_k)$).
-
--- begin hide
-```sage
-verh(2.3,0.1,10)
-```
-
-```sage
-verh(2.3,0.2,10)
-```
-
-```sage
-verh(2.3,0.3,10)
-```
-
-```sage
-verh(2.3,0.4,10)
-```
-
-```sage
-verh(2.3,0.7,10)
-```
-
-```sage
-verh(2.3,0.9,10)
-```
-
-Amb els altres valors de alpha només he posat que surt per x0=0.1
-
-```sage
-verh(2.7,0.1,20)
-```
-
-```sage
-verh(3.2,0.1,20)
-```
-
-```sage
-verh(3.5,0.1,20)
-```
-
-```sage
-verh(3.8,0.1,20)
-```
-
--- end hide
-
-
-- Representeu també, en un gràfic diferent,els valors successius de $x_k$ (fent una línia que uneixi els punts $(k, x_k)$).
-
-
--- begin hide
-
-
-He fet una nova funció que només va calculant els $x_k$ i crea una llista amb $(k,x_k)$
-
-```sage
-def verh2(alpha,x0,np):
-    '''Donats un valor alpha de [0,4], un punt inicial de [0,1] i el nombre iteraccions 
-    fa la grafica demanada en el Exercici 5'''
-    if alpha<0 or alpha>4:
-        print("El primer valor "+ str(alpha) + " està fora del interval [0,4]")
-        return
-    if x0<0 or x0>1:
-        print("El segon valor  "+ str(x0) + "  està fora del interval [0,1]")
-        return     
-    if type(np) != Integer and np<1:
-        print("El tercer valor  "+ str(np) + "  no és un enter >0")
-        return
-    f(x)=alpha*(1-x)*x
-    llista=[[0,x0]]
-    for i in [1..np]:
-        x0=f(x0)
-        llista.append([i,x0])                  
-    return(line(llista,color='red'))
-```
-
-```sage
-verh2(3.8,0.1,20)
-```
-
--- end hide
-
-
-- Introduïu un paràmetre a la funció que determini si la sortida
-  és el diagrama de teranyina, o la gràfica d'evolució dels
-  resultats $(k,x_k)$.
-  
-
-
--- begin hide
-
-He posat un paramètre booleà que es diu control que és True (si volem que surti un diagrama teranyina) o False (si volem que surti només la gràfica d'evolució. He creat la llista que ja feia per la funció verh, i amb aquesta llista , si control és True, o bé retorno el plot del diagrama o, si control és False 
-
-```sage
-def verht(alpha,x0,np,control):
-    '''Donats un valor alpha de [0,4], un punt inicial de [0,1] i el nombre iteraccions 
-    fa un diagrama teranyina o bé la gràfica d evolució depenen de si control és True or no'''
-    if alpha<0 or alpha>4:
-        print("El primer valor "+ str(alpha) + " està fora del interval [0,4]")
-        return
-    if x0<0 or x0>1:
-        print("El segon valor  "+ str(x0) + "  està fora del interval [0,1]")
-        return     
-    if type(np) != Integer and np<1:
-        print("El tercer valor  "+ str(np) + "  no és un enter >0")
-        return
-    f(x)=alpha*(1-x)*x
-    llista=[[x0,0],[x0,x0]]
-    for i in range(np):
-        x1=f(x0)
-        llista.append([x0,x1])
-        llista.append([x1,x1])
-        x0=x1
-    if control:
-        funcio=plot(f(x), 0, 1)
-        recta=plot(x,0,1)
-        return(funcio+recta+line(llista,color='red'))
-    llista2 = [[i,llista[2*i+1][0]] for i in range(np)]  #Utilitzo que la llista té els valors [xk,xk] al lloc 2*k+1
-    return(line(llista2))
-```
-
-```sage
-verht(3.8,0.1,20,False)
-```
-
-```sage
-verht(3.8,0.1,20,True)
-```
--- end hide
-
-
-- Elimineu el paràmetre `np` i feu que el procés s'aturi en
-  estabilitzar-se, amb un error menor a $10^{-3}$, en un punt fix
-  o un cicle de longitud $2$ o $4$, mostrant-lo per pantalla.
-
-
--- begin hide
-
-
-La dificultat principal està en com mirar si es compleixen les condicions: per mirar si s'estabilitza sols cal veure si dos valors consecutius són iguals (de fet, si la seva resta en valor absolut és menor de $10^{-3}$). el problema és com veure si hi ha un cicle de longitud 2 o 4; el que faig és utilitzar que tenim els valors anteriors guardats a la llista: sols cal mirar enrere de 2 en 2 a la llista. Tot això ho faig en una condició en el while, que és el punt clau del programa. 
-
-
-Utilitzo una funció molt útil, la funció all, que a una llista de booleans retorna True si i només si tots els valors són True. N'hi ha una altra que és la funció any, que retorna True si algun valor és True. Exemple:
-
-
-```sage
-L=[True,True,False]
-print(all(L))
-print(any(L))
-```
-
-També utilitzo que si posem llista[-n] per un valor de n, ens retorna el enèssim valor començant per l'últim (per tant, llista[-1] és l'últim valor de la llista) 
-
-
-Finalment, noteu que no podem demanar el valor -9 d'un llista que no tingui com a mínim 9 elements, per això hi ha un if en la creació de la llista de booleans, per assegurar que la llista és prou llarga.
-
-```sage
-def verhs(alpha,x0):
-    '''Donats un valor alpha de [0,4], un punt inicial de [0,1] 
-    fa la grafica demanada en el Exercici 5 (d)'''
-    if alpha<0 or alpha>4:
-        print("El primer valor "+ str(alpha) + " està fora del interval [0,4]")
-        return
-    if x0<0 or x0>1:
-        print("El segon valor  "+ str(x0) + "  està fora del interval [0,1]")
-        return     
-    f(x)=alpha*(1-x)*x
-    llista=[[x0,0],[x0,x0]]
-    x1=f(x0)
-    llista.append([x0,x1])
-    llista.append([x1,x1])
-    while(all([abs(llista[-1][0]-llista[-2*i-1][0])>10^(-3) for i in [1,2,4] if len(llista)>2*i+1])):
-        x0,x1=x1,f(x1)
-        llista.append([x0,x1])
-        llista.append([x1,x1])
-    funcio=plot(f(x), 0, 1)
-    recta=plot(x,0,1)
-    return(funcio+recta+line(llista,color='red'))
-```
-
-Podeu experimentar amb la funció si us bé de gust. 
-
-```sage
-verhs(3.07,0.4)
-```
-
-```sage
-verhs(3.9,0.7)
-```
--- end hide
-
-
-Com a exemple, seguidament teniu els diagrames de teranyina per a la
-funció $f(x)=\cos(x)$ que s'ha realitzat anteriorment, i per a la
-funció $f(x)=2.9\,x\,(1-x)$.
-
-![teranyina log](cobweblog.png)
-
-![teranyina cos](cobwebcos.png)

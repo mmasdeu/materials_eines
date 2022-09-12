@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 8: Aritmètica bàsica'
+  title : 'Pràctica 7: Vectors i matrius'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,1142 +14,1476 @@ jupyter:
     name: sagemath
 ---
 
-# Aritmètica Bàsica
 
-## Conjunts
+# Vectors i matrius
 
-El **SageMath** (i el Python en general) pot
-treballar amb conjunts. La diferencia entre un conjunt i una llista o
-una tupla és que en una llista o tupla els elements tenen un ordre i
-poden estar repetits, i en canvi en un conjunt no. De fet el
-**SageMath** té molta més llibertat en fer
-llistes que conjunts, ja que accepta llistes amb elements molt dispars,
-però en canvi els elements dels conjunts han de ser immutables (de fet el que han de ser és *hashables*, que és un concepte tècnic que no discutirem. Per exemple una tupla és *hashable* si els  seus membres ho són.).
+Per tal de fer els càlculs relacionats amb problemes d'àlgebra lineal
+cal utilitzar vectors i matrius. Tot i que, en principi, podríeu pensar
+que n'hi hauria prou considerant que un vector és una llista de
+coeficients i una matriu una llista de vectors (columnes o files segons
+convingui) **SageMath**  defineix unes classes
+especials per a aquests tipus d'objectes per tal d'optimitzar les
+funcions que els tractaran. Començarem, doncs, veient els mecanismes per
+a definir matrius i vectors i algunes de les instruccions que permeten
+manipular aquests objectes.
 
-La instrucció bàsica per a construir un conjunt és `set`, que pot tenir com
-a argument des d'una llista, un tupla o un iterador, sempre que estiguin
-formats per nombres, cadenes (*strings*) o tuples d'aquests elements (o
-altres objectes immutables). També es pot construir un conjunt posant
-entre claus (`{` i `}`) tots els elements del conjunt. Podeu usar
-`a in A` per a demanar si un element `a` és dins d'un conjunt `A`. Però
-(en principi) no podeu demanar el "primer" element d'un conjunt.
+## Vectors
 
+### Construcció de vectors
 
-Per posar un exemple (estrany), anem a construir el conjunt que conté el
-número 2, la variable x, el nombre $\pi$, el nombre real $3.2$ i el
-símbol per l'anell dels enters.
+La instrucció per fabricar un objecte que tingui les característiques
+d'un vector és `vector()`. L'argument d'aquesta funció és una llista o
+una tupla amb les components del vector. Els vectors es tracten, en
+principi, com files, però si cal interpretar les seves components com
+una columna no caldrà fer cap transformació ja que les funcions que
+tracten els vectors ja estan preparades per fer-ho, com veurem més
+endavant.
 
 ```sage
-A={2, x ,3.2, ZZ, pi}
+v=vector([1,-3,0,-4])
+u=vector((3/4,-1,1,0))
+show(v)
+show(u)
+```
+
+Per tal d'accedir a cada una de les components d'un vector, es pot fer
+com si fos una llista (recordeu que la numeració de les posicions
+comença per $0$). Per tant, podem fer
+
+```sage
+print(v[0])
+print(v[2])
+print(v[-1])
+```
+
+Però no funcionarà
+
+```sage
+print(v[4])
+```
+
+De la mateixa manera que es pot conèixer el valor de cada una de les
+components d'un vector també és possible modificar-les d'una en una.
+
+```sage
+show(v)
+v[1] = 7
+show(v)
+```
+
+
+Per tal de conèixer la mida d'un vector es pot utilitzar `degree` que
+actua com una *propietat* del vector.
+
+```sage
+print(u.degree())
+print(len(v))
+```
+
+Noteu que `degree` no es pot usar fent `degree(u)` però sí que podeu fer
+`len(u)`. Noteu també que la sintaxi `u.len()` tampoc és correcta.
+
+Els vectors viuen en espais vectorials. En el nostre cas viuran en el
+espai $\mathbb{Q}^d$, on $d$ és la mida del vector, i enlloc de
+$\mathbb{Q}$ pot ser el cos on estiguin definits. Recordem que el cos
+$\mathbb{Q}$ es posa `QQ` en **SageMath** . Posant
+
+```sage
+u.parent()
+```
+
+respon `Vector space of dimension 4 over Rational Field`, el que ens
+indica el espai vectorial on viu el vector. Ho podem comprovar definint
+l'espai corresponent
+
+```sage
+Q4 = VectorSpace(QQ, 4)
+u in Q4
+```
+
+L'espai `VectorSpace(QQ, 4)` també és pot definir de manera més curta com
+`QQ^4`. Compte, però, que normalment el
+**SageMath**  assigna el vector al espai més petit
+on pot fer-ho. Així el vector `v` que té coefficients enters de fet es
+pensa que viu en "l'espai vectorial $\mathbb{Z}^4$ sobre $\mathbb{Z}$
+de dimensió $4$" (que de fet no és un espai vectorial, sinò un mòdul).
+Això ho podem comprovar posant
+
+```sage
+v.parent()
+```
+
+Tot i així si li preguntem si està a `Q4` diu que si, doncs
+$\mathbb{Z}^4\subset \mathbb{Q}^4$. D'altra banda, també podem forçar
+que estigui a `Q4` posant `v = Q4(v)`, que de fet ens dona una manera
+alternativa de definir vectors: primer definir l'espai `V` on viuen i
+després posar `V(llista)`. ``
+
+```sage
+w=Q4([1,-5,6,2])
+show(w)
+w.parent()
+```
+
+**Molt important:**  Abans de passar a les operacions en les que intervenen vectors, cal fer notar que els  vectors i matrius  es comporten com les llistes; són mutables, i per tant modificables.  De forma que, si generem una variable nova *igualant-la* amb una que ja conté un vector, l'únic que obtindrem seran dos noms diferents per accedir al mateix contingut i qualsevol canvi que es faci a aquest contingut a través d'un d'aquests noms es reflectirà simultàniament a través de l'altre.
+
+Per posar un exemple, suposeu que comencem amb un vector de components $(1,2,3,4)$
+
+```sage
+v=vector([1,2,3,4]); show(v)
+vc=v; show(vc)
+```
+
+<font color=black> Si ara modifiqueu el vector `vc`, com que "apunta" al mateix lloc de memòria, el vector `v` també quedarà modificat. 
+
+```sage
+vc[2]=0; show(vc)
+show(v)
+```
+
+
+Si realment es vol obtenir un vector amb el mateix contingut però que es
+pugui manipular de forma independent caldrà *fabricar* una còpia i
+assignar una variable nova a aquesta còpia. La instrucció que es
+necessita és, òbviament, `copy`:
+
+```sage
+vc=copy(v)
+show(vc);show(v)
+vc[2]=-1
+show(vc);show(v)
+v[0]=-2
+show(vc);show(v)
+```
+
+Comproveu amb exemples que aquest comportament no succeeix amb variables que contenen constants o expressions simbòliques però que també passa el mateix quan es tracta de llistes.
+
+
+### Suma de vectors, producte de vectors per escalars i producte escalar de vectors
+
+Les operacions bàsiques amb vectors (suma de vectors i multiplicació
+d'un vector per un escalar) es realitzen directament utilitzant els
+operadors `+` o `*`. Cal tenir en compte que l'operació de multiplicació
+entre vectors de la mateixa mida també està definida i calcula el seu
+producte escalar (tot i que la funció `dot_product` també calcula el
+producte escalar de vectors).
+
+```sage
+3*u
+```
+
+```sage
+v/2
+```
+
+```sage
+0.5*v
+```
+
+```sage
+u+v
+```
+
+```sage
+u*v
+```
+
+```sage
+u.dot_product(v)
+```
+
+Naturalment, es produirà un error si s'intenta realitzar una operació no
+permesa.
+
+```sage
+u+5
+```
+
+```sage
+ u+vector([1,2])
+```
+
+```sage
+ u*vector([1,2])
+```
+
+Ara bé, tingueu en compte que `0` s'interpreta com el vector zero i sí
+permet operar amb ell
+
+```sage
+print(u+0)
+print(u-u==0)
+```
+
+Si multipliquem un vector sobre el racionals per un nombre que no sigui
+(explícitament) racional, el vector canvia de lloc on viu. Al posar ``
+
+```sage
+(0.5*v).parent()
+```
+
+ens diu que viu al espai $\mathbb{RR}^4$ (de fet al espai $RR^4$, on
+$RR$ és el cos dels reals amb precisió simple, de 53 bits de precisió).
+
+Noteu que, en particular, el comportament de l'operador `+` és diferent
+si la suma es realitza entre vectors o llistes: quan la suma és de
+vectors el resultat té com a components les sumes de les components
+corresponents de cada un dels factors, mentre que la suma de dos
+objectes de tipus llista consisteix en la concatenació dels elements
+respectius (aquí es veu un dels motius que justifiquen crear una classe
+d'objectes especial per als vectors).
+
+```sage
+print(vector([1,2,3])+vector([-2,-1,0]))
+print([1,2,3]+[-2,-1,0])
+```
+
+## Matrius
+
+### Creació de matrius
+
+La funció `matrix` és la que permet crear objectes de tipus matricial.
+En la versió més curta utilitza com argument una llista amb els
+continguts de les files (els elements de la llista són llistes de la
+mateixa longitud amb els elements de cada fila) i genera l'objecte de
+tipus matricial corresponent.
+
+```sage
+A=matrix([[1,2],[3,4],[5,6],[7,8]]) 
 show(A)
-ZZ in A
-```
-```sage
-A[0] # Us hauria de donar un error.
 ```
 
-Fixeu-vos que `ZZ` és membre del conjunt (però no és un subconjunt seu).
-Si al crear un conjunt posem elements repetits només sortiran una
-vegada.
+També es pot generar un matriu a partir d'una llista de vectors o de
+tuples de la mateixa longitud (que seran les files de la matriu
+resultant).
 
 ```sage
-X = {1,2,5,5,6,1}
-show(X)
+u=vector([1,2,3]);v=vector([3,4,5])
+M=matrix([u,v])
+show(M)
 ```
 
-Els conjunts es poden fer les operacions habituals, moltes d'elles com a
-mètode (o sigui, amb el format `A.metode(B)`). Per exemple, unió és
-`union`, intersecció és `intersection`, la diferencia és `difference`,
-etc. També podeu demanar amb una funció el nombre d'elements (amb
-`len`), i afeguir o treure un element donat (amb `remove` dona error si no
-hi és, amb `discard` no fa res si no hi és). Finalment, per agafar un
-element d'un conjunt ("a l'atzar") podeu usar `pop()`, però compte perquè això el treu del conjunt.
+Alternativament, es pot especificar el nombre de files i columnes i
+donar les dades com una llista individual (ordenant, és clar, per files)
 
 ```sage
-X.intersection(A)
-```
-```sage
-X.union(A)
-```
-```sage
-X.difference(A)
-```
-```sage
-len(X)
-```
-```sage
-X.add(3)
-show(X)
-```
-```sage
-X.remove(3)
-show(X)
-```
-```sage
-X.discard(3)
-show(X)
-```
-```sage
-X.pop()
-```
-```sage
-show(X)
+M0=matrix(2,4,[1,2,3,4,5,6,7,8]); show(M0)
+M10=matrix(10,10,range(100)); show(M10)
 ```
 
-
-A l'hora de crear conjunts, podeu usar també la comprehensió, tal com
-varem fer en les llistes. Per exemple, podem trobar el conjunt dels
-residus mòdul 17 dels quadrats
+Si mireu la informació que proporciona la instrucció `matrix?` encara
+descobrireu més variants per generar matrius amb aquesta instrucció.
 
 ```sage
-{ a^2 % 17 for a in srange(17) }
+matrix?
 ```
 
-
-El **SageMath** també té una altra construcció de conjunt,
-`Set` (amb majúscula!) que permet treballar amb conjunts infinits, i amb
-conjunts que contenen altres conjunts o llistes. Podem fer el conjunt de
-tots els enters `ZZ`, els racionals `QQ`, els nombres primers
-`Primes()`, etc.
+D'altra banda, hi ha funcions que construeixen matrius especials, com
+per exemple, la matriu identitat de la mida que es desitgi
 
 ```sage
-Z = Set(ZZ)
-show(Z)
-```
-```sage
-2 in Z
-```
-```sage
-pi in Z
+show(identity_matrix(4))
 ```
 
-Compte però que treballant amb conjunts infinits podeu provocar
-fàcilment que us quedeu sense memòria.
-
-## Diccionaris
-
-Una construcció molt més general que la de conjunt i la de llista és la
-de diccionari: un diccionari és com un conjunt de claus (*keys*, que
-han de ser *hashables*) i a cada clau el seu valor. Podríem pensar que una
-llista de llargada $n$ és com un diccionari on les claus són els nombres
-de 0 a $n-1$, i que un conjunt és un diccionari on no mirem els valors
-de les claus.
-
-
-Una manera d'inicialitzar un diccionari és fent servir claus (`{` i `}`), i posant els parells *key* : *value* separats per comes. Per exemple, el següent diccionari
+Una matriu diagonal amb uns coeficients donats
 
 ```sage
-prova = { 1 : 'a' , 'x' : [1, 2], (4,5) : { 1, 2 } }
+show(diagonal_matrix([1,-1,2,3]))
 ```
 
-
-assigna al número $1$ la lletra $a$, a la lletra $x$ la llista $[1,2]$ i
-a la tupla $(1,5)$ el conjunt $\{1,2\}$. Per accedir als valors només cal posar
-`prova[1]` i respon `'a'`, i posar `prova['x']` i respon `[1,2]`, etc.
-
-Les *keys* poden ser números, cadenes (strings), tuples de números o
-de cadenes, però no poden ser ni llistes ni altres conjunts. En canvi als
-valors s'hi pot posar qualsevol cosa.
-
-
-Podem modificar el valor d'un diccionari com en el cas de les llistes.
-Per exemple, si posem
+Una matriu zero de mida $4\times 5$:
 
 ```sage
-prova[(4,5)] = {1,2,3}
-print(prova)
+show(zero_matrix(4,5))
 ```
 
-ens imprimirà
-$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\} \}.$$
 
+També podem crear matrius a partir de les files i columnes d'una altra
+(submatriu):
 
-També podem afegir més elements a un diccionari:
+```sage
+Br = M10.matrix_from_rows([1,3,4])
+Bc = M10.matrix_from_columns([0,2])
+show(Br)
+show(Bc)
+Brc = M10.matrix_from_rows_and_columns([0,2],[1,2,4])
+show(Brc)
+```
+
+### Accedint als continguts d'una matriu
+
+Si es vol accedir al valor d'una de les posicions de la matriu n'hi
+haurà prou expressant l'índex corresponent a la fila i la columna (en
+aquest ordre), i tenint en compte que les matrius, com les llistes,
+comencen amb la fila 0 i columna 0.
+
+```sage
+print(A[0,0])
+print(A[3,1])
+```
+
+Tot i que es pot extreure una fila qualsevol d'una matriu indicant un
+sol índex, hi ha funcions específiques per extreure files i columnes
+(noteu però que el resultat és un objecte de tipus vector)
+
+```sage
+show(A[2])
+show(A.row(2))
+show(A.column(1))
+```
+
+Si es necessita saber les mides d'una matriu (si es vol comprovar si és
+quadrada, per exemple) es pot utilitzar `nrows` i `ncols`
 
 
 ```sage
-prova[2] = 'z'
+A.nrows()
 ```
-
-Si volem afegir tots els elements d'un altre diccionari, podem fer servir `update`. Per exemple
-
 
 ```sage
-prova.update({2 : 'b', 7 : 'c'})
-print(prova)
+A.ncols()
 ```
 
-ens imprimirà
-$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\}, 2:'b', 7:'c' \}.$$
-(i observem que ha sobreescrit el valor de $2$ anterior)
-
-
-Si fem un bucle indexat en un diccionari, la variable es mou en la
-llista de claus. D'aquesta manera, podem fer:
+Encara que, com que hi ha una bateria molt extensa de tests associats a
+una matriu, entre els quals hi ha la comprovació del fet que sigui
+quadrada, aquesta comprovació es podria fer directament amb
 
 ```sage
-for k in prova:
-	print(k, prova[k])
+show(A.is_square())
+show(M10.is_square())
 ```
 
-que ens imprimirà cada clau i el seu valor.
-
-## Divisió entera
-
-La majoria de programes de càlcul simbòlic, i en particular
-**SageMath** quan realitzen divisions
-entre nombres enters donen com a resultat el número racional
-corresponent. Aquest comportament és el que resulta més pràctic en la
-majoria de situacions però pels problemes específicament d'enters no
-donen, en molts casos, els resultats que interessen. En primera
-instància, quan es divideixen dos enters positius $a$ i $b$, el que cal
-determinar és el seu quocient $q$ i el residu $r$ de la divisió. És a
-dir, quan dividim $a$ entre $b$ busquem escriure $$a= q\times b+r$$ amb
-$0\le r<|b|$. En alguna de les sessions anteriors ja ha aparegut, de
-passada, l'operador que dona la resta de la divisió entre dos enters
-(que és `%`) i, en particular, es pot comprovar si un nombre enter `a`
-és parell o senar comprovant si el valor de `a % 2` és igual a $0$ o a
-$1$. Però aquesta mena de resultat es pot aplicar en qualsevol situació.
-Per exemple:
-
+També podem canviar les files per les columnes (transposar la matriu)
+amb la instrucció `transpose`
 
 ```sage
-124846 % 4
+show(A.transpose())
+show(transpose(A))
 ```
 
-mostra que $124846$ és un nombre parell que no és múltiple de $4$.
+### Suma de matrius i producte per escalars
 
-
-Contrariament a la definició usual, el càlcul del residu mòdul un enter
-qualsevol segueix el conveni de donar un resultat del mateix signe i
-menor en valor absolut que el denominador com es pot comprovar en els
-exemples següents.
+Com és d'esperar, les matrius es poden multiplicar per escalars i sumar
+entre elles sempre que tinguin la mateixa mida. Les operacions es fan
+component a component.
 
 ```sage
-(-7) % 4
-```
-```sage
-7 % (-4)
-```
-```sage
-(-7) % (-4)
+B1=matrix(3,2,range(6))
+B2=matrix(3,2,[3,3,3,1,1,1])
+B3=B1+5*B2
+show(B3)
 ```
 
-A part de les aplicacions purament aritmètiques, la reducció mòdul un
-enter pot ser molt útil en un exemple com el següent:
 
+### Producte de matrius per vectors
+
+Quan multipliquem una matriu per un vector,
+**SageMath**  interpreta convenientment el vector
+com a fila o columna, segons si es vol fer la multiplicació per la dreta
+o per l'esquerra (sempre que el producte que plantegem tingui sentit).
+
+```sage
+u=vector([1,2,3]);show(u)
+w=vector([-1,1]);show(w)
+A=matrix([[1,1],[-1,2],[2,1]]);show(A)
 ```
+
+```sage
+A*u
+```
+
+```sage
+u*A
+```
+
+```sage
+A*w
+```
+
+### Producte de matrius
+
+Naturalment, l'operador ` * ` realitza el producte de matrius sempre que
+estigui definit.
+
+```sage
+A=matrix([[1,2,3],[4,5,6]])
+B=matrix([[1,2],[3,4],[5,6]])
+show(A,B)
+show(A*B)
+show(B*A)
+```
+
+```sage
+C=matrix([[1,2,3],[4,5,6],[7,8,9]]);show(C)
+show(A*C)
+show(C*A)
+```
+
+### Matriu inversa i altres potències
+
+Les multiplicacions successives d'una matriu quadrada per si mateixa
+(potències) es poden obtenir amb l'operador de potències ordinari
+`^\wedge` i, en particular, la inversa (si existeix) es pot obtenir amb
+l'exponent $-1$.
+
+```sage
+A=matrix([[1,1,0],[0,1,0],[0,0,-1]]);show(A)
+show(A^15)
+show(A^(-1))
+```
+
+```sage
+B=matrix([[1,1,1],[-1,2,1],[0,3,2]]);show(B)
+show(B^3)
+show(B^(-1))
+```
+
+Encara que, si es vol, es pot calcular la inversa d'una matriu
+utilitzant la funció específica `inverse`
+
+```sage
+show(A.inverse())
+```
+
+Fins i tot podem calcular potències simbòlicament!
+
+```sage
+var('n')
+show(A^n)
+```
+
+```sage
+show(B^n)
+```
+
+### Traça i determinant
+
+En les matrius quadrades, la traça i el determinant juguen un paper molt
+important. Per tal de calcular el determinant d'una matriu quadrada es
+pot aplicar `det` o, si no tenim mandra d'escriure més lletres,
+`determinant`. Per calcular la traça, cal usar el mètode de les matrius
+`trace()`.
+
+```sage
+A.det()
+```
+
+```sage
+A.determinant()
+```
+
+```sage
+det(A)
+```
+
+```sage
+A.trace()
+```
+
+
+Si la matriu no és quadrada ens dona un error
+
+```sage
+Mc=matrix(2,3,[1,2,3,4,5,6])
+Mc.det()
+```
+
+```sage
+Mc.trace()
+```
+
+### Rang
+
+La instrucció que calcula el rang de les matrius és `rank`
+
+```sage
+B=matrix([[1,2,3],[2,1,-1],[1,-1,-4],[3,3,2]]);show(B)
+B.rank()
+```
+
+```sage
+rank(B)
+```
+
+Naturalment, quan el problema del càlcul del rang està posat en una
+família de matrius depenent d'un, o més, paràmetres, la funció `rank` no
+és capaç de distingir dins la família quins són els casos especials. Per
+exemple, si es considera la família de matrius depenent del paràmetre
+$k$ donada per
+$$
+A_k=\begin{pmatrix} 
+ 1 & k + 1 & -1 & 0 \\
+-1 & 2 & k & 1 \\
+k + 2 & -1 & -1 & 2 \, k - 1
+\end{pmatrix}
+$$
+el valor de la funció `rank` aplicada a l'expressió genèrica de les matrius de la família donarà $3$.
+
+```sage
 var('k')
-colors = ['red', 'green', 'blue']
-dibuix = plot(1,0,1, color=colors[0], aspect_ratio=1)
-for k in [1..10]:
-    dibuix += plot(x^k,x,0,1, color=colors[k%3],aspect_ratio=1)
-dibuix
+Ak=matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
+Ak.rank()
 ```
 
-on s'obté el gràfic entre $0$ i $1$ de les potències successives de $x$
-dibuixades en tres colors diferents que van canviant de forma
-successiva.
-
-
-Per un altre costat, l'altra part fonamental en una divisió és el
-quocient corresponent. Per tal d'obtenir aquest valor
-**SageMath** disposa d'un operador especial
-dedicat a la *divisió entera* `//`. Podeu veure el seu funcionament en
-els exemples següents
-
+De fet, **SageMath**  treballa en un context
+(utilitza un *cos de coeficients* especial) on la matriu en efecte té
+rang $3$:
 
 ```sage
-24 // 6
-```
-```sage
-(-25) // 3
-```
-```sage
-148 // (-5)
-```
-```sage
-(-24) // (-6)
+Ak.parent()
 ```
 
-
-Noteu que, quan el numerador o el denominador de la divisió és negatiu,
-els valors i els signes dels quocients i dels residus sempre es
-corresponen per tal que el numerador sigui igual al producte del
-quocient pel divisor més el residu.
-
-
-En molts problemes de divisibilitat l'únic que interessa és saber si
-l'enter $a$ divideix $b$ (o si $b$ és múltiple de $a$). En aquests casos
-es disposa de l'opció `divides` que dona com a resultat cert o fals
-segons es verifiqui la condició o no:
+Tot i això, com a mínim en el cas
+$k=0$, la matriu només té rang $2$ (es pot veure clarament que l'última
+fila és la diferència entre les altres dues).
 
 ```sage
-4.divides(24)
+A0 = Ak.subs(k=0)
+show(A0)
 ```
 ```sage
-4.divides(25)
+rank(A0)
 ```
 
+Fet que es pot preveure si es calcula, per exemple, el determinant de la
+submatriu formada per les tres primeres columnes, se'n determinen les
+arrels als racionals i
+
 ```sage
-23445567889.divides(12334455667789900023)
+AA=Ak.matrix_from_columns([0,1,2])
+show(AA)
+d=AA.det().expand()
+show(d)
+sols=d.roots(ring=QQ)
+show(sols)
 ```
 
-Un altre càlcul que apareix sovint és el de determinar tots els divisors
-d'un nombre donat. Per tal d'obtenir aquest resultat la funció que fa
-tota la feina és `divisors` com es pot veure en aquest exemple:
+i queda clar que l'únic valor racional $k$ que anul·la el determinant és
+$k=0$
+mentre que en qualsevol altre cas el rang és el màxim possible ($3$). També podriem haver fet esglaonament (com farem a la propera secció.)
+
+
+## Sistemes d'equacions lineals. Reducció de matrius
+
+Encara que la instrucció `solve` permet plantejar i resoldre sistemes
+d'equacions lineals, hi ha situacions en les que és convenient poder
+conèixer, de forma explícita, el procés de reducció del sistema que
+porta a l'expressió de les solucions.
+
+Com ja deveu saber, la tècnica més pràctica per tal de solucionar un
+sistema d'equacions lineals de la forma $A\cdot X= B$ consisteix a
+transformar la matriu ampliada dels sistema $(A\mid B)$ en la seva forma
+reduïda (Gauss-Jordan), ja que en el procés es manté el conjunt de
+solucions i en aquesta forma reduïda es poden llegir directament les
+solucions (les incògnites corresponents als *pivots* són les *incògnites
+lligades* i les solucions s'obtenen expressant aquestes incògnites en
+funció de les restants, les *incògnites lliures*, que poden prendre
+qualsevol valor).
+
+A continuació podeu veure, amb un parell d'exemples, quines funcions de
+**SageMath**  es poden utilitzar per tal de
+resoldre un sistema seguint aquest procés.
+
+### Exemple 1
+
+Considerem
+$$A= \begin{pmatrix}
+    2 & -4 & 0 & -1 & -5 \\
+0 & 0 & 2 & 1 & 5 \\
+-1 & 2 & 3 & 2 & 10
+    \end{pmatrix},\qquad B= \begin{pmatrix}
+    2 \\
+0 \\
+-1
+\end{pmatrix}$$
+
+Calcularem les solucions del sistema d'equacions
+$A\cdot X=B$ (és dir, determinarem quina forma tenen les columnes
+$X=\begin{pmatrix} x_0\\x_1\\x_2\\x_3\\x_4 \end{pmatrix}$ que compleixen
+l'equació anterior) reduint la matriu ampliada a la seva forma de
+Gauss-Jordan.
+
+
+A l'hora d'introduir les dades noteu que en el procés de reducció de
+Gauss-Jordan pot ser necessari, en algun moment, realitzar divisions, i
+per tant, per fer-ho cal *treballar amb coeficients a un cos*. Tot i
+això, **SageMath**  sap trobar formes reduïdes
+similars a la de Gauss-Jordan treballant per exemple als enters, o
+altres situacions més complexes (polinomis amb coeficients a un
+cos,...). Aquest pocés es fa amb `echelon_form` que no usa divisions a
+no ser que la matriu ja tingui els coeficients adequats (que accepten
+dividirse entre ells). Com que, en el nostre cas, la matriu de
+coeficients només té valors enters, cal especificar que volem pensar-los
+racionals (`QQ` en **SageMath** ) per tal que
+s'apliqui l'esglaonament usant divisions (o, alternativament, utilitzar
+`rref()` (consulteu la documentació per tal de veure les diferències entre
+`echelon_form` i `rref`).
 
 ```sage
-28.divisors()
-```
-```sage
-divisors(28)
-```
-
-Utilitzant aquesta llista és molt fàcil definir una funció molt simple
-que ens digui si un número qualsevol és *perfecte* (igual a la suma dels
-seus divisors diferents d'ell mateix, és clar)
-
-```sage
-def esperfecte(k):
-    sumdiv = sum(d for d in k.divisors())
-	return sumdiv == 2 * k
-```
-
-Sabríeu fer, ara, una llista amb els números perfectes menors que 1000?
-
--- begin hide
-```sage
-[esperfecte(k) for k in [1..1000]]
-```
--- end hide
-
-Per acabar aquest apartat, si en un problema interessen igualment el
-quocient i el residu de la divisió entre dos enters es poden obtenir les
-dues dades amb `quo_rem()` que dona com a resultat un parell `(q,r)`
-agrupats en un sol objecte:
-
-```sage
-567.quo_rem(6)
-```
-```sage
-q, r = 567.quo_rem(6)
-print(f'{q = }, {r = }')
-```
-
-## Màxim comú divisor i mínim comú múltiple
-
-Amb les instruccions de l'apartat anterior (i alguna altra que veurem
-tot seguit) ja n'hi ha prou per definir una funció que calculi, el màxim
-comú divisor d'un parell d'enters qualsevol. Per exemple, per a trobar
-el màxim comú divisor de $a$ i $b$ es poden considerar les llistes de
-divisors com *conjunts* i, finalment, localitzar dins aquest conjunt el
-valor màxim com es pot veure en l'exemple següent
-
-```sage
-a = 39854; b = 765756
-
-D1 = set(a.divisors())
-D2 = set(b.divisors())
-
-D = D1.intersection(D2) # Els divisors comuns de a i b
-
-max(D) # El màxim comú divisor de a i b
-```
-
-Com ja sabia Euclides fa molts anys, aquesta no és la forma més eficient
-d'obtenir aquest resultat i una funció com la següent, que aplica l'algoritme d'Euclides, seria molt millor:
-
-```sage
-def euclides(a,b):
-	m = max(abs(a),abs(b))
-	n = min(abs(a),abs(b))
-	r = m % n
-	while r > 0:
-		m = n
-		n = r
-		r = m % n
-	return n
+A=matrix(QQ,3,5,[2,-4,0,-1,-5,0,0,2,1,5,-1,2,3,2,10]);show(A)
+B=vector([2,0,-1]);show(B)
+Am=A.augment(B,subdivide=True);show(Am)
 ```
 
+Encara que $B$ sigui un vector, i per tant és una *fila*, la funció
+`augment`, que fabrica la matriu augmentada del sistema, *sap decidir*
+que l'ha de posar com una columna.
 
-Aquesta funció es pot fer encara més curta utilitzant com hem vist que
-es pot calcular el residu amb nombres negatius i que no cal prendre el
-divisor més petit que el denominador:
+Calculem ara la forma esglaonada del sistema.
 
 ```sage
-def euclides(a,b):
-    while b:
-        a, b = b, a % b
-    return a.abs()
+Ar = Am.echelon_form()
+show(Ar)
 ```
 
-En qualsevol cas, **SageMath** ja porta aquests
-càlculs incorporats a `gcd()` que calcula el màxim comú divisor de dos
-enters o d'una llista tan llarga com es vulgui d'enters. Podeu
-comprovar, per exemple, com la funció `euclides` dona el mateix resultat
-que `gcd`
+A partir d'aquesta expressió tindrem els pivots (incògnites lligades) i
+les incògnites lliures de forma immediata (o a partir del resultat de
+les funcions `pivots` i `nonpivots`) i les equacions (files) en les que
+una de les incògnites lligades s'obté com a funció de les lliures i del
+terme independent corresponent (funció `pivot_rows`).
 
 ```sage
-gcd(748*2345,748*4686)
-```
-```sage
-euclides(748*2345,748*4686)
-```
-
-
-Tingueu en compte que si es vol fer el màxim comú divisors de tres o més
-enters caldrà incloure les dades en una *llista* ja que `gcd(a,b,c)` no
-funcionarà.
-
-```sage
-gcd([748*3456,748*4520,748*4208])
+pvts = Ar.pivots();show(pvts)
+npvts = Ar.nonpivots();show(npvts)
+flspv = Ar.pivot_rows();show(flspv)
 ```
 
-Per als càlculs del mínim comú múltiple, s'aplica la funció `lcm()` a un
-parell d'enters o a una llista de tres o més. Com en el cas del màxim
-comú divisor, no funcionarà si s'introdueixen tres o més arguments sense
-agrupar en una llista.
+I amb aquesta informació us hauria de quedar clar que les solucions són
+de la forma
+$$\begin{aligned}
+x_0 &= 2\, x_1+\dfrac12\, x_3+\dfrac52\, x_4+1
+\\
+x_2 &= -\dfrac12\, x_3-\dfrac52\, x_4 
+\end{aligned}
+$$
+amb els valors de $x_1$, $x_3$ i $x_4$ arbitraris.
+
+Segurament sabeu que, en aquest context, cada cop que es realitza un
+procés de reducció sobre una matriu `Am` i s'arriba a un cert resultat
+`Ar`, hi ha una mariu invertible `P` que codifica *totes* les operacions
+que s'han fet en els sentit que es té la igualtat
+$$\mathtt{P\cdot Am=Ar}$$ Si es vol saber quina és aquesta matriu `P`
+només cal utilitzar `extended_echelon_form()` i extreure del resultat
+que dona les parts corresponents.
 
 ```sage
-lcm(24,38)
-```
-```sage
-lcm([24,38,18])
-```
-
-
-
-Hi ha problemes en els que no n'hi ha prou amb la informació del màxim
-comú divisor i es volen conèixer els coeficients d'una *identitat de
-Bézout* per a un parell d'enters (recordeu que una identitat de Bézout
-per al parell $a$, $b$ consisteix a tenir una igualtat del tipus
-$$\text{mcd}(a,b) = \alpha\times a +\beta \times b\,,$$ on $\alpha$ i
-$\beta$ són les coeficients que s'han de determinar i sempre
-existeixen). Per tal d'obtenir aquest resultat es pot utilitzar la
-instrucció `xgcd()` que dona un resultat format per tres elements que
-són, respectivament, el màxim comú divisor, $\alpha$ i $\beta$. Per
-exemple:
-
-```sage
-a=39854; b=765756; show(gcd(a,b))
-```
-```sage
-g, alpha, beta = xgcd(a,b)
-show(g)
-show(f'{alpha * a + beta * b = }')
+GJP = Am.extended_echelon_form(subdivide=True); show(GJP)
+GJ = GJP.matrix_from_columns([0,1,2,3,4,5])
+P = GJP.matrix_from_columns([6,7,8])
+show(GJ)
+show(P)
 ```
 
-Ara bé, si el que volem és obtenir identitats de Bézout per a més de dos
-elements, caldrà fer-ho manualment. Per exemple, si volem calcular una
-identitat de Bézout pels enters $a=72776$, $b=9944$ i $c=86823$:
+Podeu comprovar, fent la multiplicació, com el producte de `P` per la
+matriu original `Am` dona la forma reduïda `Ar`.
 
-Primer notem que $\text{mcd}(a,b,c)=\text{mcd}(\text{mcd}(a,b),c)$:
+### Esgalonament de matrius amb paràmetres
+
+Que passa si fem la forma esglaonada per una matriu amb paràmetres?
+Veiem-ho. Si reintroduïm la matriu $Ak$ anterior
 
 ```sage
-a=72776; b=9944; c=86823
-show(gcd([a,b,c]))
-show(gcd(gcd(a,b),c))
+var('k')
+Ak=matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
+AkE=Ak.echelon_form()
+show(AkE)
 ```
 
-
-Fem una identitat de Bézout per $a$ i $b$, i emmagatzemem els
-coeficients que obtenim:
-
-```sage
-d0, alpha0, beta0 = xgcd(a,b)
-```
-
-De forma que $d_{0}= \alpha_{0} \times a + \beta_{0} \times b$. Ara fem
-una identitat per $d_0$ i $c$:
+obtenim un matriu horrorosa, que no és fàcil de simplificar (no funciona
+automàticament). Podem fer
 
 ```sage
-d1, alpha1, beta1 = xgcd(d0, c)
-```
-
-I com que $d_{1} = \alpha_{1} \times d_{0} + \beta_{1} \times c$,
-obtenim el resultat que volem substituint $d_0$:
-
-```sage
-alpha = alpha1*alpha0
-beta = alpha1*beta0
-gamma = beta1
-
-print(f'{gcd([a,b,c])} = {alpha} * {a} + {beta} * {b} + {gamma} * {c}')
-```
-
-## Sistemes de congruències
-
-Un problema que apareix sovint quan es tracta de resoldre situacions en
-les que s'han de fer reparticions és el de resoldre sistemes de
-congruències del tipus $$\begin{gathered}
-x \equiv a\ (\text{mod }\alpha)\\
-x \equiv b\ (\text{mod }\beta)\\
-\vdots\end{gathered}$$ Segurament ja sabeu que totes les solucions d'un
-d'aquests problemes (si és que n'hi ha alguna) difereixen entre si per
-múltiples del mínim comú múltiple $m$ del mòduls $\alpha$, $\beta$,
-$\dots$ i, per tant que es pot dir que són de la forma
-$s_{0}\ (\text{mod }m)$, on $s_{0}$ és una solució particular qualsevol.
-
-La instrucció de **SageMath** que dona les
-solucions d'aquests problemes és `crt()` (**c**hinese **r**emainder
-**t**heorem) i, per exemple, per a solucionar el problema
-$$\begin{gathered}
-x \equiv 2\ (\text{mod }6)\\
-x \equiv 4\ (\text{mod }8)\\\end{gathered}$$ n'hi haurà prou amb
-
-```sage
-s = crt([2,4],[6,8])
-
-print(f'Solucio = {s}')
-print(f'{s % 6 = }')
-print(f'{s % 8 = }')
-```
-
-per tal de conèixer una solució particular, i calcular el mínim comú
-múltiple per tal de saber com construir totes les altres
-
-```sage
-m = lcm(6,8)
-print(f'Solucions = {s} mod {m}')
-```
-
-La llista de congruències pot ser tan llarga com es vulgui. Per exemple,
-amb quatre condicions,
-
-```sage
-crt([2,4,8,18],[6,8,20,50])
-```
-
-Quan el problema no té solució la funció `crt()` reacciona amb un
-missatge d'error on podreu detectar quina condició necessària per a la
-solució està fallant.
-
-```sage
-crt([3,6],[6,8])
-```
-
-
-## Equacions diofàntiques
-
-En general, la instrucció `solve()` calcularà només les solucions
-enteres d'una equació sempre que fem la restricció corresponent a les
-variables i l'equació que es plantegi no sigui *massa difícil*. Això
-vol dir que es poden plantejar equacions lineals o polinòmiques
-quadràtiques en les que intervinguin totes les variables que es
-vulgui (les equacions diofàntiques de grau 3 donen feina a molts matemàtics. Sabeu la història de l'últim teorema de Fermat i de la solució d'Andrew Wiles?).
-
-
-Per posar alguns exemples, noteu com es poden obtenir totes les *ternes
-pitagòriques* (quadrats que sumats donen quadrats) resolent amb
-`solve()` l'equació $x^{2}+y^{2}=z^{2}$
-
-```sage
-reset() # Per si de cas
-var('y z')
-assume(x,'integer')
-assume(y,'integer')
-assume(z,'integer')
-
-tp = solve(x^2 + y^2 == z^2,(x,y,z))
-show(tp)
-```
-
-I si volem una llista de valors concrets
-```sage
-ftp(p,q) = tp
-for r in [1..10]:
-    for s in [1..r-1]:
-	    print(ftp(r,s))
-```
-
-Noteu que la forma com apareixen les solucions és diferent a la que
-apareix en altres situacions, això és per què, en realitat, la
-instrucció `solve()` *demana* a una instrucció específica
-(`solve_diophantine()`) les solucions. De fet, es pot fer servir
-directament aquesta instrucció, sense posar restriccions a les
-variables, per tal d'obtenir el mateix resultat.
-
-No cal que proveu de resoldre coses com $y^{2}=x^3+1$ (que, com a mínim,
-és clar que es pot solucionar amb $x=-1, y=0$ i $x=2,y=3$, i es pot demostrar que aquestes són totes les solucions).
-
-```sage
-solve(x^3+1 == y^2,(x,y)) # Dona un error
-```
-
-## Els anells $\mathbb{Z}/n\mathbb{Z}$
-
-Recordeu que hi ha càlculs en els que cal especificar amb quin tipus
-d'elements s'està treballant, sent `ZZ` els enters, `QQ` els racionals,
-`RR` els reals, etc., de forma que els resultats de les operacions
-s'adapten al context corresponent. Si es vol treballar directament en
-l'aritmètica *mòdul $n$* es pot fer una cosa equivalent a través de la
-instrucció `Zmod()`. Per exemple, podem assignar com valor a la variable
-`Z26` (o qualsevol altre nom que ens agradi) el de l'anell
-$\mathbb{Z}/26\mathbb{Z}$:
-
-```sage
-Z26 = Zmod(26) # És equivalent a Integer(26)
-Z26
-```
-
-Ara ja hi ha funcions que permeten veure algunes propietats de
-$\mathbb{Z}/26\mathbb{Z}$ com per exemple
-
-```sage
-Z26.cardinality()
+show(AkE.full_simplify())
 ```
 
 ```sage
-len(Z26)
+show([a.full_simplify() for a in AkE.column(3)])
+```
+
+Però fent així semblaria que només hi ha problemes quan el denominador
+(comú) de les tres entades de la columna 3 és zero. Però de fet sabem
+que quan $k=0$ no té rang 3, i que de fet és el únic cas. El que ha
+passat és que en algun moment **SageMath**  ha
+dividit una fila o una columna per $k$.
+
+El que podem fer és treballar directament en l'anell de polinomis en una
+variable. Aleshores **SageMath**  no dividirà per
+cap polinomi de grau $>0$, ja que aquests no tenen inversos als
+polinomis. Si posem
+
+```sage
+R.<k> = QQ['k']  # També es pot escriure com PolynomialRing(QQ)
+Ak = matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
+AkE = Ak.echelon_form()
+show(AkE)
+```
+
+Ara és evident que només quan els dos polinomis de la darrera fila són
+zero el rank és 2, i això només passa si $k=0$. Per exemple podeu
+calcular el màxim comú divisor dels dos polinomis (ja que un zero comú
+serà un zero del mcm), i surt $k$.
+
+### Reducció pas a pas a mà d'una matriu (Opcional)
+
+### Exemple 2 (Reducció pas per pas).
+Quan interessa anar controlant
+quines operacions de reducció es fan, el mètode anterior no serveix, ja
+que només dona el resultat final. En aquests casos caldrà anar
+realitzant les operacions de forma manual, cosa que es pot aconseguir
+utilitzant: `.swap_rows()`, `.rescale_row()` i `.add_multiple_of_row()`
+(el que fa cada una d'aquestes funcions resulta obvi a partir del seu
+nom).
+
+Comencem generant una còpia de la matriu ampliada del sistema per tal de
+fer les operacions en aquesta matriu mentre mantenim el valor de la
+matriu original.
+
+```sage
+AA=copy(Am); show(AA);
+```
+
+Intercanviar files $0$ i $2$
+
+```sage
+AA.swap_rows(0,2); show(AA)
+```
+
+Canvi de signe de la primera fila (índex $0$)
+
+```sage
+AA.rescale_row(0,-1);show(AA)
+```
+
+Restar $2$ vegades la tercera fila (índex $2$) a la primera (índex $0$)
+
+```sage
+AA.add_multiple_of_row(2,0,-2);show(AA)
+```
+
+Restar 3 cops la segona fila a la tercera.
+
+```
+AA.add_multiple_of_row(2,1,-3);show(AA)
+```
+
+Dividir per 2 la segona fila.
+
+```sage
+AA.rescale_row(1,1/2);show(AA)
+```
+
+Sumar 3 cops la segona fila a primera.
+
+```sage
+AA.add_multiple_of_row(0,1,3);show(AA)
+```
+
+I, com podeu comprovar, el resultat coincideix exactament (segurament)
+amb el de la funció `echelon_form()`
+
+## Subespais vectorials, suma i intersecció
+
+### Construcció d'espais i subespais vectorials
+
+Recordeu que per a construir un espai vectorial del tipus $V=K^n$ per un
+cos $K$ i un enter $n\ge 1$ tenim la instrucció `VectorSpace(K,n)` o bé
+`K^n`.
+
+```sage
+E=QQ^4
+```
+
+Recordeu que els cossos més usuals estan definits a
+**SageMath**  amb els noms següents:
+
+-   `QQ` els racionals $\mathbb{Q}$.
+
+-   `RR` els nombre reals $\mathbb{R}$.
+
+-   `CC` els nombres complexos $\mathbb{C}$.
+
+**Molt important:** Per **SageMath** els nombres reals són
+expressions decimals amb 53 bits de precissió. El fet de treballar
+de forma aproximada fa que la majoria de propietats d'un cos no
+siguin certes, sinó aproximadament certes. Per això, és probable que
+ens trobem amb gran quantitat de resultats inesperats i per tant, a
+no ser que sigui del tot necessari, evitarem treballar amb `RR` i `CC`.
+
+Per treballar de forma genèrica amb una gran varietat d'expressions
+simbòliques, **SageMath**  usa el que anomea
+l'anell simbòlic (*symbolic ring*), que es denota per `SR`, i que de fet
+és un cos. Tot i que no entrarem en més detalls, també podem treballar
+amb cossos més complicats, com per exemple el cos de funcions racionals
+amb coeficients a $\mathbb{Q}$,
+$\mathbb{Q}(t)=\{\frac{p(t)}{q(t)}\mid q(t)\neq 0\}$:
+
+```sage
+E1=VectorSpace(FractionField(PolynomialRing(QQ,'x')),3)
+E1
+```
+
+Donats uns vectors d'un tal espai vectorial podem construir el subespai
+vectorial generat per aquests vectors es pot utilitzar `subspace`, o bé
+span.
+
+
+```sage
+u=E([5,-2,1,3])
+v=E([1,1,2,-1])
 ```
 
 ```sage
-Z26.addition_table() # La taula de l'operació suma
+w=3*u-6*v
 ```
 
 ```sage
-Z26.multiplication_table() # Endevineu
-```
-
-
-Si escriviu `Z26.` i premeu el *tabulador*, obtindreu totes les
-propietats de l'objecte que es poden demanar.
-
-
-
-Per tal de treballar directament amb elements de
-$\mathbb{Z}/26\mathbb{Z}$, es poden anar creant de la forma següent:
-
-```sage
-a=Z26(765)
-b=Z26(8934)
-show(a)
-show(b)
-```
-```sage
-a^177
-```
-```sage
-b^12
+F=E.subspace([u,v,w])
+show(F)
 ```
 
 ```sage
-a.order() # L'ordre additiu
-```
-```sage
-b.order()
-```
-
-Fixeu-vos que, encara que en el moment de mostrar el seu valor, sembli
-que les variables `a` i `b` continguin nombres enters,
-**SageMath** *sap* que en realitat s'ha
-considerat el valors continguts com elements mòdul $26$:
-
-```sage
-a.parent()
-```
-
-Es pot treballar amb expressions més complexes sempre i quan les
-operacions que es realitzin siguin permeses (per exemple, si es vol
-dividir per un element, aquest ha de ser invertible)
-
-```sage
-c = Z26(13)
-(3*a^5+(b+1)^(-2)+sqrt(c))^12 - 5
-```
-
-Observeu que a l'expressió anterior hi han alguns enters que
-**SageMath** ha *forçat* a considerar-los a
-$\mathbb{Z}/26\mathbb{Z}$. Per exemple, per fer la suma `b+1` que hi
-apareix, **SageMath** converteix l'1 en el que
-seria `Z26(1)`, i el mateix amb el `-5` del final de l'expressió. També
-podeu veure que en l'expressió hi apareix una arrel quadrada. Si bé en
-aquest cas $13^2\equiv 13 \mod(26)$, i per tant té sentit calcular
-$\sqrt{\overline{13}\,}$. De fet això va una mica més enllà. Per
-exemple, no hi ha cap element a $\mathbb{Z}/3\mathbb{Z}$ tal que
-$x^2=\bar 2$. Tot i això, **SageMath** no té cap
-problema en realitzar les comandes següents:
-
-```sage
-Z17 = Zmod(17)
-z = sqrt(Z17(5))
-show(z)
-show(z^2)
-```
-
-Tot i que no correspon a aquesta assignatura, noteu que el fet de que
-**SageMath** no es queixi per fer aquestes
-operacions és anàleg al fet de que a $\mathbb{R}$ tampoc hi ha cap
-element tal que $x^2=-1$, però això no impedeix que en definim un de
-nou, $i =\sqrt{-1}$, i a partir d'aquí arribem a la
-construcció del complexos.
-
-
-```sage
-sqrt(Z17(5)) in Z17
+F
 ```
 
 ```sage
-sqrt(Z17(2)) in Z17
+span([u,v,w])
+```
+
+Observem que al construir subespais també se'ls assigna automàticament
+una base. Aquesta s'obté de forma canònica esglaonant (Gauss-Jordan) el
+conjunt de vectors generadors.
+
+Si no es vol treballar amb aquesta base, es pot especificar la base per
+al subespai amb
+
+```sage
+F1=E.subspace_with_basis([u,v])
 ```
 
 ```sage
-parent(sqrt(Z17(5)))
-```
-
-
-En aquests últims exemples es veu com es poden utilitzar expressions del
-tipus `in Z26`. Això pot servir a l'hora de fer llistes com la que
-apareix en l'exemple següent, on es fabrica la llista dels quadrats a
-$\mathbb{Z}/26\mathbb{Z}$.
-
-```sage
-[z^2 for z in Z26]
-```
-
-A la llista hi apareixen repeticions, però recordeu que ja sabeu com
-eliminar-les:
-
-```sage
-list(set([z^2 for z in Z26]))
-```
-
-Un altre exemple del mateix tipus: suposem que es vol obtenir una llista
-de les potències de l'element `a` en $\mathbb{Z}/26\mathbb{Z}$. Com que
-sabem que en algun moment s'hauran d'anar repetint, podem fer-ho de la
-forma següent:
-
-```sage
-S = [a]
-k = 2
-while a^k not in S:
-    S.append(a^k)
-    k+=1
-S
-```
-
-En aquest cas s'ha arribat a $1$, cosa que ens indica que `a` és
-invertible a `Z26`. Podem calcular el seu ordre multiplicatiu mirant els
-elements de `S`, però, com passa sovint, ja hi ha altres formes de
-fer-ho:
-
-```sage
-len(S)
-```
-```sage
-a.multiplicative_order()
-```
-
-La llista dels elements que són invertibles s'obté, com ja sabeu,
-considerant les classes d'enters coprimers amb $26$. Aquests elements es
-poden calcular a través de les instruccions següents:
-
-```sage
-Z26.list_of_elements_of_multiplicative_group()
-```
-```sage
-Z26.unit_group()
-```
-
-Aquest últim objecte ens permet treballar amb el grup dels elements
-invertibles.
-
-
-Com ja sabeu, si $n=p$ és un nombre primer, aleshores
-$\mathbb{Z}/p\mathbb{Z}$ és un cos, el que vol dir que tots els elements
-diferents de zero tenen invers (pel producte). Però si voleu treballar
-amb $\mathbb{Z}/p\mathbb{Z}$ com a cos, hi ha una instrucció millor que
-posar `Zmod(p)` i es posar `GF(p)` (que ve de Galois Field, que és com a
-molts llocs s'anomenen els cossos finits). Compte, però, que no és el
-mateix posar `Zmod(n)` que posar `GF(n)` si $n$ no és un nombre primer:
-aquesta última ens donarà un error si $n$ no és una potència d'un primer
-(ja que no hi ha cap cos amb aquest nombre d'elements), i ens donarà un
-anell diferent si $n$ és una potència d'un primer (ja que
-$\mathbb{Z}/n\mathbb{Z}$ no és mai un cos si $n$ no és un primer). Per
-exemple `GF(4)` ens donarà un cos amb 4 elements que no és
-$\mathbb{Z}/4\mathbb{Z}$ (això us ho explicaran a segon).
-
-
-## Equacions *mòdul $n$*
-
-
-Encara que per a determinar les solucions d'una equació a
-$\mathbb{Z}/n\mathbb{Z}$ n'hi hauria prou utilitzant la *força bruta* i
-anar provant per a tots els casos possibles (només n'hi ha un nombre
-finit, en algun moment s'acabaran les proves) aquest no és,
-probablement, el mètode més eficient. La funció `solve_mod()` intenta
-ser una mica més eficient i permet resoldre a $\mathbb{Z}/25\mathbb{Z}$
-l'equació $x^{2}-3y^{2}=14$ fent
-
-```sage
-reset() # Abans hem fet alguns assume()
-var('x y')
-solve_mod(x^2-3*y^2 == 14, 25)
-```
-
-O equacions de grau superior com
-
-```sage
-solve_mod(x^3-2*x^2-1 == 0, 11)
+F1
 ```
 
 ```sage
-solve_mod(x^4-2*x^3-6 == 0, 91)
+show(F1.gen(0))
+show(F1.gen(1))
+```
+
+Notem però que els dos espais, tot i tenir assignades bases diferents,
+són el mateix:
+
+```sage
+F==F1
+```
+
+Encara que un espai vectorial tingui una base assignada diferent, sempre
+podem accedir a la que és la base canònica per a
+**SageMath**  amb
+
+```sage
+F1.echelonized_basis()
+```
+
+Vegem ara com construir un espai vectorial a partir d'equacions que
+satisfan les seves coordenades. Com sabeu, aquestes equacions han de
+correspondre a un sistema d'equacions lineals homogeni i, per tant,
+s'han de poder representar matricialment com $A\cdot X = 0$. Per tant,
+el problema inicial serà crear la matriu del sistema. En aquest cas,
+serà important el cos dels coeficients que assignem.
+
+Per exemple, si volem construir el subespai vectorial $W$ dels vectors
+$(x,y,z,t)\in\mathbb{Q}^4$ tals que $x+y=0$ i $3\,x-y-z-t=0$ es pot fer
+el següent:
+
+```sage
+A=matrix(QQ, [[1,1,0,0],[3,-1,-1,-1]])
+W=A.right_kernel()
+W
+```
+
+Ja que tenim una matriu entrada, aprofitem per veure dues instruccions
+que ens permeten obtenir els subespais vectorials generats per les files
+o per les columnes de la matriu:
+
+```sage
+A.row_space()
 ```
 
 ```sage
-solve_mod(x^3+3*x+1 == 0, 10)
+A.column_space()
+```
+
+Com és d'esperar, els valors següents coincideixen:
+
+```sage
+A.row_space().dimension()
+```
+
+```sage
+A.column_space().dimension()
+```
+
+```sage
+A.rank()
+```
+
+### Suma i intersecció d'espais
+
+La suma d'espais vectorials es pot crear de forma natural sumant-los amb
+l'operador `+`, sempre i quan l'expressió tingui sentit, és a dir, que
+siguin subespais vectorials d'un espai vectorial en comú.
+
+```sage
+F+W
+```
+
+```sage
+V=(QQ^3).subspace([(1,1,-1)])
+```
+
+```sage
+F+V    #Ha de donar error
+```
+
+<font color=black> Podem fer sumes de més d'un espai
+
+```sage
+ span([u])+span([v])+span([w])
+```
+
+Podem fer sumes de més d'un espai
+
+```sage
+span(\[u\])+span(\[v\])+span(\[w\])
+```
+
+La intersecció d'espais vectorials es crea com a una propietat d'un dels
+espais, però òbviament l'ordre que s'utilitzi serà irrellevant per al
+resultat.
+
+```sage
+F.intersection(W)
+```
+
+```sage
+W.intersection(F)
+```
+
+Per posar un exemple on apareixen aquestes construccions, calculem la
+dimensió i bases pel subespais de $\mathbb{Q}^4$, $U$, $V$, $U+V$ i
+$U\cap W$, on $$\begin{gathered}
+U=\langle (1,-1,1,-1),(1,2,1,1),(2,-1,2,0),(4,0,4,2)\rangle,\text{ i}\\
+V=\{(x,y,z,t)\in \mathbb{Q}^4 \mid 3\,x-2\,y-z-t=x-y-t=2\,x-y-z=0\}.\end{gathered}$$
+
+Per tal de *crear* els espais $U$ i $V$ n'hi ha prou amb:
+
+```sage
+U=span([(1,-1,1,-1),(1,2,1,1),(2,-1,2,0),(4,0,4,2)],QQ)
+```
+
+```sage
+B=matrix(QQ,[[3,-2,-1,-1],[1,-1,0,-1],[2,-1,-1,0]])
+```
+
+```sage
+V=B.right_kernel()
+```
+
+I ara es poden obtenir les dimensions i bases dels espais $U$, $V$,
+$U+V$ i $U\cap V$ de forma senzilla:
+
+
+```sage
+show(U.basis())
+U.dimension()
+```
+
+```sage
+show(V.basis())
+V.dimension()
+
+```
+
+```sage
+show((U+V).basis())
+(U+V).dimension()
+```
+
+```sage
+show(U.intersection(V).basis())
+V.intersection(V).dimension()
 ```
 
 ## Exercicis
 
-
 ### Exercici 1
 
-Definiu una funció de **SageMath** que si li
-dones una llista finita de nombres et retorna una llista ordenada i
-sense repeticions (Indicació: transformeu-la a un conjunt, i
-retorneu la llista ordenada amb sorted).
+
+Considereu les matrius $$P= \begin{pmatrix}
+\dfrac {4}{7} & \dfrac {1}{7} &  - \dfrac {1}{7} \\[10pt]
+ - \dfrac {5}{21} & \dfrac {4}{21} & \dfrac {1}{7} \\[10pt]
+ - \dfrac {3}{7} & \dfrac {1}{7} &  - \dfrac {1}{7}
+\end{pmatrix} \text {i } {M} =  \begin{pmatrix}
+1 & 0 & -1 \\[5pt]
+2 & 3 & 1 \\[5pt]
+-1 & 3 &  - 3
+\end{pmatrix}$$ i el vector
+${v_{1}} =  (1,\ - \dfrac {11}{3},\ - 2)$ i el vector ${v_{2}} = 
+(1,\ -1,\ 2 - 2\,\sqrt{2})$. Calculeu:
+
 
 -- begin hide
-
-
 ```sage
-def OrdNR(L):
-    return sorted(list(set(L)))
+P=matrix(QQ,[[4/7,1/7,-1/7],[-5/21,4/21,1/7],[-3/7,1/7,-1/7]])
+show(P)
 ```
 
 ```sage
-OrdNR([5,7,3,2.1,1,3,6,,1,1,6,1,3,1,7])
+M=matrix(QQ,[[1,0,-1],[2,3,1],[-1,3,-3]])
+show(M)
 ```
-
-Ho provo amb una llista de 30 nombres a l'atzar entre 1 i 30.
 
 ```sage
-OrdNR([randint(1,30) for _ in range(30)])
+v1=vector([1,-11/3,-2])
+v1
 ```
 
-(He usat `_` com a nom de la variable que s mou en el range, doncs no ens cal per res, només per repetir una cosa 30 cops).
-
-
+```sage
+v2=vector([1,-1,2-2*sqrt(2)])
+v2
+```
 -- end hide
+
+- $M\cdot P$
+
+```sage
+-- begin hide
+M*P
+-- end hide
+```
+
+- $M\cdot v_{1}$, $M\cdot v_{2}$, $P\cdot v_{1}$ i $P\cdot v_{2}$
+
+-- begin hide
+```sage
+M*v1
+```
+
+```sage
+M*v2
+```
+
+```sage
+P*v1
+```
+
+```sage
+P*v2
+```
+-- end hide
+
+- $v_{1}\cdot M$ i $v_{2}\cdot M$
+
+-- begin hide
+```sage
+v1*M
+```
+
+```sage
+v2*M
+```
+-- end hide
+
+- Hi ha algun patró en els valors dels productes de les matrius pels
+  vectors?
 
 ### Exercici 2
 
-Com que les llistes de Python comencen pel zero, el que és a vegades
-un inconvenient, ens aniria molt bé poder usar una 'nova' versió de
-les llistes que comenci per l'1. Expliqueu com podem fer això amb
-diccionaris, i creeu una funció tal que, donada una llista ens
-retorni un diccionari amb la mateixa llista però ara començant per
-1.
+
+Considereu el sistema d'equacions lineals $$\left.
+    \begin{aligned}
+    2\, x_{1}-4\, x_{2}+3\, x_{3}-5\, x_{4}+x_{5} &= 3
+    \\
+    x_{1}-4\, x_{2}-2\, x_{3}-7\, x_{5} &= 2
+    \\
+    5\, x_{1} -3\, x_{3} -2\, x_{4}+2\, x_{5} &= 1
+    \\
+    x_{2}-4\, x_{3} +3\, x_{4}-x_{5} &= 3/2
+    \end{aligned}
+    \right\}$$
+
+Genereu la seva matriu ampliada i realitzeu en aquesta matriu les
+operacions de reducció necessàries per tal de determinar si és
+compatible o no i conèixer les solucions si en té.
 
 -- begin hide
 ```sage
-def nova_llista(L):
-    return { i+1:L[i] for i in range(len(L))}
+A=matrix(QQ,[[1,-4,3,-5,1],[1,-4,-2,0,-7],[5,0,-3,-2,2],[0,2,-4,3,-1]])
+A
+```
 
-nL = nova_llista([1,2,3,4])
-show(nL[3])
+```sage
+B=vector([3,2,1,3/2])
+B
+```
+
+```sage
+Am=A.augment(B,subdivide=True)
+show(Am)
+```
+
+```sage
+AmE=Am.echelon_form()
+AmE
+```
+
+```sage
+show('Es compatible? ', rank(A) == rank(Am))
+```
+
+```sage
+AmE.pivots()
+```
+
+```sage
+show(' Les solucions son ')
+for i in AmE.pivots():
+    show('x',i,' = ', -AmE[i,4],'x4 + (', AmE[i,5],')')
 ```
 -- end hide
-
 
 ### Exercici 3
 
-Es diu que un parell d'enters positius $m$ i $n$ són *amics* si la
-suma dels divisors (propis) de cada un és igual a l'altre. Definiu
-una funció que permeti decidir si una parella $(m,n)$ és una parella
-d'amics o no. Utilitzeu la funció per a localitzar totes les
-parelles d'amics menors que $1000$.
 
+Estudieu, per als diferents valors dels paràmetres $b$ i $t$, el
+sistema d'equacions lineals (amb incògnites $x,\ y,\ z$)
+$$
+\left.
+\begin{aligned}
+    3\, x+2\, y +z &= t
+    \\
+    x-y+2\, z &= 1+t^{2}
+    \\
+    3\, x +7\, y -4\, z &= -1-t-t^{2}-t^{3}
+    \\
+    2\, x +y +b\, z &= t^{3}
+\end{aligned}
+\right\}
+$$
 
 -- begin hide
 
 ```sage
-def Amics(a,b):
-    da=sum(divisors(a))-a
-    db=sum(divisors(b))-b
-    return da==b and db==a
+K.<b,t>=PolynomialRing(QQ)
 ```
 
 ```sage
-Amics(12,15)
+A=matrix(K,[[3,2,1],[1,-1,2],[3,7,-4],[2,1,b]])
+A.echelon_form()
+```
+
+Podem veure que si $b\ne 1$ el rank de $A$ serà 3. Per tant el sistema serà compatible determinat o incompatible.
+
+```sage
+B=vector(K,[t,1+t^2,-1-t-t^2-t^3,t^3])
 ```
 
 ```sage
-Amics(6,6)
+Am=A.augment(B)
 ```
 
 ```sage
-Amics(220, 284)
+AmE=Am.echelon_form()
+show(AmE)
+```
+
+Només es compatible si el terme $AmE[2,3]$ és zero, i, si $b=1$, si a més $AmE[3,3]=0$. Per trobar els zeros substituïm $t$ per una variable $x$.
+
+```sage
+rootsAmE23=AmE[2,3].subs(t=x).roots(ring=RR)
+rootsAmE23
+```
+
+Per tant cal que el valor de la t sigui 1 (si volguéssím solucions complexes també n'hi hauria dues més). 
+
+```sage
+AmE[3,3].subs(t=x).roots(ring=RR)
+```
+
+Veiem que si $b=1$ només té solució si $t=1$ també. 
+
+
+També podriem haver trobat el mcd dels dos polinomis per a trobar les arrels en comú. 
+
+```sage
+AmE[2,3].gcd(AmE[3,3])
+```
+
+Veiem quines solucions hi ha quan t=1
+
+```sage
+AmE.subs(t=1).echelon_form()
+```
+
+Les solucions si $t=1$ i $b\ne 0$ són $x=1$,$y=-1$ i $z=0$.
+
+
+Si $t=1$ i $b=1$, les solucions són $$x=1-z \text{ i } y=-1+z $$
+
+```sage
+AmE11 = AmE.subs(t=1).subs(b=1).echelon_form()
 ```
 
 ```sage
-for a in srange(2,1000):
-    for b in srange(a,1000):
-        if Amics(a,b):
-            print(a,b)
-```
-
-Si voleu que no surtin els nombres perfectes (i per tant que les parelles siguin a < b), canvieu el segon bucle
-
-```sage
-for a in srange(2,1000):
-    for b in srange(a+1,1000):
-        if Amics(a,b):
-            print(a,b)
+var('x,y,z')
+vxs = [x,y,z]
+show(' Les solucions son ')
+for i in AmE11.pivots():
+    show(vxs[i],' = ', -AmE11[i,2]*vxs[2] + AmE11[i,3])
 ```
 
 -- end hide
-
 
 ### Exercici 4
 
-Definiu una funció de **SageMath**, anomenada
-`xxgcd`, que accepti tres enters $a$, $b$, $c$ com a argument, i
-retorni el màxim comú divisor $d=\text{mcd}(a,b,c)$ i els
-coeficients $\lambda$, $\mu$ i $\nu$ d'una identitat de Bézout per a
-aquests números de forma que
-$$d=\lambda\times a+\mu\times b+\nu\times c.$$
-Sabeu modificar
-`xxgcd` per tal que accepti com argument una llista d'enters, de
-longitud arbitrària i doni com a resultat els coeficients d'una
-identitat de Bézout?
 
+Determineu el rang de la matriu següent
+$$\left( \begin{array}{ccccc}
+4-x & 2 & -2+({2}/{3})x & 8-x & -4\\
+13/2 & -1 & x-3 & 10 & -{9}/{2} \\
+4x-4 & 6 & 2-({4}/{3})x & 3x-8 & 4 \\
+6x-4 & 3 & 2-2x & 3x-8 & 4+x
+\end{array}\right)$$
+en funció del paràmetre $x$.
 
 -- begin hide
 
-
 ```sage
-def xxgcd(a,b,c):
-    d,l,m=xgcd(a,b)
-    d,r,n=xgcd(d,c)
-    return d,r*l,r*m,n
+reset()
+K.<x>=PolynomialRing(QQ)
+A=matrix(K,[[4-x , 2 , -2+(2/3)*x , 8-x , -4],[
+13/2 , -1 , x-3 , 10 , -9/2 ],[
+4*x-4 , 6 , 2-(4/3)*x , 3*x-8 , 4 ],[
+6*x-4 , 3 , 2-2*x , 3*x-8 , 4+x]])
+show(A)
 ```
 
 ```sage
-xxgcd(4*7,2*7,3*7)
+AE=A.echelon_form()
+show(AE)
 ```
 
-Modificació per a llistes arbitraries (amb una funció recursiva, que es crida a si mateixa amb un element menys a cada llista).
+Si la última fila és zero, el rang és 3. Si un dels dos coefficients és no zero, el rang és 4. Per tal que els dos coeficients siguin 0, ho ha de ser el seu mcm
 
 ```sage
-def xxgcd(L):
-    if len(L)==1:            # Si la llista només té un element, retornem l'element i una llista que conté el 1
-        return L[0],[1]
-    else:
-        a=L[-1]              # Ultim element de la llista
-        L2=L[:-1]            # La llista menys el ultim element
-        d,S=xxgcd(L2)        # Apliquem la funció a la llista
-        d,l,m=xgcd(d,a)      # Apliquem el xgcd al gcd de la llista L2, anomentat l, i a.
-        SN=[l*s for s in S]  # Multipliquem tots els elements de la llista S pel coefficient que li toca a l
-        SN.append(m)         # Afeguim a SN el coefficient que li toca a a
-        return d,SN
+gcd(AE.row(3))
 ```
 
+Per tant el rank és 3 només quan x=0. 
+
 ```sage
-L=[2*3*5*7,2*3*5*11,2*3*11*7,2*11*5*7]
-print(L)
-d,S=xxgcd(L)
-print(S)
-sum([L[i]*S[i] for i in range(len(L))])==d
+show(AE.subs(x=0).echelon_form())
 ```
 
 -- end hide
-
 
 ### Exercici 5
 
 
-Tenint en compte que `crt()` només dona una solució particular del
-problema de congruències que es plantegi, definiu una extensió
-d'aquesta funció (`xcrt`) que, amb les mateixes dades, doni com a
-resultat una llista de dos elements: el valor de la solució
-particular i el mínim comú múltiple dels mòduls.
+Doneu una forma reduïda (per files) $F$ de la matriu $A =  \left(
+{\begin{array}{rcc}
+1 & 3 & 0 \\
+2 & -1 &  - 5 \\
+0 & 1 & 3
+\end{array}}
+ \right)$ i una matriu invertible $P$ tal que $P\cdot A= F$.
 
+-- begin hide
 
 ```sage
--- begin hide
-def xcrt(C,M):
-    return [crt(C,M), lcm(M)]
-
-xcrt([2,4,8,18],[6,8,20,50]) # exemple
--- end hide
+reset()
+A=matrix(QQ,[[1,3,0],[2,-1,-5],[0,1,3]])
 ```
 
+```sage
+AE=A.extended_echelon_form()
+show(AE)
+```
+
+```sage
+P=AE.matrix_from_columns([3,4,5])
+show(P)
+```
+
+```sage
+P*A
+```
+
+-- end hide
 
 ### Exercici 6
 
 
-Definiu una funció de **SageMath** que
-accepti com a arguments dos enters $a$ i $m$, i doni com resultat la
-llista de potències
-$\{{\overline a}^k \mid k\geq 0 \}\subseteq \mathbb{Z}/m\mathbb{Z}$.
+Feu una funció de sage PAreduccio(A) de manera que, donada una
+matriu A qualsevol, retornin 2 matrius J i P, on J és la forma
+esglaonada reduïda i P invertible tal que $PA=J$. Proveu-ho amb les
+matrius dels problemes (1), (4) i (5).
 
 -- begin hide
-```sage
-def potenciesmodm(a,m):
-    Zm=Zmod(m)
-    ab=Zm(a)
-    if ab.is_unit():
-        S=[ ab^k for k in srange(ab.multiplicative_order()) ]
-        return(S)
-    else:
-        S=[1]
-        k=1
-        while ab^k not in S:
-            S.append(ab^k)
-            k+=1
-        return S
 
-show(potenciesmodm(3,100))
-show(potenciesmodm(1,100))
-show(potenciesmodm(10,100))
-show(potenciesmodm(5,100))
+```sage
+def PAreduccio(A):
+    c=A.ncols()
+    r=A.nrows()
+    AE=A.extended_echelon_form()
+    J=AE.matrix_from_columns([0..c-1])
+    P=AE.matrix_from_columns([c..c+r-1])
+    return J,P
 ```
 
-He distingit entre el cas que és unitat, doncs aleshores la màxima $k$ que surt és l'ordre multiplicatiu, de quan no ho és (però de fet no calia). A l'enunciat diu "llista de les potències", però escriu un conjunt, així que he decidit que doni una llista ordenada. He assumit que a partir que surt una potencia repetida, les següent potències també son repetides, però aixó caldria demostrar-ho!
+Matrius del problema 1
+
+```sage
+A = matrix(QQ,[[4/7,1/7,-1/7],[-5/21,4/21,1/7],[-3/7,1/7,-1/7]])
+```
+
+```sage
+PAreduccio(A)
+```
+
+```sage
+A = matrix(QQ,[[1,0,-1],[2,3,1],[-1,3,-3]])
+```
+
+```sage
+show(PAreduccio(A))
+```
+
+Matriu del problema 4
+
+```sage
+K.<x>=PolynomialRing(QQ)
+A=matrix(K,[[4-x , 2 , -2+(2/3)*x , 8-x , -4],[
+13/2 , -1 , x-3 , 10 , -9/2 ],[
+4*x-4 , 6 , 2-(4/3)*x , 3*x-8 , 4 ],[
+6*x-4 , 3 , 2-2*x , 3*x-8 , 4+x]])
+show(A)
+```
+
+```sage
+I,P=PAreduccio(A)
+show(I,P)
+```
+
+```sage
+A0 = A.subs(x=0)
+show(A0)
+```
+
+```sage
+I,P=PAreduccio(A0)
+show(I, " \t ", P)
+```
+
+Matriu del problema 5
+
+```sage
+A=matrix(QQ,[[1,3,0],[2,-1,-5],[0,1,3]])
+```
+
+```sage
+I,P=PAreduccio(A)
+show(I, " \t ", P)
+```
 -- end hide
+
 ### Exercici 7
 
 
-Feu una llista dels elements invertibles a $\mathbb{Z}/24\mathbb{Z}$
-amb l'ordre multiplicatiu de cadascun d'ells.
+Construïu una funció que, donada una matriu quadrada $A$, doni la
+dimensió i una base de l'espai donat per la intersecció de l'espai
+generat per les files i l'espai generat per les columnes de $A$.
+Proveu-ho amb les matrius quadrades dels problemes (1), (4) i (5).
 
 -- begin hide
+
 ```sage
-R = Zmod(24)
-L1 = [(o, R(o).multiplicative_order()) for o in R.list_of_elements_of_multiplicative_group()] # El més ràpid
-
-L2 = [(o, R(o).multiplicative_order()) for o in Zmod(24).unit_group()]
-
-L3 = [(o, o.multiplicative_order()) for o in Zmod(24) if o.is_unit()] # Més clar, potser
+def InterseccioColumnesFiles(A):
+    if A.is_square():
+        return (A.row_space()).intersection(A.column_space())
 ```
--- end hide
 
+```sage
+A = matrix(QQ,[[4/7,1/7,-1/7],[-5/21,4/21,1/7],[-3/7,1/7,-1/7]])
+InterseccioColumnesFiles(A)
+```
+
+```sage
+A = matrix(QQ,[[1,0,-1],[2,3,1],[-1,3,-3]])
+InterseccioColumnesFiles(A)
+```
+
+```sage
+A=matrix(QQ,[[1,3,0],[2,-1,-5],[0,1,3]])
+InterseccioColumnesFiles(A)
+```
+
+He fet més exemples per a veure altres casos. 
+
+```sage
+A=matrix(QQ,[[1,3,0],[2,-1,-5]])
+InterseccioColumnesFiles(A)
+```
+
+```sage
+A=matrix(QQ,[[1,0,0],[0,0,0],[0,0,0]])
+InterseccioColumnesFiles(A)
+```
+
+```sage
+A=matrix(QQ,[[1,0,0],[0,0,1],[0,0,0]])
+InterseccioColumnesFiles(A)
+```
+
+-- end hide
 
 ### Exercici 8
 
 
-Considereu l'anell $\mathbb{Z}/257\mathbb{Z}$.
-
-- Comproveu que 257 és primer i que, per tant, tots els elements
-  no nuls de $\mathbb{Z}/257\mathbb{Z}$ són invertibles.
-
--- begin hide
-```sage
-print(f'{is_prime(257) = }')
-ZN = Zmod(257)
-print(f'{ZN.is_field() = }')
-```
--- end hide
-
-- Trobeu un element
-  $\bar a\in \mathbb{Z}/257\mathbb{Z}\setminus\{\bar 0\}$ amb
-  ordre multiplicatiu màxim.
+Determineu bases pels subespais de $\mathbb{Q}^5$ següents, les
+seves sumes i les seves interseccions. $$\begin{gathered}
+V_1=\langle (1,1,1,1,1),(-1,0,1,0,-1),(1,2,1,2,1),(0,2,0,2,0)\rangle \\
+V_2=\langle (1,2,3,4,5),(5,4,3,2,1)\rangle\\
+V_3=\{ (x,y,z,t,u)\in \mathbb{Q}^5\mid x+y=z+t=3\,u\}\end{gathered}$$
 
 -- begin hide
 
-Calculem el màxim dels ordres del grup d'unitats (=invertibles) de l'anell $\mathbb{Z}/257\mathbb{Z}$, que com que és un cos, són tots execepte el $0$. Hi ha un teorema que ens diu que, per $\mathbb{Z}/p\mathbb{Z}$ amb $p$ un primer, l'ordre sempre  és un divisor de $p-1=257-1=256$, i un altre teorema (més difícil) que diu que hi ha sempre algun element d'ordre $p-1$. Per tant l'ordre màxim ha de sortir $256$. 
-
 ```sage
-max([a.order() for a in ZN.unit_group()])
+V1=span([(1,1,1,1,1),(-1,0,1,0,-1),(1,2,1,2,1),(0,2,0,2,0)],QQ)
+show(V1.basis())
 ```
 
 ```sage
-for a in ZN:
-    if a != 0 and a.multiplicative_order() == 256:
-        print(f'{a = }')
-        break
-```
-
-Una altra manera
-
-```sage
-next((a for a in ZN if a != 0 and a.multiplicative_order() == 256))
-```
-
-Un buscant-lo a l'atzar:
-
-```sage
-a = ZN(randint(1,256))
-while a.multiplicative_order() != 256:
-    a = ZN(randint(1,256))
-print(a)
-```
-
-O un altre amb el mètode random_element()
-
-```sage
-a = 0
-while a == 0 or a.multiplicative_order() != 256:
-    a =  ZN.random_element()
-print(a)
-```
-
-
--- end hide
-
-### Exercici 9
-
-
-Hi ha molts jocs de màgia que estan basats en propietats de
-divisibilitat. Un d'aquests és la possibilitat de recuperar la data
-de naixement d'algú a partir del resultat de l'operació següent: si
-aquesta data és $d$-$m$ on $d$ representa el dia i $m$ el mes
-calcula $$v= 12\times d + 31\times m$$ Per exemple, al dia 3 de
-febrer li correspondrà el valor $v= 12\times 3+31\times 2=98$.
-
-Definiu una funció que recuperi les dades $(d,m)$ a partir del valor
-$v$ i proveu amb els resultats dels vostres companys.
-
-
--- begin hide
-
-Una funció buscant-lo sistemàticament (no és molt eficient, però no importa).
-
-```sage
-def diames(r):
-    for d in srange(1,32):
-        for m in srange(1,13):
-            if (12*d+31*m)==r:
-                return d,m
+V2=span([(1,2,3,4,5),(5,4,3,2,1)],QQ)
+show(V2.basis())
 ```
 
 ```sage
-diames(12*13+31*11)
-```
-
-Fixeu-vos que hi ha nombres que no poden sortir, i la funció no respondrà res. 
-
-```sage
-diames(12)
-```
-
-Una altra manera molt millor es calcular els inversos de 12 mòdul 31 i de 31 mòdul 12 i observar que el dia es el residu de multiplicar v per el invers de 12 mòdul 31, i el més el residu de multiplicar v per el invers de 31 mòdul 12
-
-```sage
-Zmod(31)(12)^(-1)
+B=matrix(QQ,[[1,1,0,0,-3],[0,0,1,1,-3]])
+V3=B.right_kernel()
+show(V3.basis())
 ```
 
 ```sage
-Zmod(12)(31)^(-1)
+show((V1+V2).basis())
+show((V1+V3).basis())
+show((V2+V3).basis())
 ```
 
 ```sage
-def diames(r):
-    return (13*r%31),(7*r%12)
+show(V1.intersection(V2).basis())
+show(V1.intersection(V3).basis())
+show(V3.intersection(V2).basis())
+
 ```
-
-```sage
-diames(12*13+31*11)
-```
-
-Si ho provem ara amb un nombre que no pot sortir, veure-ho que surt un més o un dia impossible (com 0)
-
-```sage
-diames(31)
-```
-
 -- end hide

@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 6: Càlcul infinitesimal bàsic'
+  title : 'Pràctica 4: Resoldre equacions'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,968 +14,523 @@ jupyter:
     name: sagemath
 ---
 
-# Càlcul infinitesimal bàsic
+# Resoldre equacions amb `solve`
 
-## Límit d'una expressió
 
-Per tal de calcular límits, tant si es tracta d'expressions que depenen
-d'un índex que tendeix a infinit (successions) o d'una variable contínua
-que tendeix a un cert valor (funcions d'una variable)
-**SageMath**  proporciona la funció `limit`. La
-construcció més simple d'una instrucció `limit` serà de la forma
-`limit(expr,x=lmt)`, on `expr` és l'expressió de la qual se'n vol
-obtenir un límit, `x` la variable i `lmt` el punt cap on tendeix aquesta
-variable (pot ser infinit, que es representa per `infinity` o, si voleu
-ser curts, amb `oo`, dues `o` minúscules, amb el signe `+`/`-`
-corresponent si cal). En els exemples següents podeu veure alguns casos
-en els que obtindreu directament el resultat que, segurament, ja us
-espereu:
+## Equacions i inequacions
+
+Si ens inventem una equació una mica complicada, segurament ningú la
+sabrà resoldre. Tampoc el **SageMath** serà capaç
+de fer-ho. Però sí que té guardats molts trucs per trobar l'expressió
+exacta de la solució o solucions de moltes equacions. I quan no és capaç
+de trobar les solucions exactes, pot normalment trobar valors aproximats
+amb molta precisió, si l'ajudem una mica.
+
+Per començar a treballar, cal tenir en compte que per tal de construir
+una equació en **SageMath** s'utilitza
+*l'operador de comparació* `==` . A més, cal que tingueu en compte que
+una equació és un objecte com qualsevol altre tipus d'expressió i pot
+estar guardada en un variable. Per tant, la instrucció
 
 ```sage
-var('k')
-
-limit(k/(k+1),k=infinity)
-
-limit(k*(sqrt(k+1)-sqrt(k-1))/sqrt(k),k=infinity)
-
-limit(k.factorial()/k^k,k=oo)
-
-limit((-1)^k*sqrt(k)*sin(k^k)/(k+1),k=oo)
-
-limit((sqrt(k+1) - sqrt(k) + 1)^sqrt(k),k=oo)
-
-limit((k^3-8*k+7)/(200*k+1024),k=-oo)
-
-limit(e^k,k=oo)
-
-limit(e^k,k=-oo)
+eq1 = x^3-5*x^2+23 == 2*x^2+4*x-8
 ```
 
-I en alguns casos en què la variable no tendeix a infinit:
+guarda en la variable `eq1` l'equació que en notació ordinària
+escriuríem com
+$$
+x^3-5 x^2+23 = 2 x^2+4 x-8.
+$$
+Podeu veure com en la instrucció anterior hi ha dues menes d'igual:
+el `=` que correspon
+a una assignació i el `==` que correspon a l'operació de comparació que
+ens permet construir l'objecte "equació". També podeu veure el que la
+funció `show` aplicada a un objecte de tipus equació mostra a la
+pantalla.
 
 ```sage
-limit(sin(x)/x,x=0)
-
-limit((x-sin(x))/x^3,x=0)
-
-limit((1-cos(x))/x^2),x=0)
-
-limit((x^3 + 3*x^2-x-3)/(x-1),x=1)
-
-limit(e^(-1/x^2)/x^5,x=0)
+show(eq1)
 ```
 
-Probablement haureu notat que, per defecte,
-**SageMath** (ni cap altre programari de càlcul
-simbòlic) no té mecanismes *per veure* en els límits amb la variable
-tendint a infinit si el problema correspon a una variable contínua o a
-un índex enter. És per això que si calculeu una expressió del tipus
+De la mateixa forma, es poden crear inequacions canviant l'operador
+lògic `==` per `<=`, `<`, `>=`, `>`, amb significat evident. La
+notació `!=` serveixen per indicar *no igualtat* (l'antiga notació alternativa `<>` no s'accepta en les versions més recents).
 
 ```sage
-limit(cos(2 * pi * k), k=infinity)
+ineq = abs(x-5) <= abs(x) + 4
+show(ineq)
 ```
 
-pensant que els múltiples de $2\pi$ tenen el cosinus igual a $1$ i,
-per tant, esperant que el resultat sigui aquest, veureu que la resposta
-serà que no existeix tal límit ja que la suposició inicial només és
-vàlida si $k$ és un enter. Per tal de poder tractar aquestes situacions
-cal *fer suposicions* sobre el contingut de les variables o dels
-paràmetres que apareixen en el càlcul. La funció que permet fer això és
-`assume` i en l'exemple anterior es podria utilitzar de la forma
-següent:
+Una igualtat o desigualtat, quan està determinat si és certa o falsa (o
+sigui, quan no hi ha símbols indeterminats), retorna un valor lògic
+`True` o `False`. Per exemple:
 
 ```sage
-var('k')
-assume(k,'integer')
-limit(cos(2 * pi * k),k = oo)
-```
-
-Cada cop que s'executa una instrucció `assume` s'afegeix una restricció
-nova sense oblidar les anteriors. Si es vol conèixer en qualsevol moment
-quines són les restriccions actives es pot utilitzar `assumptions()`
-(que amb una llista de variables com argument dona les restriccions
-corresponents a aquestes variables). Si s'han de modificar les
-*suposicions* que s'han fet, convé *oblidar* les que hi hagi en un
-determinat moment per tal de crear les noves. Si no es fa així, i mentre
-no s'introdueixi una suposició incompatible amb les anteriors, les
-suposicions noves s'afegeixen a les existents. Per tal d'oblidar
-**totes** les restriccions que s'han fet fins un cert moment n'hi ha
-prou amb la instrucció `forget()`, si només es vol *oblidar* algunes de
-les restriccions caldrà especificar-les individualment amb el mateix
-format que s'ha utilitzat en les instruccions `assume`.
-
-Una altra de les opcions de la funció `limit` que és important tenir en
-compte és la dels límits laterals. No és infreqüent tenir un límit que,
-estrictament parlant, no existeix encara que potser algun dels dos
-límits laterals (o tots dos) sí que està definit. Per tal de calcular
-límits per la dreta o per l'esquerra n'hi haurà prou afegint l'opció
-`dir=’+’` o `dir=’-’` (amb el significat usual) a la instrucció `limit`
-corresponent.
-
-Les línies següents mostren una situació on l'ús d'aquests mecanismes
-mostra les diferents situacions que poden aparèixer
-
-```sage
-var('a')
-
-f(x) = exp(a/x)
-
-limit(f(x),x=0)
+show(3 < 5)
 ```
 
 ```sage
-assume(a > 0)
-
-limit(f(x),x=0)
-```
-```sage
-limit(f(x),x=0,dir='+')
-```
-```sage
-limit(f(x),x=0,dir='-')
-```
-```sage
-forget(a > 0)
-assume(a < 0)
-limit(f(x),x=0)
-```
-```sage
-limit(f(x),x=0,dir='+')
-```
-```sage
-limit(f(x),x=0,dir='-')
-forget(a < 0)
+show(7 < 6)
 ```
 
-**Nota:** Teniu en compte que el mecanisme del `assume` no és
-infal·lible. Hi ha moltes situacions en les que resulta molt difícil
-incloure dins els càlculs d'una funció concreta aquestes restriccions.
-
-## Derivades
-
-La funció `diff` permet obtenir la derivada d'una expressió qualsevol
-respecte de la variable que es vulgui. Així, per exemple, es pot fer
+En **SageMath** també podem fer les operacions lògiques `not`, `and` i `or`.
+Fixeu-vos bé en els resultat de les instruccions següents:
 
 ```sage
-diff(x^3-2*x^2+4*x-5,x)
-(x^3-2*x^2+4*x-5).diff(x)
+show(not 7 > 6)
+show(not True)
+show(3 > 0 and 7 <= 10)
 ```
 
-Encara que, en realitat, si l'expressió només conté una variable, no cal
-especificar respecte què es vol derivar ja que
-**SageMath** ja ho dedueix pel seu compte.
+El dos costats d'una equació es poden extreure per separat (sense
+modificar l'objecte inicial) amb les instruccions `lhs` i `rhs`,
+abreviatura de *left-hand side* i *right-hand side*.
 
 ```sage
-diff(x^3-2*x^2+4*x-5)
-
-(x^3-2*x^2+4*x-5).diff()
+show(eq1.lhs())
+show(eq1.rhs())
 ```
 
-També es poden derivar *funcions* i el resultat és la *funció derivada*:
+o sigui que podem construir una equació equivalent a la primera posant
+tots els termes a un costat i deixant zero a l'altre (en un cert sentit,
+és la forma "normalitzada" d'una equació):
 
 ```sage
-f(x)=tan(a*x^2)
-df = f.diff()
-show(df)
+eq2 = eq1.lhs() - eq1.rhs() == 0
+show(eq2)
 ```
 
-(Noteu que, com que **SageMath** *recorda* que la
-variable de la funció `f` és `x` no cal especificar-ho a la instrucció
-que calcula la derivada).
+Fent la gràfica de l'expressió de l'esquerra podem tenir una aproximació
+visual de les solucions, com ja vam veure a la pràctica anterior:
 
-
-
-Si s'han de calcular derivades d'ordre superior no cal encadenar
-instruccions `diff` com seria
 ```sage
-ddf = diff(df)
-show(ddf)
+plot(eq2.lhs())
 ```
 
-Es pot especificar com un argument addicional després de la variable
+## Solucions exactes
+
+La funció `solve()` s'utilitza per (intentar) resoldre equacions.
+Considerem aquesta: $3x^3-4x^2-43x+84=0$:
 
 ```sage
-diff(f(x),x) # Derivada,
-
-diff(f(x),x,x) # Segona derivada,
-
-diff(f(x),x,x,x) # Tercera derivada\...
+eq3 = 3*x^3-4*x^2-43*x+84 == 0
+solucions = solve(eq3,x)
+solucions
+```
+```sage
+show(solucions)
 ```
 
-O més en general,
+Observeu que el `show()` aquí ens amaga el fet que `solve()` retorna una
+*llista d'equacions*. Això ens permet fer fàcilment la comprovació que
+són solució, usant `subs()`:
 
 ```sage
-diff(f(x),x,2) # Segona derivada,
-
-diff(f(x),x,3) # Tercera derivada,
-
-diff(f(x),x,12) # Dotzena derivada.
+eq3.subs(solucions[0])
 ```
 
-La funció `diff` permet combinar derivades d'una funció amb més d'una
-variable. Per exemple, si tenim la funció
-$g(x,y)= y e^{2x^2+x-1}$ podem pensar que $y$ és un
-paràmetre fixat, i calcular la derivada de $g$ fent variar $x$:
+O bé
 
 ```sage
-g(x,y)=y*exp(2*x^2+x-1)
-diff(g(x,y),x)
+bool(eq3.subs(solucions[0]))
 ```
 
-Però si es vol pensar la $x$ com a paràmetre i derivar $g$ com a funció
-que depèn de $y$ n'hi ha prou amb:
+En lloc de provar les solucions una a una, podem aprofitar que estan en
+una llista per comprovar-les totes a la vegada amb la funció `bool()`,
+que retorna un valor *booleà*:
 
 ```sage
-diff(g(x,y),y)
+[eq3.subs(sol) for sol in solucions]
 ```
 
-Ara noteu que la idea de derivada primera o segona es pot combinar entre
-les dues variables.
-
+La funcio `all` ens retorna `True` només si tots els elements són `True`:
 ```sage
-diff(g(x,y),x,x)
-
-diff(g(x,y),y,y)
-
-diff(g(x,y),x,y)
-
-diff(g(x,y),y,x)
+all([bool(eq3.subs(sol)) for sol in solucions])
 ```
 
-El fet que aquestes dues ultimes derivades coincideixin no és casual
-(tot i que, estrictament parlant, tampoc és sempre cert).
-
-## Estudi del gràfic d'una funció
-
-Un dels problemes típics d'una assignatura de càlcul infinitesimal
-elemental és el de determinar totes les característiques possibles del
-comportament d'una funció (asímptotes, creixement, extrems, convexitat,
-punts d'inflexió,...). En primera aproximació, el resultat d'una
-instrucció `plot` i una mica de tanteig ja és suficient per a obtenir
-resultats força satisfactoris però, en realitat, la raó de ser d'un
-exercici d'aquest tipus és el fet que sense fer alguns límits,
-solucionar algunes equacions i calcular unes quantes derivades no serà
-possible obtenir de forma precisa aquest tipus d'informació. Com heu
-vist, **SageMath** (i qualsevol eina de càlcul
-simbòlic d'un cert nivell) proporciona totes les eines necessàries per
-realitzar una tasca d'aquest tipus.
-
-
-Per tal de veure com es van utilitzant els recursos de
-**SageMath** de forma sistemàtica mirem d'obtenir
-les característiques del gràfic de la funció $f$ determinada per la
-fórmula
-$f(x)= \dfrac{x^{3} + 6 x^{2} + 12 x + 8}{x^{2} + 4  x + 3}$.
-
-*Observem primer quin és el domini màxim de definició de la funció*.
-Clarament només tindrem un problema per avaluar la funció si el que es
-troba al denominador és zero. Calculem, doncs, aquests punts i els
-guardem en una llista `disc`:
+També podem substituir les solucions en qualsevol altra expressió. Per
+exemple, anem a veure quins són els valors que pren l'expressió
+$x^{3}-2x^{2}+ 3x-7$ avaluada en les solucions de l'equació
+$3x^{2}-4x+3=0$.
 
 ```sage
-slcns = solve(x^2+4*x+3 == 0, x)
-
-disc=\[x.subs(sol) for sol in slcns\]
-disc
+expr = x^3-2*x^2-3*x+7
+eq4 = 3*x^2-4*x-3==0
+solucions = solve(eq4,x)
+show(solucions)
+show([expr.subs(s).expand() for s in solucions])
 ```
 
-Observeu que l'expressió $x^{2} + 4 x + 3$ que hem hagut d'analitzar
-(corresponent al denominador) l'hem extret *manualment* de l'expressió
-de $f(x)$. Si bé es podria haver utilitzat `f(x).denominator()` per
-calcular aquest denominador, no sempre els punts que busquem vindran
-d'igualar un denominador a zero. Això fa que la tasca de sistematitzar
-el càlcul del domini màxim d'una funció necessiti, en molts casos,
-aquesta intervenció manual.
-
-
-Fixeu-vos que si tenim un polinomi de grau més gran haurem de demanar
-solucions numèriques, com a:
+Sense l'`expand()`:
 ```sage
-solve(x^7-2*x+1==0, x, to_poly_solve=True)
+show([expr.subs(s) for s in solucions])
 ```
 
-on en surten totes les arrels, també les arrels que no són nombres
-reals.
-
-Per evitar això podem dir-li al **SageMath** que
-la variable x només prendrà valors reals posant:
+No podem aplicar la funció `n()` d'aproximació numèrica directament a
+una llista, però sí construir una llista amb les aproximacions
+numèriques de cada element. Fixeu-vos com s'utilitza aquí la
+substitució, i que és coherent amb el que hem vist fins ara.
 
 ```sage
-assume(x,"real")
-
-solve(x^7-2*x+1==0, x, to_poly_solve=True)
+[x.subs(s).n() for s in solucions]
 ```
 
-També li podem demanar les arrels als reals amb doble precisió (surt una
-llista de parelles (arrel, multiplicitat)):
+I el mateix podem fer amb l'avaluació de `expr` en les solucions de
+`eq4`:
 
 ```sage
-(x^7-2*x+1).roots(ring=RDF)
+show([expr.subs(s).n() for s in solucions])
 ```
 
-de la que podem extreure fàcilment la llista de arrels reals.
+Per cert, pensant un moment el que tenen a veure entre sí les funcions
+$x^{3}-2x^{2}+ 3x-7$ i $3x^{2}-4x+3$, què és el que hem calculat?
 
-*Un cop determinat aquest domini podem calcular els límits de la funció
-quan la variable s'aproxima als seus extrems*. Les instruccions
+
+## Solucions múltiples
+
+
+Quan alguna de les solucions d'una equació polinòmica té multiplicitat,
+la funció `solve()` és capaç de descobrir-ho i podem obtenir aquesta
+informació activant l'opció booleana `multiplicities`.
 
 ```sage
-f(x)=(x^3+6*x^2+12*x+8)/(x^2+4*x+3)
-
-show(limit(f(x),x=oo))
-
-show(limit(f(x),x=-oo))
+solve(x^3-11*x^2+7*x+147==0, x)
 ```
 
-mostren que no hi ha asímptotes horitzontals ja que són respectivament
-$+\infty$ i $-\infty$. No obstant, com que els límits
-
 ```sage
-m1=limit(f(x)/x,x=oo);show(m1)
-
-m2=limit(f(x)/x,x=-oo);show(m2)
+solve(x^3-11*x^2+7*x+147==0, x, multiplicities=True)
 ```
 
-existeixen i no són zero, hi ha l'opció que existeixin asímptotes
-obliqües amb aquests valors com pendents. Per tal d'obtenir l'equació
-d'aquestes asímptotes s'hauran de calcular els límits
+En aquest cas simple, ho podem veure també amb la factorització del
+polinomi:
 
 ```sage
-n1=limit(f(x)-m1*x,x=oo);show(n1)
-
-n2=limit(f(x)-m2*x,x=-oo);show(n2)
+show(factor(x^3-11*x^2+7*x+147))
 ```
 
-i, aleshores, es podrà assegurar que el gràfic és asimptòtic a la recta
-$y=m_{1} x+n_{1}$ quan $x\to +\infty$ i a la recta $y=m_{2} x+n_{2}$
-quan $x\to -\infty$. Definim, doncs, una funció que permeti guardar
-l'expressió d'aquesta recta asimptòtica amb
+## Solucions complexes
+
+La funció `solve()` també pot donar les solucions complexes d'una
+equació. Per exemple, l'equació $x^3-1=0$ només té una solució real
+(l'arrel cúbica de 1). Però hi ha dues solucions més dins del conjunt
+dels nombres complexos. Per tant, en els complexos, el número 1 té tres
+arrels cúbiques diferents:
 
 ```sage
-asob(x) = m1 * x + n1
+show(solve(x^3-1==0,x))
 ```
 
-Per altra banda, en els punts on no es pot avaluar la funció que s'han
-guardat a la variable `disc` i s'han determinat abans,
+En molts casos les expressions que apareixen poden resultar força
+difícils de llegir i interpretar. Considerem el problema de buscar les
+arrels del polinomi $x^3-34x^2+4$.
 
 ```sage
-for a in disc:
-    print(f"Límit quan x-> {a} per la dreta = {limit(f(x),x=a,dir='+')}")
-    print(f"Límit quan x-> {a} per l'esquerra = {limit(f(x),x=a,dir='-')}")
+poli = x^3-34*x^2+4
+arrels = solve(poli==0, x)
+show(arrels)
 ```
 
-mostra l'existència de les dues asímptotes verticals corresponents i el
-comportament de la funció al seu voltant.
-
-Els zeros de la funció es calcularan usant la instrucció `solve()`, que
-també permet determinar els intervals on el signe de la funció és un o
-l'altre.
+Sembla que ens doni tres solucions amb part real i part imaginària. Però
+en aquest cas es pot comprovar, prenent una aproximació numèrica, que
+les solucions són tres nombres reals (havíem dibuixar la gràfica
+d'aquest polinomi a la pràctica anterior).
 
 ```sage
-solve(f(x)==0,x) # Zeros de f(x)
-solve(f(x)>0,x) # On la funció és positiva
-solve(f(x)<0,x) # On és negativa
+show([x.subs(s).n() for s in arrels])
 ```
 
-*Ara, per estudiar el creixement i decreixement de la funció, és qüestió
-de repetir el mateix estudi per a la funció derivada*:
+Encara es veu part imaginària, però és zero dins dels marges d'error de
+l'aproximació numèrica. Podeu augmentar el nombre de dígits i encara és
+més clar.
+
+I ho podem confirmar encara millor si fem primer una simplificació:
 
 ```sage
-df=diff(f)
-show(df)
-show(df.simplify_full()) # Versió compacta de la derivada
+show([x.subs(s).simplify_full().n() for s in arrels])
 ```
 
+Es poden trobar exactament totes les solucions d'una equació polinomial
+de grau fins a quatre. Però ja per a grau tres la fórmula *general* és horrible:
 
-Observeu que el domini de definició de $f'(x)$ no ha canviat respecte el
-de $f(x)$.
-
-Calculem ara els punts crítics i els intervals de creixement i
-decreixement de la funció:
 ```sage
-solve(df(x)==0,x) # Punts crítics de f(x)
-
-solve(df(x)>0,x) # On la funció creix
-
-solve(df(x)<0,x) # On decreix
+var('a b c d')
+show(solve(a*x^3+b*x^2+c*x+d==0, x))
 ```
 
-Observareu que hi ha tres punts crítics (màxims o mínims locals dels
-valors de la funció) que es poden guardar en una llista:
+## Equacions no polinomials
+
+Hi ha equacions no polinomials que també es poden resoldre exactament.
+Moltes altres no. La funció `solve()` fa el que pot. Considereu
+$5 e^{x/4}=43$. Aquesta equació no és polinòmica, però a mà podem aïllar
+fàcilment la $x$ i expressar l'única solució que té com el logaritme
+d'alguna cosa. També `solve()` la troba:
 
 ```sage
-sptscrt=solve(df(x)==0,x)
-
-pcrt= [ x.subs(ss) for ss in sptscrt ]
-
-show(pcrt)
+show(solve(5*e^(x/4)==43, x) )
 ```
 
-Per altra banda, els intervals on la funció creix o decreix estaran
-limitats per aquests punts crítics i els punts de discontinuïtat. Es pot
-fer una llista d'aquests valors amb:
+Considereu ara trobar les solucions de $\sin x = 1/2$. Sabem de memòria
+que $\pi/6$ és solució,
 
 ```sage
-cridcr = sorted(disc+pcrt)
-
-show(cridcr)
+solve(sin(x)==1/2, x)
 ```
 
-Per últim es pot passar a estudiar la concavitat i la convexitat de la
-funció usant la segona derivada:
+però també sabem que n'hi ha infinites, perquè el sinus és una funció
+periòdica.
+
+Es pot millorar el resultat anterior afegint una opció a la instrucció
+que farà que el resultat sigui una representació de totes les solucions.
 
 ```sage
-ddf=diff(f,2)
-
-show(ddf)
-
-show(ddf.simplify_full())
+solve(sin(x)==1/2, x, to_poly_solve='force')
+show(_)
 ```
 
-De nou, el domini de definició de $f''(x)$ no ha canviat. Però si
-calculem els punts crítics de la derivada ($f''(x)=0$),
+Els $z$ amb subíndex que apareixen s'han d'interpretar com nombres
+enters qualssevol. És a dir: Per a qualssevol nombres enters que hi
+posem en cadascun d'aquests $z$, s'obté una solució de l'equació.
+
+Aquesta opció és útil no només per equacions amb funcions
+trigonomètriques. Per exemple, segur que podeu trobar a mà les dues
+solucions de $\big|1-|1-x|\big|=10$; però `solve()` no pot amb les
+opcions per omissió:
 
 ```sage
-solve(ddf(x)==0,x)
+solve(abs(1-abs(1-x)) == 10, x)
+```
+```sage
+solve(abs(1-abs(1-x)) == 10, x, to_poly_solve='force')
 ```
 
-obtenim un valor real i dos valors estranys que de fet és corresponen a
-nombres complexos; aquests valors no ens interessen! Es poden evitar els
-dos valor complexos de bon principi fent l'assumpció de que $x$ és real:
+Per veure més opcions i exemples d'ús de `solve()`, busqueu a internet
+`sagemath symbolic equations and inequalities`
+
+## Solucions aproximades
+
+Quan la funció `solve()` no pot determinar les solucions d'una equació
+només queda el recurs d'intentar obtenir-ne aproximacions numèriques.
+Per posar un exemple, es pot mirar de resoldre l'equació polinòmica
+$$x^5-2\,x^3-17\,x^2-6\,x+2=0$$ (de grau $5$ i, per tant, amb una
+solució real com a mínim) i veurem com `solve()` no pot determinar cap
+solució a no ser que es permeti a aquesta funció donar aproximacions
+numèriques amb l'opció `to_poly_solve`.
 
 ```sage
-assume(x,'real')
-
-solve(ddf(x)==0,x)
-
-solve(ddf(x)>0,x) # On la funció és convexa
-
-solve(ddf(x)<0,x) # On la funció és concava
+eq4 = x^5-2*x^3-17*x^2-6*x+2 == 0
+solve(eq4, x)
+```
+```sage
+solve(eq4, x, explicit_solutions=True)
+```
+```sage
+solve(eq4, x, to_poly_solve=True)
 ```
 
-I es veu que el punt $x=-2$ és un punt d'inflexió. Totes aquestes propietats es poden visualitzar al gràfic de la funció:
+(I d'aquesta forma apareixen les aproximacions de les solucions
+complexes i tot!)
+
+
+Naturalment, les coses es compliquen encara més si l'equació no és
+polinòmica. Per exemple, la funció `solve()` no coneix cap algorisme que
+li permeti descobrir solucions d'una equació com $$x^3+1=e^x$$ que té,
+com a mínim, la solució òbvia $x=0$.
 
 ```sage
-gf=plot(f,-8,5,ymin=-10,ymax=10,detect_poles='show')
-
-ga=plot(asob,-8,5)
-
-gf+ga
+eq5 = x^3+1==e^x
+solve(eq5, x)
 ```
 
-Els valors extrems de la variable $x$ ($-8$ i $5$) així com es valors
-màxim i mínim de la $y$ s'han triat tenint en compte els resultats que
-han anat sortint al llarg dels càlculs anteriors.
-
-## Integrals
-
-El càlcul integral amb **SageMath** és prou
-intuïtiu. Donada, per exemple, la funció determinada per
-$f(x)=x\sin(x)$, per calcular la integral definida
-$\displaystyle\int_a^b f(x) dx$ es pot fer
-
 ```sage
-
-f(x)=x*sin(x)
-
-var('a b')
-
-integral(f(x),x,a,b)
+solve(eq5, x, to_poly_solve=True)
 ```
 
-Els límits d'integració els hem introduït com una variable però,
-òbviament, els podem canviar per qualsevol valor real o expressió (també
-són vàlids $\pm\infty$).
+Observeu que la segona línia fa alguna cosa, però no resol l'equació. I
+l'algorisme invocat per `to_poly_solve` no ens dona res.
+
+No queda més remei que usar la funció `find_root()`, que calcula una
+aproximació per *mètodes numèrics*. Els mètodes numèrics habitualment
+involucren un procediment d'aproximacions successives, per al qual cal
+donar un valor inicial el més proper possible a la solució, o bé un
+interval on buscar la solució.
+
+Per tal de trobar la solució $x=0$ de `eq5` li donarem un interval que
+contingui el zero:
 
 ```sage
-integral(f(x),x,0,3)
-
-integral(f(x),x,0,3).n()
-
-integral(f(x),x,1.,2.)
-
-integral(e^(-x^2),x,-infinity,infinity)
+eq5.find_root(-0.5, 0.5)
 ```
 
-Recordeu que, si $f(x)$ és una funció positiva, la integral definida
-entre $a$ i $b$ ens dona l'àrea entre la gràfica de la funció i l'eix
-$x$. Això es pot estendre a funcions amb valors negatius entenent l'àrea
-per sota de la funció com a àrea negativa.
+Noteu que el resultat és una molt bona aproximació de zero.
 
-Això es pot il·lustrar usant l'opció `fill()` en una instrucció
-`plot()`. Mireu a l'ajuda les diferents possibilitats que ens ofereix.
+Per trobar les altres solucions, podem fer les gràfiques que ens permetin
+determinar intervals on n'hi hagi només una, i amb la instrucció
+anterior aplicada als diferents intervals, les trobarem totes.
+
+
+
+Un altre exemple en el que trobar totes les solucions dona una mica de
+feina és l'equació $$\frac{x^2}{20}-10 x= 15\cos(x+15)$$ Un gràfic de
+les dues corbes corresponents als dos costats de l'equació, sobre un
+domini més o menys raonable, mostra de forma immediata que cal buscar
+una solució entre $1$ i $2$:
 
 ```sage
-plot(f(x),(x,0,4))+plot(f(x),(x,1,2),fill='axis')
-
-integral(f(x),x,1,2).n()
-
-plot(sin(x)/x,(x,-50,50),fill='axis')
-
-integral(sin(x)/x,x,-50,50).n()
+eq6 = x^2/20-10*x == 15*cos(x+15)
+plot(eq6.lhs(), -10, 10, color='red') + plot(eq6.rhs(), -10, 10)
+eq6.find_root(1, 2)
 ```
 
-
-Si es vol calcular una *primitiva* de $f(x)$, és a dir, una funció
-$F(x)$ tal que $F'(x)=f(x)$, simplement s'eliminen els límits
-d'integració a la sintaxi anterior.
+Però l'aparent recta que surt en el dibuix no és tal. És un tros de
+paràbola, que forçosament ha de tornar a pujar en algun moment. Podem
+veure a mà (o explorant més la gràfica) que tornarà a tocar l'eix
+d'abscisses en $x=200$, i per tant hi haurà una solució de `eq6` no
+gaire lluny d'allà.
 
 ```sage
-
-integral(f(x),x)
-
-h(x)=integral(f(x),x)
-
-diff(h(x),x)
+plot(eq6.lhs(), 150, 250, color='red') + plot(eq6.rhs(), 150, 250)
 ```
 
-Ara bé, noteu que el resultat obtingut no té en compte la constant
-d'integració $C$, de forma que, si el que volem és una primitiva
-concreta, l'haurem d'ajustar. Per exemple, sabem que la funció
-$F(x)=\displaystyle\int_0^x f(t) dt$ és la primitiva de $f(x)$ que
-compleix $F(0)=0$. Observem que això no és cert per a la primitiva que
-calcula **SageMath** en l'exemple anterior, però
-que es pot ajustar fàcilment.
+O, acostant una mica més el zoom,
 
 ```sage
-show(h(0))
-F(x)=h(x)-h(0)
+plot(eq6.lhs(), 195, 205, color='red') + plot(eq6.rhs(), 195, 205)
 ```
 
-Es poden fer els càlculs d'algunes integrals treballant amb paràmetres,
-tot i això, en alguns casos caldrà fer suposicions sobre aquests com ves
-veu a l'exemple següent:
+Queda clar que la solució està només una mica més enllà de $200$.
 
 ```sage
-var('m')
+eq6.find_root(200, 200.5)
+```
 
-integral(x^m,x)
+## Sistemes d'equacions
 
-assume(m!=-1)
+La funció `solve()` també es pot utilitzar per a resoldre sistemes
+d'equacions. És suficient introduir el sistema com una llista
+d'equacions (`[eq1, eq2, ...]`) i explicitar de quines incògnites es vol
+obtenir la solució. En particular, per sistemes d'equacions lineals tot
+funciona molt bé. Aquí tenim un parell d'exemples:
 
-integral(x^m,x)
+```sage
+var('y')
+sistema = [ 3*x + 2*y == 3, x-y == -4 ]
+solve(sistema, x, y)
+```
 
-integral(x^(-1),x)
+```sage
+var('y z')
+sistema2 = [ x+y+z == 1, 3*x + y == 3, x-2*y-z == 0 ]
+solucio2 = solve(sistema2, x, y, z); show(solucio2)
+```
+
+Podeu comprovar que, efectivament, els valors corresponen a la solució
+del sistema fent les substitucions corresponents
+
+```sage
+[eq.subs(solucio2) for eq in sistema2]
+```
+
+Per a sistemes lineals indeterminats, el resultat conté els paràmetres
+lliures que calguin.
+
+```sage
+var('y z')
+sistema3 = [ 2*x - y + 4*z == 1, 3*x + y - z == 2 ]
+solucio3 = solve(sistema3, x, y, z); show(solucio3)
+```
+```sage
+[ eq.subs(solucio3) for eq in sistema3 ]
+```
+
+Si ja sabem que el sistema és indeterminat, es pot fer que els
+paràmetres lliures siguin determinades incògnites forçant a solucionar
+respecte les altres
+
+```sage
+solve(sistema3, x, y)
+```
+
+```sage
+solve(sistema3, x, z)
+```
+
+Si demanem la solució d'un nombre massa petit d'incògnites no s'obté
+res:
+
+```sage
+solve(sistema3, x)
+```
+
+Quan els sistemes no són lineals, el problema és molt més complicat però
+la funció `solve()` farà el que pugui. Per exemple, en la intersecció de
+dues *còniques* (corbes de grau $2$) donarà, normalment, les quatre
+solucions possibles (comptant les complexes).
+
+Es pot obtenir les solucions amb radicals com en l'exemple següent:
+
+```sage
+var('y')
+conica1 = 2*x^2+3*y^2-2*x+y-5
+conica2 = 3*x^2-y^2+2*x+y-1
+show(solve([conica1==0, conica2==0], x, y))
+```
+
+O una solució numèrica com en aquest altre:
+
+```sage
+conica3 = 2*x^2+y^2-2*x+y-1
+conica4 = x^2-y^2+2*x+y-1
+show(solve([conica3==0, conica4==0], x, y))
 ```
 
 ## Exercicis
 
+1.  Calculeu totes les solucions de les equacions:
 
-### Exercici 1
+    (a) $x^3-5x^2-29x+105 =0$
 
+    (b) $x^3 -175+25x-7x^2=0$
 
-Calculeu
-$$
-\lim_{k\to \infty} \left( \frac{\ln(k+1)}{\ln(k)}\right)^{(k \ln(k))}
-$$
+    (c) $\mathrm{e}^{x^2}=1-x^2$
 
--- begin hide
-```sage
-var('k')
-lim((ln(k+1)/ln(k))(k*ln(k)),k=infinity)
-```
--- end hide
+2.  Determineu els valors de $x$ que satisfan:
 
-### Exercici 2
+    (a) $|4x^2-3x+1|>0$
 
+    (b) $3<|2x-5|\leq 6$
 
-Calculeu els límits de la forma:
+3.  Determineu totes les solucions que es troben a l'interval
+    $[-7\pi, 11\pi]$ de les equacions:
 
-1. $\lim\limits_{x\to 3} \exp\left(\dfrac{a x}{x-3}\right)$
+    (a) $2\cos x  + 1=0$
 
-2. $\lim\limits_{x\to 2} \dfrac{x-a}{|x-b|}$
+    (b) $\sin^2(2x) -1 =0$
 
-3. $\lim\limits_{x\to 0} \exp\left( \dfrac{a+\exp(-1/x^{2})}{x^{2}} \right)$
+4.  Partint d'un gràfic significatiu, doneu aproximacions de *totes* les
+    solucions reals de l'equació $$x^5-4x^3+3x^2+7x-1=0$$
 
-Tenint en compte com varia el resultat segons el valor dels
-paràmetres $a$, $b$ i com són els límits laterals en cada cas.
+5.  Feu un gràfic en què apareguin les corbes $y= 10-x^2$ i
+    $y=4\sin(2x) +5$ per als valors de $x$ entre $-5$ i $5$. Després
 
+    (a) Observant el gràfic, feu una estimació del valor de les
+        abscisses ($x$) dels dos punts de tall de les corbes que
+        s'aprecien.
 
--- begin hide
+    (b) Doneu una aproximació numèrica acurada d'aquests dos valors amb
+        `find_root`.
 
+    (c) Doneu els valors de l'ordenada ($y$) corresponents al dos valors
+        anteriors avaluant qualsevol de les dues expressions.
 
-(a) $\lim\limits_{x\to 3} \exp\left(\dfrac{a\, x}{x-3}\right)$
+    (d) Feu la gràfica de les dues corbes anteriors al voltant del punt
+        $(1,9)$, on sembla que estiguin a prop una de l'altra, per tal
+        de confirmar que no hi ha cap altre punt de tall en el domini
+        que s'ha fixat al principi.
 
-```sage
-forget()
-var('a x')
-assume(a>0)
-show('limit quan a>0 per la dreta =\t ',lim(exp((a*x)/(x-3)),x=3,dir='+'))
-```
+6.  Doneu l'expressió general de les solucions del sistema
+    $$\left.\begin{aligned}
+    x+2y +z &= 2\\
+    3x+y &= 1
+    \end{aligned}
+    \right\}$$ i calculeu, com a mínim, tres solucions concretes.
 
-```sage
-show("limit quan a>0 per l'esquerra =\t ",lim(exp((a*x)/(x-3)),x=3,dir='-'))
-```
-
-```sage
-forget(a>0)
-assume(a<0)
-show('limit quan a<0 per la dreta =\t ', lim(exp((a*x)/(x-3)),x=3,dir='+'))
-```
-
-```sage
-show("limit quan a<0 per l'esquerra =\t ",lim(exp((a*x)/(x-3)),x=3,dir='-'))
-```
-
-(b) $\lim\limits_{x\to 2} \dfrac{x-a}{|x-b|}$
-
-```sage
-forget()
-var('a b x')
-show('limit quan b no és 2 =\t ',lim((x-a)/(abs(x-b)),x=2))
-```
-
-```sage
-assume(a>2)
-show('limit quan a> 2 i b és 2 =\t ',lim((x-a)/(abs(x-2)),x=2))
-```
-
-```sage
-forget()
-assume(a<2)
-show('limit quan a<2 i b és 2 = \t ',lim((x-a)/(abs(x-2)),x=2))
-```
-
-(c) $\lim\limits_{x\to 0} \exp\left( \dfrac{a+\exp(-1/x^{2})}{x^{2}} \right)$
-
-```sage
-forget()
-assume(a>0)
-show('limit quan a> 0  = \t',lim(exp((a+exp(-1/x^2))/x^2),x=0))
-```
-
-```sage
-forget()
-assume(a<0)
-show('limit quan a<0  = \t ',lim(exp((a+exp(-1/x^2))/x^2),x=0))
-```
-
-```sage
-forget()
-show('limit quan a és 0  = \t',lim(exp((exp(-1/x^2))/x^2),x=0))
-```
-
--- end hide
-
-### Exercici 3
-
-
-Considereu la funció determinada per $h(x)=\dfrac{20}{x^2+4}$.
-Calculeu la primera i segona derivades $h'(x)$ i $h''(x)$ i
-representeu conjuntament les tres funcions.
-
-Observareu que, el punt on el pendent a la gràfica de $h(x)$ és
-màxim, és en efecte un màxim de $h'(x)$ i a més s'anuł.la $h''(x)$.
-Determineu aquest punt. Sabeu com serà $h'''(x)$ en aquest punt?
-
-
--- begin hide
-
-
-```sage
-reset()
-var('x')
-h(x)=20/(x^2+4)
-```
-
-```sage
-dh=h.diff()
-ddh=dh.diff()
-show(dh)
-show(ddh)
-```
-
-```sage
-gh=plot(h,-5,5,ymin=-5,ymax=6,  legend_label='Funció f')
-gdh=plot(dh,-5,5,ymin=-5,ymax=6,color='red',legend_label='Derivada de f')
-gddh=plot(ddh,-5,5,ymin=-5,ymax=6,color='green', legend_label='Segona derivada de f')
-gh+gdh+gddh
-```
-
-```sage
-S=solve(ddh(x)==0,x)
-S=[x.subs(s) for s in S]
-show("Punts on s'anul·la la segona derivada \t ", S)
-```
-
-```sage
-dddh=ddh.diff()
-pdddh = plot(dddh,-5,5,ymin=-5,ymax=6)
-ptdddh = point([[s,dddh(s)] for s in S],color='red',title='Grafica de la tercera derivada amb els dos punts',size=25)
-pdddh+ptdddh
-```
-
-```sage
-ddddh=dddh.diff()
-show('Valor de la tercera derivada en aquests dos punts = \t', {ddddh(s) for s in S}) 
-```
-
-
--- end hide
-
-### Exercici 4
-
-
-Definiu la *funció* `h` de dues variables corresponent a
-$$h(x,y)= \frac{x e^{xy} \sin(y^{2})}{\ln(x^{2}+y^{2}+2)}$$
-i determineu
-
-1. La *funció* corresponent a la derivada de `h` respecte la
-        variable `x`.
-
-2. La *funció* corresponent a la derivada de `h` respecte la segona
-        variable (`y`).
-
-3. Els valor de la derivada de `h` respecte `x` per a `x=1`,
-        `y=1/2`.
-
-4. La *funció* que s'obté derivant `h` respecte `x` dues vegades.
-
-
--- begin hide
-
-```sage
-h(x,y) = (x*exp(x*y)*sin(y^2))/(ln(x^2+y^2+2))
-show(h)
-```
-
-La funció corresponent a la derivada de $h$ respecte la variable $x$:
-
-```sage
-show(diff(h,x))
-```
-
-La funció corresponent a la derivada de $h$ respecte la segona variable ($y$):
-
-```sage
-show(diff(h,y))
-```
-
-Els valor de la derivada de $h$ respecte $x$ per a $x=1$, $y=1/2$:
-
-```sage
-diff(h,x)(1,1/2)
-```
-
-```sage
-diff(h,x)(1.,1./2)
-```
-
-La funció que s'obté derivant $h$ respecte $x$ dues vegades:
-
-```sage
-show(diff(h,x,x).simplify())
-```
-
--- end hide
-
-
-### Exercici 5
-Creeu una funció de **SageMath** anomenada
-`tangent`, que accepti com a paràmetres una funció $f(x)$, un punt
-$a$ i una distància $h>0$, i doni com a resultat el gràfic de la
-funció $f(x)$ junt amb la seva recta tangent en el punt $(a,f(a))$
-en l'interval $[a-h,a+h]$.
-
--- begin hide
-```sage
-def tangent(f,a,h):
-    f=f.function(x)
-    dfa=diff(f(x),x).subs(x==a)
-    rtan(x)=dfa*(x-a)+f.subs(x==a)
-    gt=plot(rtan,a-h,a+h,color='red')
-    gf=plot(f,a-h,a+h)
-    return gt+gf
-
-show(tangent(x^3,3,1))
-show(tangent(exp(x^-2),5,.5))
-```
--- end hide
-
-### Exerici 6
-
-
-Milloreu la informació que mostra el gràfic de la funció
-$f(x)= \dfrac{x^{3} + 6  x^{2} + 12  x + 8}{x^{2} + 4  x + 3}$
-que surt al text marcant els punts on hi ha extrems relatius i fent
-que les regions de creixement i decreixement tenguin colors
-diferents.
-
--- begin hide
-
-```sage
-f(x)=(x^3+6*x^2+12*x+8)/(x^2+4*x+3)
-slcns=solve(f(x).denominator()==0,x)
-disc=[x.subs(sol) for sol in slcns]
-m1=limit(f(x)/x,x=oo)
-n1=limit(f(x)-m1*x,x=oo)
-asob(x)=m1*x+n1
-df=diff(f)
-sptscrt=solve(df(x)==0,x)
-pcrt=[x.subs(ss) for ss in sptscrt]
-cridcr=sorted(disc+pcrt)
-creixement=solve(df(x)>0,x)
-decreixement=solve(df(x)<0,x)
-```
-
-```sage
-show('els punts crítics (on pot canviar la derivada) són \t', cridcr)
-```
-
-```sage
-show('llocs on la fucnió creix  \t', creixement)
-show('llocs on la fucnió decreix \t', decreixement)
-```
-
-```sage
-show('Observem que la funció decreix del primer punt crític al últim punt crític, que són els extrems relatius')
-extrems = [cridcr[0],cridcr[-1]]
-show('Els extrems relatius són  \t  ', set(extrems))
-```
-
-```sage
-gfce=plot(f,-8,cridcr[0],ymin=-10,ymax=10,detect_poles='show',color='green')
-gfcd=plot(f,cridcr[-1],5,ymin=-10,ymax=10,detect_poles='show',color='green')
-gfd=plot(f,cridcr[0],cridcr[-1],ymin=-10,ymax=10,detect_poles='show',color='blue')
-ga=plot(asob,-8,5,color='grey')
-pcridcr=point([(s,f(s)) for s in extrems],xmin=-8, xmax=5,color='red', marker="s", size=25)
-gfce+gfcd+gfd+ga+pcridcr
-```
-
--- end hide
-
-### Exerici 7
-
-
-Realitzeu l'estudi complet de la representació gràfica de la funció
-$$g(x)= \frac{x^3-2}{x^2-3x+1}$$
-
--- begin hide
-
-```sage
-reset()
-assume(x,'real')
-g(x)=(x^3-2)/(x^2-3*x+1)
-```
-
-```sage
-slcns=solve(g(x).denominator()==0,x)
-disc=[x.subs(sol) for sol in slcns]
-show(disc)
-```
-
-```sage
-show(limit(g(x),x=oo))
-m1=limit(g(x)/x,x=oo)
-show(m1)
-```
-
-```sage
-show(limit(g(x),x=-oo))
-m2=limit(g(x)/x,x=-oo)
-show(m2)
-```
-
-```sage
-n1=limit(g(x)-m1*x,x=oo)
-n2=limit(g(x)-m1*x,x=-oo)
-show(n1)
-show(n2)
-asob(x)=m1*x+n1
-```
-
-```sage
-dg=diff(g)
-sptscrt=solve(dg(x)==0,x)
-pcrt=[x.subs(ss) for ss in sptscrt]
-show(pcrt)
-cridcr=sorted(disc+pcrt)
-cridcr=[c.n() for c in cridcr]
-show(cridcr)
-```
-
-```sage
-show([c.n() for c in cridcr])
-```
-
-```sage
-solve(dg(x)>0,x) # On la funció creix
-```
-
-```sage
-solve(dg(x)<0,x) # On la funció decreix
-```
-
-```sage
-ddg=diff(g,2)
-show(ddg)
-show(ddg.simplify_full())
-```
-
-```sage
-solve(ddg(x)==0,x)
-```
-
-```sage
-solve(ddg(x)>0,x) # On la funció és convexa
-```
-
-```sage
-solve(ddg(x)<0,x) # On la funció és còncava
-```
-
-```sage
-gce=plot(g,-3,cridcr[0],ymin=-20,ymax=30,detect_poles='show',color='green')
-gcd=plot(g,cridcr[-1],8,ymin=-20,ymax=30,detect_poles='show',color='green')
-gd=plot(g,cridcr[0],cridcr[-1],ymin=-20,ymax=30,detect_poles='show',color='blue')
-ga=plot(asob,-3,8,color='grey')
-pcridcr=point([(s,g(s)) for s in pcrt], xmin=-3, xmax=8,color='red', marker="s", size=25)
-gce+gcd+gd+ga+pcridcr
-```
-
--- end hide
-
-### Exercici 8
-
-Representeu l'àrea de la regió del pla que queda entre els gràfics
-de $y=\sin(x)$ i $y=\cos(x)$ corresponent als $x$ entre $0$ i
-$2\, \pi$ en els que $\cos(x)\le\sin(x)$ dibuixant els gràfics
-d'aquestes dues funcions en $[0,2 \pi]$ i ombrejant la regió. (Cal
-que investigueu una mica en la documentació de `plot` per aconseguir
-un bon resultat).
-
-Determineu el valor de l'àrea d'aquesta regió calculant la integral
-corresponent.
-
--- begin hide
-
-```sage
-s(x)=sin(x)
-c(x)=cos(x)
-```
-
-Primer faig la grafica per a veure aproximadament on es tallen.
-
-```sage
-plot([s,c],0,2*pi)
-```
-
-Calculo les x's on es tallen les gràfiques amb find_root (numèricament).
-
-```sage
-r1=find_root(s(x)-c(x),0,1)
-r2=find_root(s(x)-c(x),3,5)
-```
-
-Afegeixo al plot anterior el ombrejat entre s i c entre els punts r1 i r2.
-
-```sage
-plot([s,c],0,2*pi)+ plot(s,r1,r2, fill=c)
-```
-
-Determinem el valor de l'àrea d'aquesta regió:
-
-```sage
-integral(s(x)-c(x),x,r1,r2)
-```
-
--- end hide

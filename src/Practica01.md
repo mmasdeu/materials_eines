@@ -61,27 +61,100 @@ Estem fent *càlcul simbòlic*, i no *càlcul numèric*.
 
 (i) $\dfrac{23568}{23456}$
 
+-- begin hide
+```sage
+23568 / 23456
+```
+-- end hide
+
 (ii) $23456^{450}$
+
+-- begin hide
+```sage
+23456^450
+```
+-- end hide
+
 
 (iii) $\dfrac{2}{3}+\dfrac{1}{4}-\dfrac{4}{8}$
 
+-- begin hide
+```sage
+2 / 3 + 1 / 4 - 4 / 8
+```
+-- end hide
+
 (iv) $\sqrt{72\,}$
-n
+
+-- begin hide
+```sage
+sqrt(72)
+```
+-- end hide
+
 (v) $\dfrac{1}{\sqrt{2\, }}$
+
+-- begin hide
+```sage
+1/sqrt(2)
+```
+-- end hide
 
 (vi) $2.345\times 5.89701$
 
+-- begin hide
+```sage
+2.345 * 5.89701
+```
+-- end hide
+
 (vii) $\sqrt[3]{64\,}$
+
+-- begin hide
+```sage
+64^(1/3)
+```
+-- end hide
 
 (viii) $\sqrt[4]{902.8654\,}$
 
+-- begin hide
+```sage
+902.8654^(1/4)
+```
+-- end hide
+
 (ix) $2\times 4- 5\times 3$
+
+-- begin hide
+```sage
+2*4 - 5*3
+```
+-- end hide
 
 (x) $2\times (4- 5)\times 3$
 
+-- begin hide
+```sage
+2*(4-5)*3
+```
+-- end hide
+
 (xi) $3^{4^{5}}$
 
+-- begin hide
+```sage
+3^(4^5)
+```
+-- end hide
+
 (xii) $\left(3^{4}\right)^{5}$
+
+-- begin hide
+```sage
+(3^4)^5
+```
+-- end hide
 
 
 

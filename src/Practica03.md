@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 3: Gràfiques'
+  title : 'Pràctica 3: Gràfiques de funcions'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,7 +14,233 @@ jupyter:
     name: sagemath
 ---
 
-# Gràfiques
+# Gràfiques de funcions
+
+## Definir funcions
+
+Per tal de definir un objecte de **SageMath** que
+reaccioni com una funció tal i com s'entén des del punt de vista
+matemàtic (un objecte $f$ que admet arguments, com per exemple $x$, i
+tal que, en funció del valor d'aquest argument, produeix un valor $f(x)$
+lligat a fer una sèrie de càlculs dependents de $x$), la construcció més
+senzilla és la de les que es denominen *funcions simbòliques*. S'obté un
+objecte d'aquest tipus quan es fa una assignació com, per exemple, la
+següent:
+
+```sage
+f(x)=cos(pi*x)+7
+show(f)
+```
+
+(que generarà un símbol `f` que reacciona com la funció definida per la
+condició $f(x)=\cos(\pi\, x)+7$ o, més concretament, qualsevol expressió
+de la forma `f(v)` s'avaluarà com `cos(pi*v)+7`). De forma que es poden
+avaluar expressions del tipus:
+
+```sage
+f(1/2)
+```
+
+```sage
+f(1/3)
+```
+
+```sage
+f(0.5)
+```
+```sage
+f(0.5).n()
+```
+
+Noteu que aquesta construcció és molt semblant, però no del tot
+equivalent, a escurçar la substitució (`subs`) d'una variable simbòlica
+per un valor concret dins d'una expressió. Teniu en compte, no obstant,
+que en la definició d'una funció no cal que la variable sigui una
+variable simbòlica ja definida amb una instrucció `var` (el que
+s'interpreta i queda guardat és el mecanisme de càlcul del valor
+resultant en funció del valor introduït). Per tant, no hi ha haurà cap
+inconvenient en definir una funció utilitzant com a nom de la seva
+variable qualsevol que es vulgui. Per exemple:
+
+```sage
+g(t)=2*t^2 - 1
+show(g)
+```
+```sage
+g(x)
+```
+```sage
+g(2)
+```
+```sage
+g(1.345)
+```
+
+```sage
+v=3.01
+g(v)
+```
+
+Tot i això, aquesta construcció crea la variable que s'usa per definir
+la funció. En particular, si aquesta variable està emmagatzemant un
+valor, aquest es perdrà.
+
+```sage
+v = 5
+```
+```sage
+u
+```
+
+```sage
+v
+```
+
+```sage
+F(u,v)=u*v
+```
+```sage
+u
+```
+```sage
+v
+```
+
+
+Evidentment, si es vol avaluar la funció prenent com argument un nom
+sense valor assignat o sense haver declarat el símbol formal, apareix un
+error fins que no donem una opció vàlida per a l'argument.
+
+```sage
+g(y)
+```
+```sage
+var('y')
+g(y)
+```
+
+El nombre d'arguments (variables) d'una funció és arbitrari i, per tant,
+és perfectament raonable fer la definició següent:
+
+```sage
+h(x,y)=x^2-xy+ln(x^2+y^2)
+show(h)
+```
+```sage
+h(2,3)
+```
+```sage
+h(1,x)
+```
+
+## Convertir expressions en funcions
+
+Hi ha situacions en les que s'ha obtingut una certa expressió, que depèn
+d'un o més paràmetres, i es vol utilitzar aquest resultat com una funció
+d'aquests paràmetres (o, potser, només d'alguns d'ells). La instrucció
+que permet obtenir aquest resultat és la que apareix a la plantilla
+`expresssio.function(variables)` (que es podria llegir com: *l'expressió
+"tal" com a funció de les variables "qual"*) i es pot comprovar el seu
+funcionament en els exemples que venen a continuació. ``
+
+```sage
+expr = ln(3*x^3 + sqrt(x-1))
+f = expr.function(x)
+show(f)
+```
+```sage
+f(1.2)
+```
+```sage
+var('y')
+show(f(y^2+1))
+```
+
+El mecanisme també és vàlid amb més d'una variable com a:
+
+```sage
+g=(x^2-y^2+sin(x*y)).function(x,y)
+show(g)
+```
+
+```sage
+show(g(2,pi))
+```
+
+L'ordre és important !
+```sage
+g=(x^2-y^2+sin(x*y)).function(y,x)
+show(g(2,pi))
+```
+
+```sage
+show(g)
+```
+
+
+I no cal que tots els paràmetres es converteixin en arguments de la
+funció.
+
+```sage
+h = (x+y)*sin(pi*x)-cos(y)
+hf = h.function(y)
+show(hf)
+```
+```sage
+show(hf(pi/2))
+```
+
+
+## Diferències entre expressions on hi apareixen indeterminades i funcions
+
+Tot i que en molts casos no hi ha cap diferència pràctica entre definir
+una funció o introduir una expressió que depèn de variables simbòliques
+cal tenir en compte que aquests dos tipus d'objecte no són equivalents i
+el seu comportament pot ser totalment diferent. Noteu, per exemple, com
+els resultats d'aquestes instruccions semblen una mica contradictoris:
+
+```sage
+reset()
+var('y z')
+
+fyz = y^2 - 3*y*z + 2*z^2
+
+f(y,z) = y^2 - 3*y*z + 2*z^2
+
+show(fyz)
+```
+```sage
+show(f)
+```
+
+```sage
+y=2
+z=3
+show(fyz)
+```
+```sage
+show(f(y,z))
+```
+```sage
+show(f(2,3))
+```
+
+ja que, encara que assignem respectivament els valors $2$ i $3$ a les
+variables `y` i `z` l'expressió `fyz` no reflecteix aquesta situació. És
+més, si considereu una operació del tipus
+
+```sage
+y * fyz
+```
+
+podeu quedar una mica sorpresos. De fet, descobrireu que la definició
+del símbol `fyz` *recorda* que els símbols `y` i `z` són variables
+simbòliques i, aleshores, en l'expressió `y * fyz` hi ha dues `y`
+diferents: la que té assignat el valor $2$ i la simbòlica que està
+*dins* `fyz`. Naturalment, tal i com calia esperar, l'expressió `f(y,z)`
+produeix el mateix resultat que `f(2,3)` encara que en el moment de la
+seva definició s'utilitzin les variables simbòliques `y`, `z` per a
+designar els arguments.
 
 
 ## Gràfica d'una funció
@@ -34,6 +260,28 @@ es pot aplicar com un *mètode* associat a l'objecte que volem dibuixar:
 
 ```sage
 (3*x^2-8).plot(-5, 5)
+```
+
+La instrucció `plot` és prou flexible com per saber si l'argument que
+s'introdueix és una funció. El seu mecanisme intern ja s'ocupa d'avaluar
+aquest argument de la forma convenient. Per posar un exemple senzill:
+
+```sage
+reset()
+f(x)= x*e^-x
+
+plot(f,(-1,4))
+```
+
+donarà el mateix resultat que fer
+
+```sage
+plot(x*e^-x,(-1,4))
+```
+o també
+```sage
+f(x)= x*e^-x
+plot(f(x),(x,-1,4))
 ```
 
 ## Asímptotes

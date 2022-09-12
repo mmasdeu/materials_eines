@@ -488,6 +488,237 @@ len(quadrats_primers)
 
 I el resultat ens diu que hi ha 10 nombres primers entre 2 i 29.
 
+
+## Tuples
+
+Una tupla $(a_1,a_2,\dots,a_n)$ és similar a una llista, però té algunes diferències
+importants que cal remarcar. La més important, i de fet la
+que marca les altres, és que mentre que una llista és mutable, la tupla no: podem
+modificar "l'interior" d'una llista però no d'una tupla.
+
+Per exemple, si posem
+```sage
+T=(1,2,3,4,5)
+print(T[-1])
+T[-1]=10
+```
+a part d'imprimir 5 ens surt un error que diu "'tuple' object does not
+support item assignment". En canvi, amb llistes el següent bloc
+
+```sage
+L=[1,2,3,4,5]
+print(L[-1])
+L[-1]=10
+print(L)
+```
+ens imprimirà $5$ i $[1,2,3,4,10]$.
+
+Com que les tuples són immutables, podrieu pensar que no podem posar una
+cosa mutable dins una tupla. Però si que és pot sense problemes: una
+tupla, per tant, pot contenir una llista, i aquesta és pot modificar
+sense problemes. El problema és que una tupla com aquesta no seria
+"hashable", que és un concepte que sortirà a la propera pràctica.
+
+Es pot passar de llista a tupla i de tupla a llista amb les comandes
+`tuple` i `list`, respectivament. Les tuples, com les llistes, es poden
+construir utilitzant comprehensió.
+
+Compte que el fet que es pugui mutar té conseqüències delicades: si
+poses, per exemple `LL = L`, on `L` és una llista, i canvies el valor de
+`LL[1] = 1000`, llavors `L` també canvia. Per poder tenir una copia de `L` per
+poder-la manipular sense canviar la llista particular s'ha de posar
+`LL = copy(L)` (però què passa llavors si tens una llista de llistes?...).
+
+Les tuples i les llistes es poden sumar, i l'efecte és que es construeix
+una nova llista o tupla que conté els elements de la primera
+llista / tupla seguit dels de la segona. Si posem `n * L` per un natural `n`,
+obtindrem la llista/tupla repetida n cops.
+
+Un cas especial és el de les tuples de només un element: si posem
+`T = [2]`, això és una llista amb un sol element. Però si posem `T = (2)`
+obtenim només el número 2. Per poder remeiar això cal posar `T = (2,)`.
+
+
+## Conjunts
+
+El **SageMath** (i el Python en general) pot
+treballar amb conjunts. La diferencia entre un conjunt i una llista o
+una tupla és que en una llista o tupla els elements tenen un ordre i
+poden estar repetits, i en canvi en un conjunt no. De fet el
+**SageMath** té molta més llibertat en fer
+llistes que conjunts, ja que accepta llistes amb elements molt dispars,
+però en canvi els elements dels conjunts han de ser immutables (de fet el que han de ser és *hashables*, que és un concepte tècnic que no discutirem. Per exemple una tupla és *hashable* si els  seus membres ho són.).
+
+La instrucció bàsica per a construir un conjunt és `set`, que pot tenir com
+a argument des d'una llista, un tupla o un iterador, sempre que estiguin
+formats per nombres, cadenes (*strings*) o tuples d'aquests elements (o
+altres objectes immutables). També es pot construir un conjunt posant
+entre claus (`{` i `}`) tots els elements del conjunt. Podeu usar
+`a in A` per a demanar si un element `a` és dins d'un conjunt `A`. Però
+(en principi) no podeu demanar el "primer" element d'un conjunt.
+
+
+Per posar un exemple (estrany), anem a construir el conjunt que conté el
+número 2, la variable x, el nombre $\pi$, el nombre real $3.2$ i el
+símbol per l'anell dels enters.
+
+```sage
+A={2, x ,3.2, ZZ, pi}
+show(A)
+ZZ in A
+```
+```sage
+A[0] # Us hauria de donar un error.
+```
+
+Fixeu-vos que `ZZ` és membre del conjunt (però no és un subconjunt seu).
+Si al crear un conjunt posem elements repetits només sortiran una
+vegada.
+
+```sage
+X = {1,2,5,5,6,1}
+show(X)
+```
+
+Els conjunts es poden fer les operacions habituals, moltes d'elles com a
+mètode (o sigui, amb el format `A.metode(B)`). Per exemple, unió és
+`union`, intersecció és `intersection`, la diferencia és `difference`,
+etc. També podeu demanar amb una funció el nombre d'elements (amb
+`len`), i afeguir o treure un element donat (amb `remove` dona error si no
+hi és, amb `discard` no fa res si no hi és). Finalment, per agafar un
+element d'un conjunt ("a l'atzar") podeu usar `pop()`, però compte perquè això el treu del conjunt.
+
+```sage
+X.intersection(A)
+```
+```sage
+X.union(A)
+```
+```sage
+X.difference(A)
+```
+```sage
+len(X)
+```
+```sage
+X.add(3)
+show(X)
+```
+```sage
+X.remove(3)
+show(X)
+```
+```sage
+X.discard(3)
+show(X)
+```
+```sage
+X.pop()
+```
+```sage
+show(X)
+```
+
+
+A l'hora de crear conjunts, podeu usar també la comprehensió, tal com
+varem fer en les llistes. Per exemple, podem trobar el conjunt dels
+residus mòdul 17 dels quadrats
+
+```sage
+{ a^2 % 17 for a in srange(17) }
+```
+
+
+El **SageMath** també té una altra construcció de conjunt,
+`Set` (amb majúscula!) que permet treballar amb conjunts infinits, i amb
+conjunts que contenen altres conjunts o llistes. Podem fer el conjunt de
+tots els enters `ZZ`, els racionals `QQ`, els nombres primers
+`Primes()`, etc.
+
+```sage
+Z = Set(ZZ)
+show(Z)
+```
+```sage
+2 in Z
+```
+```sage
+pi in Z
+```
+
+Compte però que treballant amb conjunts infinits podeu provocar
+fàcilment que us quedeu sense memòria.
+
+## Diccionaris
+
+Una construcció molt més general que la de conjunt i la de llista és la
+de diccionari: un diccionari és com un conjunt de claus (*keys*, que
+han de ser *hashables*) i a cada clau el seu valor. Podríem pensar que una
+llista de llargada $n$ és com un diccionari on les claus són els nombres
+de 0 a $n-1$, i que un conjunt és un diccionari on no mirem els valors
+de les claus.
+
+
+Una manera d'inicialitzar un diccionari és fent servir claus (`{` i `}`), i posant els parells *key* : *value* separats per comes. Per exemple, el següent diccionari
+
+```sage
+prova = { 1 : 'a' , 'x' : [1, 2], (4,5) : { 1, 2 } }
+```
+
+
+assigna al número $1$ la lletra $a$, a la lletra $x$ la llista $[1,2]$ i
+a la tupla $(1,5)$ el conjunt $\{1,2\}$. Per accedir als valors només cal posar
+`prova[1]` i respon `'a'`, i posar `prova['x']` i respon `[1,2]`, etc.
+
+Les *keys* poden ser números, cadenes (strings), tuples de números o
+de cadenes, però no poden ser ni llistes ni altres conjunts. En canvi als
+valors s'hi pot posar qualsevol cosa.
+
+
+Podem modificar el valor d'un diccionari com en el cas de les llistes.
+Per exemple, si posem
+
+```sage
+prova[(4,5)] = {1,2,3}
+print(prova)
+```
+
+ens imprimirà
+$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\} \}.$$
+
+
+També podem afegir més elements a un diccionari:
+
+
+```sage
+prova[2] = 'z'
+```
+
+Si volem afegir tots els elements d'un altre diccionari, podem fer servir `update`. Per exemple
+
+
+```sage
+prova.update({2 : 'b', 7 : 'c'})
+print(prova)
+```
+
+ens imprimirà
+$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\}, 2:'b', 7:'c' \}.$$
+(i observem que ha sobreescrit el valor de $2$ anterior)
+
+
+Si fem un bucle indexat en un diccionari, la variable es mou en la
+llista de claus. D'aquesta manera, podem fer:
+
+```sage
+for k in prova:
+	print(k, prova[k])
+```
+
+que ens imprimirà cada clau i el seu valor.
+
+
+
 ## Exercicis
 
 
