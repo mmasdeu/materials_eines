@@ -444,17 +444,8 @@ print(E)
 print(a, b, c)
 ```
 
-Com veieu, es poden escriure diverses instruccions en la mateixa línia,
-separades per punt-i-coma. També podem fer línies separades en el mateix
-camp `In[ ]` del notebook, prement la tecla **Enter**.
-
-```sage
-print(a)
-print(b)
-print(c)
-```
-
-Podem substituir variables per altres variables:
+Com veieu, es poden imprimir diverses coses en la mateixa línia,
+separades per una coma. També podem substituir variables per altres variables:
 
 ```sage
 print(E.subs(a=b))
