@@ -445,7 +445,7 @@ print(a, b, c)
 ```
 
 Com veieu, es poden imprimir diverses coses en la mateixa línia,
-separades per una coma. També podem substituir variables per altres variables:
+posant-les dins un print, separades per una coma. També podem substituir variables per altres variables:
 
 ```sage
 print(E.subs(a=b))
