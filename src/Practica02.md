@@ -447,7 +447,7 @@ D.insert(1,t^(1/2))
 print(D)
 ```
 ```sage
-D.remove(t^2)`
+D.remove(t^2)
 print(D)
 ```
 ```sage
@@ -472,7 +472,7 @@ Es pot fer que l'índex `k` avanci des de $a$ fins a $b$ (o sigui, es mogui
 dins de $\text a\le k\lt b$), incrementant-se cada pas en $c$ unitats, utilitzant
 l'expressió `range(a,b,c)`, i també indicant una progressió aritmètica
 amb $a$, $a+t$, $a+2t$,...$b$ amb `[a, a+t,..,b]` (només hi podeu posar 
-**dos** punts, ni un ni tres tres). Així els quadrats dels múltiples de $3$
+**dos** punts, ni un ni tres). Així els quadrats dels múltiples de $3$
 (fins al quadrat de $18$) s'obtenen amb:
 
 ```sage
@@ -536,10 +536,26 @@ Es pot passar de llista a tupla i de tupla a llista amb les comandes
 construir utilitzant comprehensió.
 
 Compte que el fet que es pugui mutar té conseqüències delicades: si
-poses, per exemple `LL = L`, on `L` és una llista, i canvies el valor de
-`LL[1] = 1000`, llavors `L` també canvia. Per poder tenir una copia de `L` per
+poses, per exemple `M = L`, on `L` és una llista, i canvies el valor de
+`M[1] = 1000`, llavors `L` també canvia. Per poder tenir una copia de `L` per
 poder-la manipular sense canviar la llista particular s'ha de posar
-`LL = copy(L)` (però què passa llavors si tens una llista de llistes?...).
+`M = copy(L)` (però què passa llavors si tens una llista de llistes?...).
+
+```sage
+L = [1, 2, 3]
+M = L
+print(f'{L = }, {M = }')
+M[1] = 1000
+print(f'{L = }, {M = }')
+```
+
+```sage
+L = [1, 2, 3]
+M = copy(L) # També es pot fer M = L[:]
+print(f'{L = }, {M = }')
+M[1] = 1000
+print(f'{L = }, {M = }')
+```
 
 Les tuples i les llistes es poden sumar, i l'efecte és que es construeix
 una nova llista o tupla que conté els elements de la primera
@@ -548,7 +564,7 @@ obtindrem la llista/tupla repetida n cops.
 
 Un cas especial és el de les tuples de només un element: si posem
 `T = [2]`, això és una llista amb un sol element. Però si posem `T = (2)`
-obtenim només el número 2. Per poder remeiar això cal posar `T = (2,)`.
+obtenim només el número, no pas una llista. Per poder remeiar això cal posar `T = (2,)`.
 
 
 ## Conjunts
@@ -589,17 +605,13 @@ vegada.
 
 ```sage
 X = {1,2,5,5,6,1}
-show(X)
+print(X)
 ```
 
 Els conjunts es poden fer les operacions habituals, moltes d'elles com a
 mètode (o sigui, amb el format `A.metode(B)`). Per exemple, unió és
 `union`, intersecció és `intersection`, la diferencia és `difference`,
-etc. També podeu demanar amb una funció el nombre d'elements (amb
-`len`), i afeguir o treure un element donat (amb `remove` dona error si no
-hi és, amb `discard` no fa res si no hi és). Finalment, per agafar un
-element d'un conjunt ("a l'atzar") podeu usar `pop()`, però compte perquè això el treu del conjunt.
-
+etc.
 ```sage
 X.intersection(A)
 ```
@@ -609,26 +621,35 @@ X.union(A)
 ```sage
 X.difference(A)
 ```
+També podeu demanar amb una funció el nombre d'elements (amb
+`len`), i afeguir o treure un element donat (amb `remove` dona error si no
+hi és, amb `discard` no fa res si no hi és).
 ```sage
 len(X)
 ```
 ```sage
 X.add(3)
-show(X)
+print(X)
 ```
 ```sage
 X.remove(3)
-show(X)
+print(X)
 ```
 ```sage
 X.discard(3)
-show(X)
+print(X)
 ```
+
+Finalment, per agafar un
+element d'un conjunt (arbitrari, és a dir, que no teniu control sobre quin us retornarà) podeu usar `pop()`, però compte perquè això el treu del conjunt.
 ```sage
-X.pop()
+print(X.pop())
+print(X)
 ```
+Si voleu un element *arbitrari* del conjunt però no el voleu treure, podeu fer servir la següent construcció:
 ```sage
-show(X)
+X = {2, 1, 3}
+next(iter(X))
 ```
 
 
@@ -649,7 +670,7 @@ tots els enters `ZZ`, els racionals `QQ`, els nombres primers
 
 ```sage
 Z = Set(ZZ)
-show(Z)
+print(Z)
 ```
 ```sage
 2 in Z
