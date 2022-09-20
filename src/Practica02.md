@@ -165,9 +165,9 @@ factoritzar com a argument de la funció `factor()`):
 
 ```sage
 var('a x')
-(x^2-2*x+1).factor()
-(x^2-2*a*x+a^2).factor()
-(x^2-x-1).factor()
+print((x^2-2*x+1).factor())
+print((x^2-2*a*x+a^2).factor())
+print((x^2-x-1).factor())
 ```
 
 Observeu que l'última expressió té dues arrels reals: En efecte
@@ -338,10 +338,9 @@ comprovar en les instruccions següents.
 ```sage
 var('y')
 A = x^3-3*x^2*y+x^2-2*x*y-x-y^2*x+y^3+y^2-1
-A.collect(x)
-show(_)
-A.collect(y)
-show(_)
+print(A)
+print(A.collect(x))
+print(A.collect(y))
 ```
 
 L'expressió de la qual es vol fer `collect` no ha de ser necessàriament
