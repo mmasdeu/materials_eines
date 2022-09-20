@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 3: Gràfiques de funcions'
+  title : 'Pràctica 3: Cadenes i Gràfiques de funcions'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,7 +14,122 @@ jupyter:
     name: sagemath
 ---
 
-# Gràfiques de funcions
+# Cadenes i Gràfiques de funcions
+
+## Cadenes
+
+Una cadena (*string*) és una successió de caràcters, que podem especificar com `'hola'` o `"hola"`, per exemple.
+
+```sage
+x = 'hola'
+print(x)
+y = "hola"
+print(x == y)
+```
+
+Si la cadena conté més d'una línia, la podem especificar obrint amb 3 cometes:
+```sage
+x = '''Primera línia,
+Segona línia,
+i tercera.'''
+print(x)
+```
+
+Fixeu-vos que si volem fer servir `'` o `"` dins la cadena, aleshores hem de delimitar-la amb l'altre tipus:
+```sage
+s = 'Un exemple "senzill".'
+```
+
+Podem accedir a posicions de les cadenes, com si fossin llistes:
+```sage
+print(len(s))
+print(s[4])
+print(s[:10])
+print(s[::-1])
+```
+
+També podem preguntar si contenen una determinada subcadena:
+```sage
+print('ex' in s)
+```
+o si no la contenen:
+```sage
+print('ex' not in s)
+```
+
+El **SageMath** (de fet, **Python**) és molt potent a l'hora de manipular cadenes,
+i incorpora moltes funcions. Per exemple, els mètodes `.lower()`, `.upper()`, `.strip()`,
+`.replace()`, `.split()` ens poden ser útils:
+
+```sage
+s = '   Eines Informàtiques per les Matemàtiques   '
+print(s.lower())
+```
+
+```sage
+print(s.upper())
+```
+
+```sage
+print(s.strip())
+```
+
+```sage
+print(s.replace('Informàtiques', 'Computacionals'))
+```
+
+Com amb les llistes, podem sumar-les i obtenim la concatenació:
+
+```sage
+print('hola ' + 'adeu.')
+```
+
+## Cadenes amb format
+
+Molt sovint volem construïr cadenes a partir de variables que tenim declarades.
+Igual que fa la funció `print()`, **SageMath** sap convertir qualsevol objecte en
+una cadena, i podem forçar-lo a fer-ho amb `str()`:
+
+```sage
+temperatura = 38
+str(temperatura)
+```
+
+Això ens permet construïr cadenes
+
+```sage
+print('Avui hem arribat a ' + str(temperatura) + 'graus!')
+```
+
+La manera recomanada de construir cadenes amb paràmetres és una altra. Es tracta
+d'afegir una `f` davant les cometes, i aleshores podem especificar dins la cadena
+les diferents variables que vulguem que s'avaluin, i fins i tot podem fer càlculs. Per exemple:
+
+```sage
+nom = 'Arale'
+localitat = 'Vila del Pingüí'
+setmanes = 3
+s = f'Hola {nom}, benvinguda a {localitat}. Feia {7 * setmanes} dies que no et veia!'
+print(s)
+```
+
+Pot ser que vulguem fer servir una plantilla que després anirem omplint. En aquest cas, hi ha el
+mètode `.format()`.
+
+```sage
+s = 'Hola {nom}, benvinguda a {localitat}.'
+print(s.format(localitat = 'Cerdanyola', nom = 'Jana'))
+```
+
+Hi ha alguns caràcters especials, com ara el tabulador `\t` o el salt de línia, `\n`, que ens poden ser
+útils per representar informació:
+
+```sage
+s = '{nom}\t{edat}'
+print('NOM\tEDAT\n')
+print(s.format(nom='Júlia', edat=21))
+print(s.format(nom='Gerard', edat=19))
+```
 
 ## Definir funcions
 
