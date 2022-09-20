@@ -29,7 +29,7 @@ següent:
 
 ```sage
 f(x)=cos(pi*x)+7
-show(f)
+print(f)
 ```
 
 (que generarà un símbol `f` que reacciona com la funció definida per la
@@ -64,7 +64,7 @@ variable qualsevol que es vulgui. Per exemple:
 
 ```sage
 g(t)=2*t^2 - 1
-show(g)
+print(g)
 ```
 ```sage
 g(x)
@@ -124,7 +124,7 @@ El nombre d'arguments (variables) d'una funció és arbitrari i, per tant,
 
 ```sage
 h(x,y)=x^2-xy+ln(x^2+y^2)
-show(h)
+print(h)
 ```
 ```sage
 h(2,3)
@@ -146,35 +146,35 @@ funcionament en els exemples que venen a continuació. ``
 ```sage
 expr = ln(3*x^3 + sqrt(x-1))
 f = expr.function(x)
-show(f)
+print(f)
 ```
 ```sage
 f(1.2)
 ```
 ```sage
 var('y')
-show(f(y^2+1))
+print(f(y^2+1))
 ```
 
 El mecanisme també és vàlid amb més d'una variable com a:
 
 ```sage
 g=(x^2-y^2+sin(x*y)).function(x,y)
-show(g)
+print(g)
 ```
 
 ```sage
-show(g(2,pi))
+print(g(2,pi))
 ```
 
 L'ordre és important !
 ```sage
 g=(x^2-y^2+sin(x*y)).function(y,x)
-show(g(2,pi))
+print(g(2,pi))
 ```
 
 ```sage
-show(g)
+print(g)
 ```
 
 
@@ -184,10 +184,10 @@ funció.
 ```sage
 h = (x+y)*sin(pi*x)-cos(y)
 hf = h.function(y)
-show(hf)
+print(hf)
 ```
 ```sage
-show(hf(pi/2))
+print(hf(pi/2))
 ```
 
 
@@ -207,22 +207,22 @@ fyz = y^2 - 3*y*z + 2*z^2
 
 f(y,z) = y^2 - 3*y*z + 2*z^2
 
-show(fyz)
+print(fyz)
 ```
 ```sage
-show(f)
+print(f)
 ```
 
 ```sage
 y=2
 z=3
-show(fyz)
+print(fyz)
 ```
 ```sage
-show(f(y,z))
+print(f(y,z))
 ```
 ```sage
-show(f(2,3))
+print(f(2,3))
 ```
 
 ja que, encara que assignem respectivament els valors $2$ i $3$ a les

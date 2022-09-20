@@ -62,8 +62,8 @@ a = 3
 if a == 4:
     b = a + 1
     print("Modificant b")
-show(a)
-show(b)
+print(f'{a=}')
+print(f'{b=}')
 ```
 
 En aquest cas es veu que, en ser el valor de `a` igual a 3, no es
@@ -75,8 +75,8 @@ a = 4
 if a == 4:
     b = a + 1
     print("Modificant b")
-show(a)
-show(b)
+print(f'{a=}')
+print(f'{b=}')
 ```
 
 es veu com apareix el text `Modificant b` i el valor de `b` passa a ser
@@ -101,9 +101,9 @@ Per exemple, el següent programa ``
 ```sage
 a = 2
 if a < 3:
-    print (f'{a} és menor que 3")
+    print (f"{a} és menor que 3")
 else:
-    print (f'{a} no és menor que 3")
+    print (f"{a} no és menor que 3")
 ```
 
 respon "2 és menor que 3" ja que la primera instrucció dona el valor
@@ -164,7 +164,7 @@ sum(a^2 for a in range(101))
 **Nota2:** Sovint quan treballem amb
 **SageMath** és millor utilitzar la funció
 `srange` que la funció `range`: la diferència és que la primera produeix
-enters de **SageMath** i la segoja enters de
+enters de **SageMath** i la segona enters de
 **Python**.  Amb els enters de Python no hi ha definits certs mètodes per
 decidir, per exemple, si un nombre és primer, o per factoritzar-lo. Per
 exemple, si volem la suma dels quadrats dels nombres primers entre 1 i
@@ -236,7 +236,7 @@ k = 0 #Variable que controla el nombre de repeticions
 
 while abs(s-sa) > di:
     k += 1; sa = s; s = cos(s)
-    show(f'Iteració {k}, {s = }')
+    print(f'Iteració {k}, {s = }')
 show(sa, s)
 ```
 
@@ -254,12 +254,12 @@ mxi = 20 # Nombre màxim de repeticions del proces
 
 while abs(s-sa) > di and k < mxi:
     k+=1; sa=s; s=cos(s)
-    show(f'Iteració {k}, {s = }')
+    print(f'Iteració {k}, {s = }')
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
-    show("S'ha arribat al maxim d'iteracions previstes!!!")
-    show("No és segur que el valor sigui prou ajustat")
+    print("S'ha arribat al maxim d'iteracions previstes!!!")
+    print("No és segur que el valor sigui prou ajustat")
 
 show(sa, s)
 ```
@@ -274,13 +274,13 @@ di = 1e-8; s = 0.; sa = s + 1; k = 0; mxi = 50
 while abs(s-sa) > di and k < mxi:
     k+=1; sa=s; s=cos(s)
     if k == mxi:
-        show("S'ha arribat al maxim d'iteracions previstes!!!")
-        show("No és segur que el valor sigui prou ajustat")
+        print("S'ha arribat al maxim d'iteracions previstes!!!")
+        print("No és segur que el valor sigui prou ajustat")
     else:
-        show(f"Despres de {k} iteracions,")
-        show("les dues ultimes aproximacions difereixen en")
-        show(f"{abs(s-sa).n(digits=3)}, i són:")
-        show(sa, s)
+        print(f"Despres de {k} iteracions,")
+        print("les dues ultimes aproximacions difereixen en")
+        print(f"{abs(s-sa).n(digits=3)}, i són:")
+        print(sa, s)
 ```
 
 De forma semblant a l'anterior, es pot aturar l'execució d'un `for`
@@ -458,20 +458,19 @@ def ICos(origen, precisio, maxit):
     s = origen.n()
     sa = s+1
     k = 0
-    print(30 * '*')
+    print(45 * '*')
     while abs(s-sa) > precisio and k < maxit:
         k += 1; sa = s; s = cos(s)
-        show(f'Iteracio {k}, {s = }')
+        print(f'Iteracio {k}, {s = }')
         if k == maxit:
-            show("S'ha arribat al maxim d'iteracions previstes!!!")
-            show("No es segur que el valor sigui prou ajustat")
-            show("El resultat correspon a l'ultim valor obtingut.")
+            print("S'ha arribat al maxim d'iteracions previstes!!!")
+            print("No es segur que el valor sigui prou ajustat")
+            print("El resultat correspon a l'ultim valor obtingut.")
         else:
-            show(f"Despres de {k} iteracions,")
-            show("les dues ultimes aproximacions difereixen en")
-            show(f"{abs(s-sa).n(digits=3)}, i son:")
-            show(sa, s)
-    print(30 * '*')
+            print(f"Despres de {k} iteracions,les dues ultimes ")
+            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i son:")
+            print(sa, s)
+            print(45 * '*')
     return s
 ```
 ```sage
@@ -606,23 +605,25 @@ següent manera:
 ```sage
 reset()
 def ICos(origen, precisio, maxit=10):
+    """ Itera la funció cos(s) fins que dos valors consecutius
+    estan a distància menor que precisio i com a màxim maxit iteracions
+    (per defecte maxit=10)"""
     s=origen.n()
     sa=s+1
     k=0
     print(30 * '*')
     while abs(s-sa) > precisio and k < maxit:
         k += 1; sa = s; s = cos(s)
-        show(f'Iteracio {k}, {s = }')
-    if k==maxit:
-        show("S'ha arribat al maxim d'iteracions previstes!!!")
-        show("No es segur que el valor sigui prou ajustat")
-        show("El resultat correspon a l'ultim valor obtingut.")
-    else:
-        show(f"Despres de {k} iteracions,")
-        show("les dues ultimes aproximacions difereixen en ")
-        show(f"{abs(s-sa).n(digits=3)}, i són:")
-        show(f'{sa}, {s}')
-    print(30 * '*')
+        print(f'Iteracio {k}, {s = }')
+        if k == maxit:
+            print("S'ha arribat al maxim d'iteracions previstes!!!")
+            print("No es segur que el valor sigui prou ajustat")
+            print("El resultat correspon a l'ultim valor obtingut.")
+        else:
+            print(f"Despres de {k} iteracions,les dues ultimes ")
+            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i son:")
+            print(sa, s)
+            print(45 * '*')
     return s
 ```
 
@@ -636,6 +637,27 @@ També podem executar:
 valor = ICos(pi/3,0.00001,30)
 ```
 Observeu també com hem escrit el "docstring" al inici.
+
+De fet, aquesta funció no seria considerada gaire ben feta per un 
+programador experimentat, doncs no cal que una funció imprimeixi els 
+resultats intermedis un cop ja funciona, i a més ens hauria de donar retornar 
+també si el resultat té o no la precisió adecuada. Així que seria millor 
+la següent funció: 
+
+```sage
+reset()
+def ICos(origen, precisio, maxit=10):
+    """ Itera la funció cos(s) fins que dos valors consecutius
+    estan a distància menor que precisio i com a màxim maxit iteracions
+    (per defecte maxit=10). i retorna el valor i si la precisió es compleix"""
+    s=origen.n()
+    sa=s+1
+    k=0
+    while abs(s-sa) > precisio and k < maxit:
+        k += 1
+        sa,s = s,cos(s)
+    return s, abs(s-sa) <= precisio
+```
 
 Una comanda més que es pot utilitzar amb les funcions enlloc del
 `return` és el `yield`: així com amb el `return`, un cop la funció
