@@ -208,7 +208,7 @@ print(237761.is_prime())
 -- end hide
 
 Fixeu-vos que el resultat és True o False. Es diu que aquesta funció
-*retorna un valor booleà (Boolean value, el nom prové de George Boole, matemàtic anglès (1815-1864)).
+*retorna* un valor booleà (Boolean value, el nom prové de George Boole, matemàtic anglès (1815-1864)).
 
 I ja que estem amb nombres primers, quin és el següent primer d'un
 primer (o de qualsevol nombre)? Això ho contesta la funció
@@ -333,15 +333,13 @@ manipulació d'expressions que contenen símbols indeterminats és la
 d'agrupar llurs sumands en termes de les potències d'una de les
 variables, per tal d'obtenir una representació com a *polinomi* respecte
 aquesta variable. La funció `collect()` intenta fer això, com podeu
-comprovar en les instruccions següents. 
+comprovar en les instruccions següents.
 
 ```sage
 var('y')
 A = x^3-3*x^2*y+x^2-2*x*y-x-y^2*x+y^3+y^2-1
-A.collect(x)
-show(_)
-A.collect(y)
-show(_)
+print(A.collect(x))
+print(A.collect(y))
 ```
 
 L'expressió de la qual es vol fer `collect` no ha de ser necessàriament
