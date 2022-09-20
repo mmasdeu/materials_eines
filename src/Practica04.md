@@ -654,9 +654,9 @@ def ICos(origen, precisio, maxit=10):
     sa=s+1
     k=0
     while abs(s-sa) > precisio and k < maxit:
-        k += 1 
-	sa , s = s , cos(s)
-    return s, k == maxit
+        k += 1
+        sa,s = s,cos(s)
+    return s, abs(s-sa) <= precisio
 ```
 
 Una comanda més que es pot utilitzar amb les funcions enlloc del
