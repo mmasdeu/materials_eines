@@ -672,3 +672,7 @@ els seus quadrats.
 
 9. Expliqueu com ho farieu per crear una nova llista d'una llista `L` que tingui els mateixos 
 elements que `L` però sense repeticions. 
+
+10. Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer 
+un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt
+cada lletra? Proveu-ho per `C='Mississipi'`.
