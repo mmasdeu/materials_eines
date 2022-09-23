@@ -113,8 +113,20 @@ s = f'Hola {nom}, benvinguda a {localitat}. Feia {7 * setmanes} dies que no et v
 print(s)
 ```
 
+A vegades volem presentar el valor d'algunes variables. Les `f`-cadenes ens faciliten molt la feina,
+ja que dins de `{}` hi podem posar un símbol `=` i aleshores també ens retorna el nom de la variable.
+Fixeu-vos en aquest exemple.
+
+```sage
+u = 3
+v = 4
+w = 5
+
+print(f'La variable {u = } i a més  {v * w = }')
+```
+
 Pot ser que vulguem fer servir una plantilla que després anirem omplint. En aquest cas, hi ha el
-mètode `.format()`.
+mètode `.format()`, que s'aplica a cadenes normals (sense `f` al començament).
 
 ```sage
 s = 'Hola {nom}, benvinguda a {localitat}.'
@@ -129,6 +141,11 @@ s = '{nom}\t{edat}'
 print('NOM\tEDAT\n')
 print(s.format(nom='Júlia', edat=21))
 print(s.format(nom='Gerard', edat=19))
+```
+Si els hem de fer servir en una cadena, els hem d'"escapar", és a dir, afegir una `\` extra perquè no els interpreti:
+
+```sage
+print('Per fer un salt de línia cal escriure \\n al mig de la cadena')
 ```
 
 ## Definir funcions
@@ -212,7 +229,7 @@ v
 ```
 
 ```sage
-F(u,v)=u*v
+F(u,v) = u*v
 ```
 ```sage
 u
@@ -238,7 +255,7 @@ El nombre d'arguments (variables) d'una funció és arbitrari i, per tant,
 és perfectament raonable fer la definició següent:
 
 ```sage
-h(x,y)=x^2-xy+ln(x^2+y^2)
+h(x,y) = x^2-x*y+ln(x^2+y^2)
 print(h)
 ```
 ```sage
@@ -329,8 +346,8 @@ print(f)
 ```
 
 ```sage
-y=2
-z=3
+y = 2
+z = 3
 print(fyz)
 ```
 ```sage
@@ -395,7 +412,7 @@ plot(x*e^-x,(-1,4))
 ```
 o també
 ```sage
-f(x)= x*e^-x
+f(x) = x*e^-x
 plot(f(x),(x,-1,4))
 ```
 
@@ -505,8 +522,8 @@ plot(1 - x^2/2, -pi/2, pi/2, color='red') + \
 O, si interessa guardar cadascun dels dibuixos per separat,
 
 ```sage
-dibcirc=plot(1-x^2/2, -pi/2, pi/2, color='red', legend_label='1-x^2')
-dibcos=plot(cos(x), -pi/2, pi/2, color='green', legend_label='cos(x)')
+dibcirc = plot(1-x^2/2, -pi/2, pi/2, color='red', legend_label='1-x^2')
+dibcos = plot(cos(x), -pi/2, pi/2, color='green', legend_label='cos(x)')
 show(dibcirc + dibcos)
 ```
 
