@@ -684,4 +684,12 @@ Utilitzant la llista anterior i una instrucció `line`, dibuixeu aquest
 hexàgon (Tingueu en compte que també és molt possible que existeixi una
     instrucció del tipus `polygon`).
 
+8. Definiu un diccionari on les claus siguint els nombres enters des de 2 fins a 10, i els valors 
+els seus quadrats. 
 
+9. Expliqueu com ho farieu per crear una nova llista d'una llista `L` que tingui els mateixos 
+elements que `L` però sense repeticions. 
+
+10. Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer 
+un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt
+cada lletra? Proveu-ho per `C='Mississipi'`.
