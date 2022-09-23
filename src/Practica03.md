@@ -649,25 +649,35 @@ que permet modificar alguna de les opcions dels dibuixos individuals.
 
 1.  Dibuixeu la gràfica de $y=\sin x$ per a dos períodes complets.
 
+
+
 2.  Dibuixeu $y=3\, x^4-6\, x^2$ per al domini $[-10,10]$ amb l'escala
     automàtica per a les ordenades (eix de les $y$). Després d'observar
     la gràfica, editeu el domini i el recorregut per tal de veure amb
     claredat els talls de la gràfica amb l'eix d'abscisses. Feu una
     estimació d'aquests talls amb la informació del dibuix.
 
+
+
 3.  Dibuixeu la gràfica de l'expressió polinòmica
     $$p= x^5-2\,x^4+x^3-x^2+1$$ i determineu (a partir de la informació
     visual) el nombre de solucions que té l'equació
     $$x^5-2\,x^4+x^3-x^2+1=0.$$
 
+
+
 4.  Localitzeu els zeros del polinomi $$x^3-34 \, x^2+4$$ a partir del
     dibuix adequat (**atenció!!!** en té tres.)
+
+
 
 5.  Dibuixeu la gràfica de la funció donada per
     $$g(x)= \left| 2\, x+3 \right|- \left| 3-x \right|$$ i determineu
     (amb la precisió que permeti el dibuix) els punts $x$ on
     $g(x)\ge 8$.\
     (Idea: Potser és més pràctic fer la gràfica de $g(x)-8$).
+
+
 
 6.  Representeu els punts del pla $(1,4)$, $(-2,-3)$, $(4,-5)$ i
     $(-6,5)$ en color vermell i utilitzant un símbol diferent del que
@@ -676,20 +686,25 @@ que permet modificar alguna de les opcions dels dibuixos individuals.
     Dibuixeu els segments que uneixen aquests punts en color verd, i
     representeu-ho tot en un dibuix únic.
 
+
+
 7.  Feu una llista amb les coordenades dels sis vèrtexs
-de l'hexàgon regular inscrit en la circumferència de radi $1$, que són
-els punts de la forma
-$$\big(\cos(\tfrac{2k\pi}{6}),\sin(\tfrac{2k\pi}{6})\big), \quad\text{per a $k=0,\dots,5$}\ .$$
-Utilitzant la llista anterior i una instrucció `line`, dibuixeu aquest
-hexàgon (Tingueu en compte que també és molt possible que existeixi una
+	de l'hexàgon regular inscrit en la circumferència de radi $1$, que són
+	els punts de la forma
+	$$\big(\cos(\tfrac{2k\pi}{6}),\sin(\tfrac{2k\pi}{6})\big), \quad\text{per a $k=0,\dots,5$}\ .$$
+	Utilitzant la llista anterior i una instrucció `line`, dibuixeu aquest
+	hexàgon (Tingueu en compte que també és molt possible que existeixi una
     instrucció del tipus `polygon`).
 
-8. Definiu un diccionari on les claus siguint els nombres enters des de 2 fins a 10, i els valors 
-els seus quadrats. 
 
-9. Expliqueu com ho farieu per crear una nova llista d'una llista `L` que tingui els mateixos 
-elements que `L` però sense repeticions. 
 
-10. Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer 
-un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt
-cada lletra? Proveu-ho per `C='Mississipi'`.
+8. Definiu un diccionari on les claus siguint els nombres enters
+   des de 2 fins a 10, i els valors els seus quadrats.
+
+
+
+9. Expliqueu com ho farieu per crear una nova llista d'una llista `L` que tingui els mateixos elements que `L` però sense repeticions.
+
+
+
+10. Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt cada lletra? Proveu-ho per `C='Mississipi'`.
