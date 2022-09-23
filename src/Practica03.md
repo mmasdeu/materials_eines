@@ -638,7 +638,7 @@ paràbola $y= 9-x^2$ (de color vermell).
 recta = plot(-3*x+5, -3, 5, color='green'); recta
 parabola=plot(9-x^2, -3, 5, color='red'); parabola
 interseccio=point([(-1,8), (4,-7)], color='blue', marker="*", size=100)
-interseccio(recta+parabola+interseccio).show(xmin=-15, xmax=15, aspect_ratio=1)
+(recta+parabola+interseccio).show(xmin=-15, xmax=15, aspect_ratio=1)
 ```
 
 Observeu que el dibuix final s'ha generat amb una instrucció `show()`,
