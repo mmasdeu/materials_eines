@@ -271,9 +271,9 @@ Hi ha situacions en les que s'ha obtingut una certa expressió, que depèn
 d'un o més paràmetres, i es vol utilitzar aquest resultat com una funció
 d'aquests paràmetres (o, potser, només d'alguns d'ells). La instrucció
 que permet obtenir aquest resultat és la que apareix a la plantilla
-`expresssio.function(variables)` (que es podria llegir com: *l'expressió
-"tal" com a funció de les variables "qual"*) i es pot comprovar el seu
-funcionament en els exemples que venen a continuació. ``
+`expresssio.function(variables)` (que es podria llegir com: "l'expressió
+*tal* com a funció de les variables *qual*") i es pot comprovar el seu
+funcionament en els exemples que venen a continuació.
 
 ```sage
 expr = ln(3*x^3 + sqrt(x-1))
@@ -609,9 +609,9 @@ point((1,1))
 ```
 
 ```sage
-point(\[(0,2), (-1,-3), (3,1.5)\],\
+point([(0,2), (-1,-3), (3,1.5)],\
     xmin=-1.5, xmax=3.5, ymin=-3.5, ymax=2.5,\
-    color='red', marker=\"s\", size=25, aspect_ratio=1)
+    color='red', marker="s", size=25, aspect_ratio=1)
 ```
 
 A la mateixa pàgina d'abans `2D Plotting` de
@@ -623,7 +623,7 @@ segments que uneixen els punts, utilitzem la funció `line()`. L'argument
 principal és la llista de punts, com en el cas anterior. Per exemple:
 
 ```sage
-line(\[(0,2), (-1,-3), (3,1.5)\],\
+line([(0,2), (-1,-3), (3,1.5)],\
     xmin=-1.5, xmax=3.5, ymin=-3.5, ymax=2.5,\
     color='red', aspect_ratio=1)
 ```
@@ -638,8 +638,7 @@ paràbola $y= 9-x^2$ (de color vermell).
 recta = plot(-3*x+5, -3, 5, color='green'); recta
 parabola=plot(9-x^2, -3, 5, color='red'); parabola
 interseccio=point([(-1,8), (4,-7)], color='blue', marker="*", size=100)
-interseccio`
-(recta+parabola+interseccio).show(xmin=-15, xmax=15, aspect_ratio=1)
+interseccio(recta+parabola+interseccio).show(xmin=-15, xmax=15, aspect_ratio=1)
 ```
 
 Observeu que el dibuix final s'ha generat amb una instrucció `show()`,
