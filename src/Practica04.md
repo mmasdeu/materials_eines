@@ -96,7 +96,7 @@ Naturalment, la instrucció `if` també permet definir quines instruccions
 s'executen quan el test dona un valor fals (posant un `else`) i, fins i
 tot, encadenar dos o més blocs condicionals.
 
-Per exemple, el següent programa ``
+Per exemple, el següent programa 
 
 ```sage
 a = 2
@@ -258,6 +258,8 @@ while abs(s-sa) > di and k < mxi:
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
+    print(f"Despres de {k} iteracions,")
+    print("les dues ultimes aproximacions difereixen en")
     print("S'ha arribat al maxim d'iteracions previstes!!!")
     print("No és segur que el valor sigui prou ajustat")
 
@@ -397,7 +399,7 @@ def primer3(n):
 ```
 
 De fet, com que dins del condicional hi ha unes funcions que ja donen un
-booleà, encara ho podriem fer més concís escrivint simplement ``
+booleà, encara ho podriem fer més concís escrivint simplement 
 
 ```sage
 def primer3(n):
@@ -586,7 +588,7 @@ la funció.
 
 ## Més sobre les funcions de Python
 
-Recordeu que una funció ben definida en Python hauria de tenir un
+Una funció ben definida en Python hauria de tenir un
 docstring, o sigui un text explicatiu, que descrigui què fa la funció.
 És estàndard escriure una frase a la línia després de def amb tres `"` o `'`
 a cada banda. Si té més d'una línia es posen tres `"` o `'` en una línia a part.
