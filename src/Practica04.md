@@ -96,7 +96,7 @@ Naturalment, la instrucció `if` també permet definir quines instruccions
 s'executen quan el test dona un valor fals (posant un `else`) i, fins i
 tot, encadenar dos o més blocs condicionals.
 
-Per exemple, el següent programa ``
+Per exemple, el següent programa 
 
 ```sage
 a = 2
@@ -258,6 +258,8 @@ while abs(s-sa) > di and k < mxi:
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
+    print(f"Despres de {k} iteracions,")
+    print("les dues ultimes aproximacions difereixen en")
     print("S'ha arribat al maxim d'iteracions previstes!!!")
     print("No és segur que el valor sigui prou ajustat")
 
@@ -395,7 +397,7 @@ def primer3(n):
 ```
 
 De fet, com que dins del condicional hi ha unes funcions que ja donen un
-booleà, encara ho podriem fer més concís escrivint simplement ``
+booleà, encara ho podriem fer més concís escrivint simplement 
 
 ```sage
 def primer3(n):
@@ -515,7 +517,7 @@ seguim aquest procediment és el de l'exemple següent:
 ```sage
 def tresxmesun(k):
     if type(k) != Integer or k <= 0:
-        print "No es poden fer els càlculs."
+        print("No es poden fer els càlculs.")
         return None
     valor = k
     llista= [valor]
@@ -586,7 +588,7 @@ la funció.
 
 ## Més sobre les funcions de Python
 
-Recordeu que una funció ben definida en Python hauria de tenir un
+Una funció ben definida en Python hauria de tenir un
 docstring, o sigui un text explicatiu, que descrigui què fa la funció.
 És estàndard escriure una frase a la línia després de def amb tres `"` o `'`
 a cada banda. Si té més d'una línia es posen tres `"` o `'` en una línia a part.
@@ -657,6 +659,15 @@ def ICos(origen, precisio, maxit=10):
         sa,s = s,cos(s)
     return s, abs(s-sa) <= precisio
 ```
+Per exemple, repetint els càlculs anteriors surt: 
+
+```sage
+valor, certesa  = ICos(pi / 3, 0.00001)
+print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+valor, certesa = ICos(pi/3,0.00001,30)
+print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+```
+
 
 Una comanda més que es pot utilitzar amb les funcions enlloc del
 `return` és el `yield`: així com amb el `return`, un cop la funció
@@ -724,35 +735,29 @@ l'adequat) o `ValueError` (si el valor no és adequat), o altres tipus
 d'errors (`PrecisionError`, `RuntimeError`,...) (el tipus d'error és una cosa que decidiu vosaltres, però es bo
 que sigui el que correspon).
 
-Per exemple, en l'Exercici 5 dels exercicis de consolidació es demana
-fer una funció `Goldbach(n)` de manera que donat un nombre enter de **SageMath**
-que sigui parell i més gran que 4 ens retorni una llista amb les
-parelles de primers $(p,q)$ amb $p+q=n$ (i entendrem que $p\le q$). Per
-a tal de assegurar que ens passen una dada adequada podem fer
-
+Per exemple, abans hem fet la funció tresxmesun que ens imprimia un error 
+quan no es complien certes condicions. Una manera més adecuada de fer-ho és 
+que surti un missatge d'error. 
 
 ```sage
-def Goldbach(n):
-    """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n) != Integer:
+def tresxmesun(k):
+    if type(n)!= Integer:
         raise TypeError('No és un enter de Sage')
-    elif is_odd(n):
-        raise ValueError(f'El nombre {n} és senar')
-    elif n < 6:
-        raise ValueError(f'El nombre {n} és menor que 6')
-    return [(p, n-p) for p in prime_range(3, n // 2 + 1) if (n-p).is_prime()]
+    elif n <=0:
+        raise ValueError(f'El nombre {n} és menor o igual que 0')
+    valor = k
+    llista= [valor]
+    while valor != 1:
+        valor = valor / 2 if valor % 2 == 0 else 3 * valor + 1
+        llista.append(valor)
+    return llista
 ```
-
+Vegem que surt quan posem un nombre no adecuat en cada cas. 
 ```sage
-Goldbach(12/2)
+tresxmesun(12/2)
 ```
-
 ```sage
-Goldbach(11)
-```
-
-```sage
-Goldbach(4)
+tresxmesun(0)
 ```
 
 Una altra possibilitat que ens ofereix el Python és utilitzar el
@@ -761,30 +766,28 @@ satisfeta per seguir amb la funció, sinó retorna un error (de `assert`).
 Per exemple, el codi anterior es pot fer amb asserts com:
 
 ```sage
-def Goldbacha(n):
+def tresxmesun(k):
     assert type(n) == Integer,'Ha de ser un enter de sage'
-    assert is_even(n), f'El nombre {n} ha de ser parell'
-    assert n >= 6, f'El nombre {n} ha de ser com a mínim 6'
-    return [(p, n - p) for p in prime_range(3, n // 2 + 1) if (n-p).is_prime()]
-```
-
-```sage
-Goldbacha(12/2)
-```
-
-```sage
-Goldbacha(11)
-```
-
-```sage
-Goldbacha(4)
+    assert n > 0, f'El nombre {n} ha de ser més gran que 0'
+    valor = k
+    llista= [valor]
+    while valor != 1:
+        valor = valor / 2 if valor % 2 == 0 else 3 * valor + 1
+        llista.append(valor)
+    return llista
 ```
 
 Fixeu-vos que hem de posar la condició que s'ha de satisfer, (i no com
-abans, que posàvem la que no es satisfà). Ara, si posem `Goldbach(12/2)`
+abans, que posàvem la que no es satisfà). Ara, si posem `tresxmesun(12/2)`
 ens respon `AssertionError: Ha de ser un enter de sage`, i la resta igual
 amb un `AssertionError`. L'inconvenient és, per tant, que no et distingeix
-el tipus d'error. En general, l'`assert` només s'hauria de usar per
+el tipus d'error. 
+
+```sage
+tresxmesun(12/2)
+```
+
+En general, el `assert` només s'hauria de usar per
 casos que un no espera que passin mai però que es vol assegurar per
 evitar que el programa funcioni malament. En canvi el `raise` es pot
 utilitzar per casos que es poden donar i així avisar de què ha passat a
