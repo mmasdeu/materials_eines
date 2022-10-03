@@ -18,6 +18,7 @@ jupyter:
 
 ## Divisió entera
 
+
 La majoria de programes de càlcul simbòlic, i en particular
 **SageMath** quan realitzen divisions
 entre nombres enters donen com a resultat el número racional

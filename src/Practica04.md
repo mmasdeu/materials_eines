@@ -44,8 +44,8 @@ Un fet molt important del Python és que els espais són molt importants
 fa una nova linea dins d'un condicional, un bucle, una funció tipus
 programa, etc, s'ha de posar indentada: el
 **SageMath** ho fa automàticament normalment,
-però és important saber que aquesta indentació és clau i està definida
-com formada per 4 espais.
+però és important saber que aquesta indentació és clau, i es
+recomana que estigui formada per 4 espais.
 
 ## Execució condicional (`if`)
 
@@ -57,13 +57,13 @@ s'ha d'escriure una instrucció d'aquest tipus per tal de realitzar una
 acció o una altra segons el resultat d'un test:
 
 ```sage
-var('a b')
 a = 3
+b = 0
 if a == 4:
     b = a + 1
     print("Modificant b")
-print(f'{a=}')
-print(f'{b=}')
+print(f'{a = }')
+print(f'{b = }')
 ```
 
 En aquest cas es veu que, en ser el valor de `a` igual a 3, no es
@@ -84,7 +84,7 @@ es veu com apareix el text `Modificant b` i el valor de `b` passa a ser
 
 Segurament queda clar, després d'aquests dos exemples, que just darrera
 del `if` apareix la condició que es comprovarà, en forma d'equació, per
-tal d'executar la llista d'instruccions que va a continuació dels ` : `.
+tal d'executar la llista d'instruccions que va a continuació dels ":".
 Aquesta llista queda determinada (Python) pel fet que les instruccions
 corresponents s'escriuen indentades i quan s'acaben les instruccions
 d'execució condicional es tornen a escriure sense aquesta indentació
@@ -137,9 +137,9 @@ diferents situacions, canvieu el `a = 3` per `a = -pi`, per `a = 0` o per un
 Una altra estructura bàsica de programació és la de les iteracions
 (repetició d'un bloc d'instruccions un cert nombre de cops, utilitzant
 els valors obtingut en cada repetició per tal de realitzar els càlculs
-en la següent,...).Ja hem vist que per a generar llistes podem
+en la següent,...). Ja hem vist que per a generar llistes podem
 utilitzarel `for`. Fem primer un exemple calculant la suma dels quadrats
-de $1$ i $100$:
+de 1 a 100:
 
 ```sage
 suma = 0
@@ -171,26 +171,27 @@ exemple, si volem la suma dels quadrats dels nombres primers entre 1 i
 100 i posem
 
 ```sage
-sum(a^2 for a in range(101) if is_prime(a))
+sum(a^2 for a in range(101) if a.is_prime())
 ```
 
 no funciona, però sí si posem
 
 ```sage
-sum(a^2 for a in srange(101) if is_prime(a))
+sum(a^2 for a in srange(101) if a.is_prime())
 ```
 
 Observeu que quan assigneu un valor enter a una variable,
 **SageMath** el considera un enter de Sage i no de
-Python.
+Python, però en canvi la funció `range` retorna enters de Python.
 
 
 En altres situacions, el bloc d'instruccions que s'ha de repetir, en
 comptes de dependre del valor d'un índex, depèn d'una condició lligada a
-algun dels càlculs que s'estan realitzant: la instrucció és `while`.
+algun dels càlculs que s'estan realitzant. En aquests casos utilitzarem
+la instrucció és `while`.
 
 
-Per exemple, si volem fer una llista $L$ dels primers menors que 20 en
+Per exemple, si volem fer una llista `L` dels primers menors que 20 en
 ordre invers (de gran a petit) podem fer
 
 ```sage
@@ -212,10 +213,9 @@ L = []
 for p in srange(20,1,-1):
     if p.is_prime():
         L.append(p)
-L
 ```
 ```sage
-[p for p in srange(20,1,-1) if p.is_prime()]
+L = [p for p in srange(20,1,-1) if p.is_prime()]
 ```
 -- end hide
 
@@ -253,7 +253,7 @@ di = 1e-8; s=0.; sa = s+1; k=0
 mxi = 20 # Nombre màxim de repeticions del proces
 
 while abs(s-sa) > di and k < mxi:
-    k+=1; sa=s; s=cos(s)
+    k+ = 1; sa = s; s = cos(s)
     print(f'Iteració {k}, {s = }')
 
 # Es controla si s'han esgotat les repeticions previstes
@@ -272,15 +272,13 @@ ajustat.
 di = 1e-8; s = 0.; sa = s + 1; k = 0; mxi = 50
 
 while abs(s-sa) > di and k < mxi:
-    k+=1; sa=s; s=cos(s)
+    k += 1; sa = s; s = cos(s)
     if k == mxi:
         print("S'ha arribat al maxim d'iteracions previstes!!!")
         print("No és segur que el valor sigui prou ajustat")
     else:
-        print(f"Despres de {k} iteracions,")
-        print("les dues ultimes aproximacions difereixen en")
-        print(f"{abs(s-sa).n(digits=3)}, i són:")
-        print(sa, s)
+        print(f"Després de {k} iteracions, les dues últimes aproximacions difereixen en")
+        print(f"{abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
 ```
 
 De forma semblant a l'anterior, es pot aturar l'execució d'un `for`
@@ -290,7 +288,7 @@ programadors que no recomanen la utilització del `break` per ser poc
 estructurada).
 
 Per exemple, podem localitzar el nombre primer que és immediatament
-inferior a $a=1000$ (càlcul que ja realitza la funció `previous_prime`)
+inferior a 1000 (càlcul que ja realitza la funció `previous_prime`)
 amb les instruccions següents: ``
 
 ```sage
@@ -369,12 +367,12 @@ incloure de forma obvia un condicional `if` dins la definició d'una
 funció). En aquestes situacions cal generar objectes de tipus programa
 utilitzant l'estructura `def`.
 
-Veiem un exemple d'aquesta estructura. La següent funció retornarà
-`True` or `False` (els booleans) depenent de si el nombre que li passem
+Vegem un exemple d'aquesta estructura. La següent funció retornarà
+`True` o `False` (els booleans) depenent de si el nombre que li passem
 és primer i dona residu 1 si el dividim per 3 (equivalentment, al
 restar-li 1 és divisible per 3). Hem utilitzat una funció de Python molt
 important que és `a % b`, que si $a$ i $b$ són dos nombres enters $>0$,
-retorna el residuu de dividir $a$ entre $b$ (en una propera pràctica
+retorna el residu de dividir $a$ entre $b$ (en una propera pràctica
 l'estudiarem amb més detall).
 
 ```sage
@@ -411,7 +409,7 @@ primer3 = lambda n : n.is_prime() and n % 3 == 1
 ```
 
 Cal dir que aquesta funció es podria optimitzar per tal que comproves
-primer si el valor de `n` és un nombre enter de Sage, i retornés `False`
+primer si el valor de `n` és un nombre enter de **SageMath**, i retornés `False`
 o un error si no ho fos; això es pot fer usant la funció `type`, que
 retorna el "tipus" del valor passat: en el cas que ens interessa,
 ha de ser de tipus `Integer`.
@@ -431,13 +429,16 @@ primers menors que 100 i amb resta 1 al dividir per 3:
 L = [n for n in range(100) if primer3(n)]
 ```
 
-Les funcions, en principi, poden no necessitar cap dada incial ni tant
+Les funcions, en principi, poden no necessitar cap dada inicial ni tant
 sols retornar res (en aquest cas, retornen un tipus buit, que s'anomena `None`). Per exemple:
 
 ```sage
 def hola():
-    print('Hola que tal!')
+    print('Hola que tal!') # No retorna res, simplement escriu una cadena.
+ret = hola()
+print(f'{ret = }')
 ```
+
 Un altre exemple més sofisticat per a fer els càlculs de les iteracions
 de la funció cosinus que ja han aparegut anteriorment defininint una
 funció designada com `ICos`. Aquesta funció acceptarà tres arguments (el
@@ -467,9 +468,8 @@ def ICos(origen, precisio, maxit):
             print("No es segur que el valor sigui prou ajustat")
             print("El resultat correspon a l'ultim valor obtingut.")
         else:
-            print(f"Despres de {k} iteracions,les dues ultimes ")
-            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i son:")
-            print(sa, s)
+            print(f"Despres de {k} iteracions,les dues últimes ")
+            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
             print(45 * '*')
     return s
 ```
@@ -621,8 +621,7 @@ def ICos(origen, precisio, maxit=10):
             print("El resultat correspon a l'ultim valor obtingut.")
         else:
             print(f"Despres de {k} iteracions,les dues ultimes ")
-            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i son:")
-            print(sa, s)
+            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
             print(45 * '*')
     return s
 ```
@@ -721,12 +720,12 @@ Una altra eina que hauríeu de conèixer de les funcions és com fer que
 doni un error en el cas que no se li passin entrades adequades. Això
 s'hauria de fer amb la comanda `raise`. Quan es troba un `raise` la funció para i envia un missatge d'error.
 Aquest missatge es pot posar escrivint `TypeError` (si el tipus no és
-l'adequat) o `ValueError` (si el valor no és el adequat), o altres tipus
-d'errors (el tipus d'error és una cosa que decidiu vosaltres, però es bo
+l'adequat) o `ValueError` (si el valor no és adequat), o altres tipus
+d'errors (`PrecisionError`, `RuntimeError`,...) (el tipus d'error és una cosa que decidiu vosaltres, però es bo
 que sigui el que correspon).
 
-Per exemple, en l'exercici 5 dels exercicis de consolidació es demanava
-fer una funció `Goldbach(n)` de manera que donat un nombre enter de Sage
+Per exemple, en l'Exercici 5 dels exercicis de consolidació es demana
+fer una funció `Goldbach(n)` de manera que donat un nombre enter de **SageMath**
 que sigui parell i més gran que 4 ens retorni una llista amb les
 parelles de primers $(p,q)$ amb $p+q=n$ (i entendrem que $p\le q$). Per
 a tal de assegurar que ens passen una dada adequada podem fer
@@ -735,13 +734,13 @@ a tal de assegurar que ens passen una dada adequada podem fer
 ```sage
 def Goldbach(n):
     """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n)! = Integer:
+    if type(n) != Integer:
         raise TypeError('No és un enter de Sage')
     elif is_odd(n):
         raise ValueError(f'El nombre {n} és senar')
     elif n < 6:
         raise ValueError(f'El nombre {n} és menor que 6')
-    return [(p,n-p) for p in prime_range(3, n//2 + 1) if (n-p).is_prime()]
+    return [(p, n-p) for p in prime_range(3, n // 2 + 1) if (n-p).is_prime()]
 ```
 
 ```sage
@@ -756,10 +755,6 @@ Goldbach(11)
 Goldbach(4)
 ```
 
-Fixeu-vos que per imprimir el nombre `n` en el error el que he fet ha
-estat transformar-lo en una cadena (string) amb `str(n)`, i després hem
-sumat les cadenes (que equival a posar-les una rere l'altra).
-
 Una altra possibilitat que ens ofereix el Python és utilitzar el
 `assert`: es tracta de demanar que una certa condició ha de ser
 satisfeta per seguir amb la funció, sinó retorna un error (de `assert`).
@@ -770,7 +765,7 @@ def Goldbacha(n):
     assert type(n) == Integer,'Ha de ser un enter de sage'
     assert is_even(n), f'El nombre {n} ha de ser parell'
     assert n >= 6, f'El nombre {n} ha de ser com a mínim 6'
-    return [(p, n - p) for p in prime_range(3,n // 2 + 1) if (n-p).is_prime()]
+    return [(p, n - p) for p in prime_range(3, n // 2 + 1) if (n-p).is_prime()]
 ```
 
 ```sage
@@ -789,7 +784,7 @@ Fixeu-vos que hem de posar la condició que s'ha de satisfer, (i no com
 abans, que posàvem la que no es satisfà). Ara, si posem `Goldbach(12/2)`
 ens respon `AssertionError: Ha de ser un enter de sage`, i la resta igual
 amb un `AssertionError`. L'inconvenient és, per tant, que no et distingeix
-el tipus d'error. En general, el `assert` només s'hauria de usar per
+el tipus d'error. En general, l'`assert` només s'hauria de usar per
 casos que un no espera que passin mai però que es vol assegurar per
 evitar que el programa funcioni malament. En canvi el `raise` es pot
 utilitzar per casos que es poden donar i així avisar de què ha passat a
@@ -798,43 +793,43 @@ comentarem.
 
 ## Try i except
 
-Finalment explicarem l'us de try i except, que justament són molt útils
+Finalment explicarem l'us de `try` i `except`, que justament són molt útils
 a l'hora de programar una funció. La idea és que ens concentrem en el
-funcioament normal, i tractem a part els casos excepcionals (que poden
+funcionament normal, i tractem a part els casos excepcionals (que poden
 ser errors o no).
 
 La sintaxi és la següent: tot el que hi ha entre el `try` i un `except`
 s'executa. Si hi ha alguna *excepció* (el que abans en dèiem *errors*)
-aleshores **Python** va executa bloc `except` corresponent si existeix
+aleshores **Python** executa bloc `except` corresponent si existeix
 (si no existeix, aleshores retorna l'error com seria habitual). Si no
 escrivim cap tipus d'error després d'`except` aleshores s'intercepten
 **totes** les exepcions, fins i tot la que es produeix quan intentem
-aturar l'execució mitjançant *Ctrl + C*.
+aturar l'execució mitjançant *Ctrl + C* (que generen una excepció
+de tipus `KeyboardInterrupt`).
 
 
 Per exemple, imaginem que volem avaluar la funció $\sin(x)/x$, que la
 podem pensar com a
 ben definida per a tot $x$, ja que per a $x=0$ el seu limit val $1$.
 Però si executem $sin(0) / 0$ el **SageMath** ens dona
-un error de divisió per zero. Una possibilitat podria ser definir la
+un error de divisió per zero (`ZeroDivisionError`). Una possibilitat podria ser definir la
 següent funció:
 
 
 ```sage
-def sinxpartitperx(a):
+def sinc(a):
     try:
-        f = (sin(a) / a).n()
-        return f
+        return (sin(a) / a).n()
     except ZeroDivisionError:
         return 1
 ```
 
 ```sage
-sinxpartitperx(1)
+sinc(1)
 ```
 
 ```sage
-sinxpartitperx(0)
+sinc(0)
 ```
 
 El que fa la funció és provar d'avaluar $sin(x) / x$, i, si pot, retorna
@@ -874,7 +869,7 @@ p = 2
 while p < 101:
     if p % 4 == 1:
         s += p
-    p = p.next_prime() 
+    p = p.next_prime()
 print(s)
 ```
 
@@ -891,9 +886,9 @@ sum(p for p in srange(1,100,4) if p.is_prime())
 -- end hide
 
 ### Exercici 2
-Recordeu que la successió de Fibonacci, $(f_n)_n$, es defineix de
-forma iterativa a partir de $f_0=1$, $f_1=1$ i la regla
-$$f_k=f_{k-1}+f_{k-2}\quad \text{ per a tot }k\geq 2.$$
+Recordeu que la successió de Fibonacci, $(F_n)_n$, es defineix de
+forma iterativa a partir de $F_0=0$, $F_1=1$ i la regla
+$$F_k=F_{k-1}+F_{k-2}\quad \text{ per a tot }k\geq 2.$$
 
 - Construïu un programa `Fib()` que tingui com argument un enter
  $k$ (`Fib(k)`) i doni com a resultat la llista dels primers $k$
@@ -903,15 +898,15 @@ $$f_k=f_{k-1}+f_{k-2}\quad \text{ per a tot }k\geq 2.$$
 ```sage
 def Fib(k):
     '''Calcula la llista dels nombres de Fibonacci fins el k-èssim'''
-    if type(k) != Integer or k<0:
-        print("No és un valor admissible")
-        return                # Si no és un enter >=0, fem que no retorni res
-    if k == 0:
-        return [1]            #Per a k=0 retorna només la llista amb el 1. 
-    F=[1,1]                   #Inicialitzem la llista amb els dos primers valors
-    for i in range(k-1):      #El bucle va fins a k-1 ja que el 0 i el 1 ja estan
-        f=F[i]+F[i+1]
-        F.append(f)
+    if type(k) != Integer:
+		raise TypeError('El paràmetre k no és un enter.')
+	elif k < 0:
+		raise ValueError(f'El paràmetre {k = } ha de ser no-negatiu')
+    elif k == 0:
+        return [0] # Per a k = 0 retorna només la llista amb el 0.
+    F = [0, 1] #Inicialitzem la llista amb els dos primers valors
+	while len(F) < k + 1:
+		F.append(F[-1] + F[-2]) # Sumem el penúltim i avantpenúltim elements.
     return(F)
 ```
 -- end hide
@@ -923,11 +918,10 @@ def Fib(k):
 -- begin hide
 ```sage
 def llistaFib(N):
-    F=Fib(N)
-    llista=[(k,F[k]/F[k-1]) for k in [1..N]]
+    F = Fib(N)
+    llista = [(k, F[k] / F[k-1]) for k in [1..N]]
     return points(llista)
-
-llistaFib(20)
+plot(llistaFib(20))
 ```
 -- end hide
 
@@ -956,10 +950,10 @@ Farem un bucle amb el for per a fer les 100 passades. Si el iterador es diu $i$,
 
 ```sage
 for i in range(100):
-    r=i                        #La primera porta en el primer pas en la iteració i està en el lloc i de la llista
-    while(r<100):
-        Portes[r]=1-Portes[r]  #Obrim o tanquem la porta en el lloc r
-        r+=i+1                 #Saltem anem a buscar la porta que està i+1 llocs de distància
+    r = i                        # La primera porta en el primer pas en la iteració i està en el lloc i de la llista
+    while r < 100:
+        Portes[r] = 1 - Portes[r]  # Obrim o tanquem la porta en el lloc r
+        r += i+1                   # Saltem anem a buscar la porta que està i+1 llocs de distància
 print(Portes)
 ```
 
@@ -975,15 +969,15 @@ Fixeu-vos que el nombre de vegades que passem per una porta és igual al nombre 
 [number_of_divisors(i+1).mod(2) for i in range(100)] == Portes
 ```
 
-Hem fet una nova versió utilitzant dos bucles `for`: el primer controla les passades, el segon el procés de tancar i obrir portes. Noteu que 
+Hem fet una nova versió utilitzant dos bucles `for`: el primer controla les passades, el segon el procés de tancar i obrir portes.
 
 ```sage
 PortesN=[0 for a in range(100)]
 for i in [1..100]:
-    for r in [i..100,step=i]:        #la r es mou des del lloc i al lloc 100 de i en i.
-        PortesN[r-1]=1-PortesN[r-1]  #Obrim o tanquem la porta r-èssima, que es troba en el lloc r-1 de la llista
+    for r in [i, 2*i..100]:        #la r es mou des del lloc i al lloc 100 de i en i.
+        PortesN[r-1] = 1 - PortesN[r-1]  #Obrim o tanquem la porta r-èssima, que es troba en el lloc r-1 de la llista
 print(PortesN)
-print("Comprovem que surt la mateixa llista : ",PortesN==Portes)
+print("Comprovem que surt la mateixa llista : ",PortesN == Portes)
 ```
 -- end hide
 
@@ -1003,32 +997,33 @@ indicant, si és el cas, les passes que s'han realitzat.
 
 -- begin hide
 
-Com que volem fer un pas aleatori, escollim un nombre aleatori entre 1 i 4, i després assinem el pas corresponent al nombre. El que hem fet és definir una variable que sigui un boobleà (bo), i que passi a ser False quan retornem al (0,0) o bé haguem fet el nombre de passos que hem dit previament (=1000).
+Com que volem fer un pas aleatori, escollim un nombre aleatori entre 1 i 4, i després assignem el pas corresponent al nombre.
+El que hem fet és definir una variable que sigui un boobleà (bo), i que passi a ser False quan retornem al (0,0) o bé haguem fet el nombre de passos que hem dit prèviament (=1000).
 
 ```sage
-pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
-llista=[pt]                #Llista de punts per on passarem
-fi=1000                    #Nombre màxim de passos a fer.
-bo=True                    #Boobleà que val True mentre no tornem a (0,0) o fem fi passos
-while(bo):                 
-    pas=randint(1,4)
-    if pas ==1: 
-        pt[0]=pt[0]+1
-    elif pas==2:
-        pt[1]=pt[1]+1
-    elif pas==3:
-        pt[0]=pt[0]-1
+pt = [0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
+llista = [pt]                #Llista de punts per on passarem
+fi = 1000                    #Nombre màxim de passos a fer.
+bo = True                    #Boobleà que val True mentre no tornem a (0,0) o fem fi passos
+while bo:
+    pas = randint(1,4)
+    if pas ==1:
+        pt[0] += 1
+    elif pas == 2:
+        pt[1] += 1
+    elif pas == 3:
+        pt[0] -= 1
     else:
-        pt[1]=pt[1]-1
+        pt[1] -= 1
     llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
-    bo=(pt!=[0,0]) and (len(llista)< fi)       #El booleà valdrà False si pt=[0,0] o hem fet fi o més passos. 
+    bo = (pt != [0,0]) and (len(llista) < fi)       #El booleà valdrà False si pt=[0,0] o hem fet fi o més passos. 
 print(len(llista))
 ```
 
-**Penseu:** perquè hem fet així i no hem posat directament 
+**Penseu:** perquè hem fet així i no hem posat directament
 
 ```sage
-while ((pt!=[0,0]) and (len(llista)< fi) ): ?
+while ((pt != [0,0]) and (len(llista) < fi) ): ?
 ```
 
 Proveu de fer el mateix amb un `for` i un `break`.
@@ -1037,22 +1032,19 @@ Proveu de fer el mateix amb un `for` i un `break`.
 line(llista)
 ```
 
-Poso una altra manera per veure si ho veieu més clar
-
-
-Podriem fer el mateix creant una llista de passos i fent un primer pas abans. 
+Una altra manera on potser es veu més clar: podriem fer el mateix creant una llista de passos i fent un primer pas abans.
 
 ```sage
-pt=[0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
-llista=[pt]                #Llista de punts per on passarem
-fi=1000                    #Nombre màxim de passos a fer.
-passos=[[1,0],[0,1],[-1,0],[0,-1]]
-pas=randint(0,3)           #Fem un primer pas fora del while per poder posar el boobleà al while
-pt = [pt[i]+passos[pas][i] for i in range(2)]
-llista.append(copy(pt))                    
-while((pt!=[0,0]) and (len(llista)< fi)):                 
-    pas=randint(0,3)
-    pt = [pt[i]+passos[pas][i] for i in range(2)]
+pt = [0,0]                   #Punt inicial. Es una llista doncs les tuples no es poden modificar un de les coordenades.
+llista = [pt]                #Llista de punts per on passarem
+fi = 1000                    #Nombre màxim de passos a fer.
+passos = [[1,0],[0,1],[-1,0],[0,-1]]
+pas = passos[randint(0,3)]           #Fem un primer pas fora del while per poder posar el boobleà al while
+pt = [pt[i] + pas[i] for i in range(2)]
+llista.append(copy(pt))
+while pt != [0,0] and len(llista) < fi:
+    pas = passos[randint(0,3)]
+    pt = [pt[i] + pas[i] for i in range(2)]
     llista.append(copy(pt))                    #Afegim una copia del punt, per assegurar que no canviarà al canviar el punt
 print(len(llista))
 ```
