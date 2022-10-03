@@ -746,7 +746,7 @@ a tal de assegurar que ens passen una dada adequada podem fer
 ```sage
 def Goldbach(n):
     """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n)! = Integer:
+    if type(n)!= Integer:
         raise TypeError('No és un enter de Sage')
     elif is_odd(n):
         raise ValueError(f'El nombre {n} és senar')
