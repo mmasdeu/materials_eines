@@ -758,7 +758,7 @@ Vegem que surt quan posem un nombre no adecuat en cada cas.
 tresxmesun(12/2)
 ```
 ```sage
-tresxmesun(-1)
+tresxmesun(0)
 ```
 
 Una altra possibilitat que ens ofereix el Python és utilitzar el
@@ -769,7 +769,7 @@ Per exemple, el codi anterior es pot fer amb asserts com:
 ```sage
 def tresxmesun(k):
     assert type(n) == Integer,'Ha de ser un enter de sage'
-    assert n > 0, f'El nombre {n} ha de ser més gra que 0'
+    assert n > 0, f'El nombre {n} ha de ser més gran que 0'
     valor = k
     llista= [valor]
     while valor != 1:
@@ -786,9 +786,6 @@ el tipus d'error.
 
 ```sage
 tresxmesun(12/2)
-```
-```sage
-tresxmesun(-1)
 ```
 
 En general, el `assert` només s'hauria de usar per
