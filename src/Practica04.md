@@ -517,7 +517,7 @@ seguim aquest procediment és el de l'exemple següent:
 ```sage
 def tresxmesun(k):
     if type(k) != Integer or k <= 0:
-        print "No es poden fer els càlculs."
+        print("No es poden fer els càlculs.")
         return None
     valor = k
     llista= [valor]
@@ -660,6 +660,15 @@ def ICos(origen, precisio, maxit=10):
         sa,s = s,cos(s)
     return s, abs(s-sa) <= precisio
 ```
+Per exemple, repetint els càlculs anteriors surt: 
+
+```sage
+valor, certesa  = ICos(pi / 3, 0.00001)
+print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+valor, certesa = ICos(pi/3,0.00001,30)
+print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+```
+
 
 Una comanda més que es pot utilitzar amb les funcions enlloc del
 `return` és el `yield`: així com amb el `return`, un cop la funció
