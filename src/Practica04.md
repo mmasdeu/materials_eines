@@ -736,40 +736,30 @@ l'adequat) o `ValueError` (si el valor no és el adequat), o altres tipus
 d'errors (el tipus d'error és una cosa que decidiu vosaltres, però es bo
 que sigui el que correspon).
 
-Per exemple, en l'exercici 5 dels exercicis de consolidació es demanava
-fer una funció `Goldbach(n)` de manera que donat un nombre enter de Sage
-que sigui parell i més gran que 4 ens retorni una llista amb les
-parelles de primers $(p,q)$ amb $p+q=n$ (i entendrem que $p\le q$). Per
-a tal de assegurar que ens passen una dada adequada podem fer
-
+Per exemple, abans hem fet la funció tresxmesun que ens imprimia un error 
+quan no es complien certes condicions. Una manera més adecuada de fer-ho és 
+que surti un missatge d'error. 
 
 ```sage
-def Goldbach(n):
-    """ Retorna la llista de parelles de primers senars que sumen n """
+def tresxmesun(k):
     if type(n)!= Integer:
         raise TypeError('No és un enter de Sage')
-    elif is_odd(n):
-        raise ValueError(f'El nombre {n} és senar')
-    elif n < 6:
-        raise ValueError(f'El nombre {n} és menor que 6')
-    return [(p,n-p) for p in prime_range(3, n//2 + 1) if (n-p).is_prime()]
+    elif n <=0:
+        raise ValueError(f'El nombre {n} és menor o igual que 0')
+    valor = k
+    llista= [valor]
+    while valor != 1:
+        valor = valor / 2 if valor % 2 == 0 else 3 * valor + 1
+        llista.append(valor)
+    return llista
 ```
-
+Vegem que surt quan posem un nombre no adecuat en cada cas. 
 ```sage
-Goldbach(12/2)
+tresxmesun(12/2)
 ```
-
 ```sage
-Goldbach(11)
+tresxmesun(-1)
 ```
-
-```sage
-Goldbach(4)
-```
-
-Fixeu-vos que per imprimir el nombre `n` en el error el que he fet ha
-estat transformar-lo en una cadena (string) amb `str(n)`, i després hem
-sumat les cadenes (que equival a posar-les una rere l'altra).
 
 Una altra possibilitat que ens ofereix el Python és utilitzar el
 `assert`: es tracta de demanar que una certa condició ha de ser
@@ -777,30 +767,31 @@ satisfeta per seguir amb la funció, sinó retorna un error (de `assert`).
 Per exemple, el codi anterior es pot fer amb asserts com:
 
 ```sage
-def Goldbacha(n):
+def tresxmesun(k):
     assert type(n) == Integer,'Ha de ser un enter de sage'
-    assert is_even(n), f'El nombre {n} ha de ser parell'
-    assert n >= 6, f'El nombre {n} ha de ser com a mínim 6'
-    return [(p, n - p) for p in prime_range(3,n // 2 + 1) if (n-p).is_prime()]
-```
-
-```sage
-Goldbacha(12/2)
-```
-
-```sage
-Goldbacha(11)
-```
-
-```sage
-Goldbacha(4)
+    assert n > 0, f'El nombre {n} ha de ser més gra que 0'
+    valor = k
+    llista= [valor]
+    while valor != 1:
+        valor = valor / 2 if valor % 2 == 0 else 3 * valor + 1
+        llista.append(valor)
+    return llista
 ```
 
 Fixeu-vos que hem de posar la condició que s'ha de satisfer, (i no com
-abans, que posàvem la que no es satisfà). Ara, si posem `Goldbach(12/2)`
+abans, que posàvem la que no es satisfà). Ara, si posem `tresxmesun(12/2)`
 ens respon `AssertionError: Ha de ser un enter de sage`, i la resta igual
 amb un `AssertionError`. L'inconvenient és, per tant, que no et distingeix
-el tipus d'error. En general, el `assert` només s'hauria de usar per
+el tipus d'error. 
+
+```sage
+tresxmesun(12/2)
+```
+```sage
+tresxmesun(-1)
+```
+
+En general, el `assert` només s'hauria de usar per
 casos que un no espera que passin mai però que es vol assegurar per
 evitar que el programa funcioni malament. En canvi el `raise` es pot
 utilitzar per casos que es poden donar i així avisar de què ha passat a
