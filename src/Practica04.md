@@ -238,7 +238,7 @@ while abs(s-sa) > di:
     k += 1
     sa , s = s , cos(s)
     print(f'Iteració {k}, {s = }')
-print(f'Els valors finals són {sa=} i {s= })
+print(f'Els valors finals són {sa=} i {s= }')
 ```
 
 És fàcil que un bucle de repetició `while` es converteixi en un bloc que
