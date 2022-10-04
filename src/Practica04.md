@@ -235,7 +235,8 @@ sa = s+1 # Valor inicial per a l'aproximacio anterior
 k = 0 #Variable que controla el nombre de repeticions
 
 while abs(s-sa) > di:
-    k += 1; sa = s; s = cos(s)
+    k += 1
+    sa , s = s , cos(s)
     print(f'Iteració {k}, {s = }')
 show(sa, s)
 ```
@@ -244,43 +245,51 @@ show(sa, s)
 no s'atura mai (si no s'ha controlat bé que la condició de repetició
 realment s'acabi per complir en algun moment raonable). Per tant, el
 càlcul anterior resultarà més correcte si es controla el nombre de cops
-que s'ha de repetir el procés. Per exemple:
+que s'ha de repetir el procés. El que farem també es que no vagi imprimint 
+tots els valors intermedis. 
 
 ```sage
-
-di = 1e-8; s=0.; sa = s+1; k=0
+di = 1e-8
+s=0.
+sa = s+1
+k=0
 
 mxi = 20 # Nombre màxim de repeticions del proces
 
 while abs(s-sa) > di and k < mxi:
-    k+ = 1; sa = s; s = cos(s)
-    print(f'Iteració {k}, {s = }')
+    k += 1
+    sa , s = s , cos(s)
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
-    print(f"Despres de {k} iteracions,")
-    print("les dues ultimes aproximacions difereixen en")
     print("S'ha arribat al maxim d'iteracions previstes!!!")
     print("No és segur que el valor sigui prou ajustat")
-
-show(sa, s)
+else:
+    print(f"Després de {k} iteracions, les dues últimes aproximacions difereixen en")
+    print(f"{abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
 ```
 
 Encara que si deixem repetir més cops tornem a tenir un resultat prou
 ajustat.
 
 ```sage
-
-di = 1e-8; s = 0.; sa = s + 1; k = 0; mxi = 50
+di = 1e-8
+s=0.
+sa = s+1
+k=0
+mxi = 50
 
 while abs(s-sa) > di and k < mxi:
-    k += 1; sa = s; s = cos(s)
-    if k == mxi:
-        print("S'ha arribat al maxim d'iteracions previstes!!!")
-        print("No és segur que el valor sigui prou ajustat")
-    else:
-        print(f"Després de {k} iteracions, les dues últimes aproximacions difereixen en")
-        print(f"{abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
+    k += 1
+    sa , s = s , cos(s)
+
+# Es controla si s'han esgotat les repeticions previstes
+if k == mxi:
+    print("S'ha arribat al maxim d'iteracions previstes!!!")
+    print("No és segur que el valor sigui prou ajustat")
+else:
+    print(f"Després de {k} iteracions, les dues últimes aproximacions difereixen en")
+    print(f"{abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
 ```
 
 De forma semblant a l'anterior, es pot aturar l'execució d'un `for`
@@ -296,7 +305,7 @@ amb les instruccions següents: ``
 ```sage
 
 a = 1000
-for p in [a-1, a-2..1]:
+for p in srange(a,1,-1):
     if p.is_prime():
         break
 print(p)
@@ -461,18 +470,17 @@ def ICos(origen, precisio, maxit):
     s = origen.n()
     sa = s+1
     k = 0
-    print(45 * '*')
     while abs(s-sa) > precisio and k < maxit:
-        k += 1; sa = s; s = cos(s)
-        print(f'Iteracio {k}, {s = }')
-        if k == maxit:
-            print("S'ha arribat al maxim d'iteracions previstes!!!")
-            print("No es segur que el valor sigui prou ajustat")
-            print("El resultat correspon a l'ultim valor obtingut.")
-        else:
-            print(f"Despres de {k} iteracions,les dues últimes ")
-            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
-            print(45 * '*')
+        k += 1
+	sa , s = s , cos(s)
+    if k == maxit:
+        print("S'ha arribat al maxim d'iteracions previstes!!!")
+        print("No es segur que el valor sigui prou ajustat")
+        print("El resultat correspon a l'ultim valor obtingut.")
+    else:
+        print(f"Despres de {k} iteracions,les dues últimes ")
+        print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
+        print(45 * '*')
     return s
 ```
 ```sage
@@ -613,18 +621,16 @@ def ICos(origen, precisio, maxit=10):
     s=origen.n()
     sa=s+1
     k=0
-    print(30 * '*')
     while abs(s-sa) > precisio and k < maxit:
-        k += 1; sa = s; s = cos(s)
-        print(f'Iteracio {k}, {s = }')
-        if k == maxit:
-            print("S'ha arribat al maxim d'iteracions previstes!!!")
-            print("No es segur que el valor sigui prou ajustat")
-            print("El resultat correspon a l'ultim valor obtingut.")
-        else:
-            print(f"Despres de {k} iteracions,les dues ultimes ")
-            print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
-            print(45 * '*')
+        k += 1
+	sa , s = s , cos(s)
+    if k == maxit:
+        print("S'ha arribat al maxim d'iteracions previstes!!!")
+        print("No es segur que el valor sigui prou ajustat")
+        print("El resultat correspon a l'ultim valor obtingut.")
+    else:
+        print(f"Després de {k} iteracions,les dues ultimes ")
+        print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
     return s
 ```
 
@@ -741,10 +747,10 @@ que surti un missatge d'error.
 
 ```sage
 def tresxmesun(k):
-    if type(n)!= Integer:
+    if type(k)!= Integer:
         raise TypeError('No és un enter de Sage')
-    elif n <=0:
-        raise ValueError(f'El nombre {n} és menor o igual que 0')
+    elif k <=0:
+        raise ValueError(f'El nombre {k} és menor o igual que 0')
     valor = k
     llista= [valor]
     while valor != 1:
@@ -767,8 +773,8 @@ Per exemple, el codi anterior es pot fer amb asserts com:
 
 ```sage
 def tresxmesun(k):
-    assert type(n) == Integer,'Ha de ser un enter de sage'
-    assert n > 0, f'El nombre {n} ha de ser més gran que 0'
+    assert type(k) == Integer,'Ha de ser un enter de sage'
+    assert k > 0, f'El nombre {k} ha de ser més gran que 0'
     valor = k
     llista= [valor]
     while valor != 1:
