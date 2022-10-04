@@ -199,7 +199,7 @@ L = []
 a = 20
 while a > 0:
     if a.is_prime():
-		L.append(a)
+        L.append(a)
     a -= 1
 print(L)
 ```
@@ -238,7 +238,7 @@ while abs(s-sa) > di:
     k += 1
     sa , s = s , cos(s)
     print(f'Iteració {k}, {s = }')
-show(sa, s)
+print(f'Els valors finals són {sa=} i {s= })
 ```
 
 És fàcil que un bucle de repetició `while` es converteixi en un bloc que
@@ -394,6 +394,12 @@ def primer3(n):
         return False
 ```
 
+```sage
+print(primer3(11))
+print(primer3(13))
+```
+
+
 Com a comentari, vegeu que rere la instrucció `return` hi ha el que
 volem que retorni la funció, en cada cas. Un cop executa un `return` la
 funció s'acaba, i per tant també es pot escriure
@@ -413,11 +419,17 @@ def primer3(n):
     return n.is_prime() and n % 3 == 1
 ```
 
+```sage
+print(primer3(11))
+print(primer3(13))
+```
+
 Quan tenim una funció tan curta, podem escriure-la també en notació *lambda*:
 
 ```sage
 primer3 = lambda n : n.is_prime() and n % 3 == 1
 ```
+
 
 Cal dir que aquesta funció es podria optimitzar per tal que comproves
 primer si el valor de `n` és un nombre enter de **SageMath**, i retornés `False`
@@ -472,7 +484,7 @@ def ICos(origen, precisio, maxit):
     k = 0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-	sa , s = s , cos(s)
+        sa , s = s , cos(s)
     if k == maxit:
         print("S'ha arribat al maxim d'iteracions previstes!!!")
         print("No es segur que el valor sigui prou ajustat")
@@ -623,7 +635,7 @@ def ICos(origen, precisio, maxit=10):
     k=0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-	sa , s = s , cos(s)
+        sa , s = s , cos(s)
     if k == maxit:
         print("S'ha arribat al maxim d'iteracions previstes!!!")
         print("No es segur que el valor sigui prou ajustat")
@@ -662,7 +674,7 @@ def ICos(origen, precisio, maxit=10):
     k=0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-        sa,s = s,cos(s)
+        sa , s = s , cos(s)
     return s, abs(s-sa) <= precisio
 ```
 Per exemple, repetint els càlculs anteriors surt: 
