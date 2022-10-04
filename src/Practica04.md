@@ -505,11 +505,11 @@ Noteu que totes les variables que reben valors en la descripció de
 s'ha acabat l'execució del programa, tornen al seu estat anterior. (Se
 sol dir que són variables *locals*.). Per exemple, `k`, `s`, `sa` i
 `origen` en la funció anterior. Si la variable ja tenia un valor
-assignat, no canvia. Per exemple ``
+assignat, no canvia. Per exemple 
 
 ```sage
 k=10
-ICos(2,0.001,20)
+print(ICos(2,0.001,20))
 print(k)
 ```
 
