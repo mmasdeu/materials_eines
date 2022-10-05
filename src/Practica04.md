@@ -490,9 +490,8 @@ def ICos(origen, precisio, maxit):
         print("No es segur que el valor sigui prou ajustat")
         print("El resultat correspon a l'ultim valor obtingut.")
     else:
-        print(f"Despres de {k} iteracions,les dues últimes ")
+        print(f"Després de {k} iteracions,les dues últimes ")
         print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
-        print(45 * '*')
     return s
 ```
 ```sage
@@ -737,7 +736,7 @@ En general, es recomanable que una funció (acabada) de Python
 5.  No imprimeixi cap missatge entremig (a menys que siguin missatges
     d'error).
 
-Es poden posar `print`s en mig d'una funció mentre s'està programant per a
+Es poden posar `print`s enmig d'una funció mentre s'està programant per a
 veure si fa el que un vol, però no és recomanable fer-ho quan la funció
 està acabada, o com a mínim no per defecte. En qualsevol cas, les
 funcions haurien de retornar el que es demana per tal que després es
@@ -1358,14 +1357,14 @@ funció $f(x)=2.9\,x\,(1-x)$.
 
 
 ### Exercici 6
-Feu una funció de Sage de manera que, si li passem una funció $f(x)$
+Feu una funció de **SageMath** de manera que, si li passem una funció $f(x)$
 d'una variable, valors $a$ i $b$ reals, amb $a<b$, i un nombre de
 passos $n\ge 1$, divideixi el interval $[a,b]$ en $n$ intervals
 iguals, i retorni una llista amb elements $(t,f(t))$ on $t$ es mou
 de $a$ a $b$ (inclosos) passant pels extrems dels intervals
 ordenadament, i, aquí hi ha la dificultat, si no pot avaluar la
-funció, es salti el valor. Indicació: useu try except amb el error
-ValueError.
+funció, es salti el valor. Indicació: useu `try / except` amb l'error
+`ValueError`.
 
 -- begin hide
 
