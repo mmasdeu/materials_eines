@@ -1,100 +1,199 @@
 ---
 jupyter:
-  title : 'Pràctica 9: Complements a la programació en Python'
-  authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
+  authors:
+  - name: Marc Masdeu
+  - name: Xavier Xarles
   jupytext:
+    notebook_metadata_filter: title,authors
     text_representation:
       extension: .md
       format_name: markdown
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 9.6
+    display_name: SageMath 9.7
     language: sage
     name: sagemath
+  title: "Pr\xE0ctica 9: Complements a la programaci\xF3 en Python"
 ---
 
 # Complements a la programació en Python
 
 
-## Mòduls
+## Optimització
 
-Un mòdul és un fitxer que conté definicions i sentències de **Python** que
-es poden utilitzar en d'altres programes **Python**. Hi ha molts mòduls de
-**Python** que formen part de la biblioteca estàndard de **Python**, i
-que tenim disponibles des de **SageMath** (també en podem instal·lar d'altres, si ens cal).
+A vegades és important aconseguir que una funció s'executi el màxim de ràpid possible.
+En aquests casos, potser ens cal triar entre dues o més possibles implementacions,
+i per fer-ho és útil poder mesurar el temps que es triga en executar un bloc de codi.
 
-Els mòduls s'han de carregar si es volen utilitzar en un programa de
-Python. La instrucció per a fer-ho és `import`. El mòdul contindrà
-moltes funcions, i si es vol es pot importar sols una funció, utilitzant
-`from` [mòdul]{.underline} `import` [funció]{.underline}. Les funcions
-de dins del mòdul s'utilitzen posant
-[mòdul]{.underline}.[funció]{.underline}. Una pràctica força usual és
-abreujar el nom del mòdul (o canviar-lo), que es pot fer posant `import`
-[mòdul]{.underline} ` as ` [nou nom]{.underline}.
-
-Un mòdul important de conèixer és **time**, que permet comptar el temps
-d'execució d'un procés. Per exemple, si volem veure quants segons triga
-a executar-se una funció podem fer
+La manera més fàcil de veure el temps que triga una certa funció és la comanda `%time`,
+que podem posar davant de qualsevol càlcul. Per exemple:
 
 ```sage
-from time import perf_counter
+%time 2 + 2
+```
+
+Observem que ens mostra quatre nombres diferents. La primera fila ("CPU times")
+ens diu quant temps li ha dedicat el processador, repartit entre la part que es dedica
+a realment el càlcul i la part que es dedica a gestionar la interacció amb el sistema.
+La segona fila ("Wall time") ens diu el temps "de rellotge de paret" que ha passat. Aquest temps
+sempre serà més gran que el "CPU time", perquè el nostre ordinador a més de fer el càlcul que li
+hem demanat també està fent altres coses (per exemple, potser esteu escoltant música, o mirant
+una pel·lícula,...).
+
+Una variant d'aquesta comanda és `%timeit`, que executa la instrucció diverses vegades i fa un promig.
+
+```sage
+%timeit 2 + 2
+```
+
+Pot ser que vulguem veure aquesta informació dins d'una funció que estem programent. Aleshores
+podem fer servir les funcions `cputime()` i `walltime()`, que tenen el mateix funcionament
+però tracten un o l'altre recompte de temps com abans. Ho veurem amb un exemple. Primer, simularem
+que tenim una classe molt gran (amb un mil·lió d'alumnes), cadascun amb el seu NIU. Desarem les
+notes en una llista els elements de la qual seran tuples `(NIU, nota)`.
+
+```sage
+notes_eines = [(randint(0, 10**7),randint(0,10)) for _ in range(10**6)]
+```
+
+Fem una funció que ens digui quina nota ha tret un alumne amb un NIU donat:
+
+```sage
+def quina_nota(NIU_alumne):
+    for NIU, nota in notes_eines:
+        if NIU_alumne == NIU:
+            return nota
+    raise ValueError(f"El {NIU_alumne = } no s'ha trobat.")
 ```
 
 ```sage
-inici = perf_counter()
-G = Goldbach(100000)
-final = perf_counter()
-temps_execucio = final-inici
-print(temps_execucio)
-```
-
-Tot i que també es pot fer servir:
-```sage
-%time G = Goldbach(100000)
-```
-
-Ara farem amb el mateix però amb una implimentació diferent
-
-```sage
-def Goldbach2(n):
-    """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n)! = Integer:
-        raise TypeError('No és un enter de Sage')
-    elif is_odd(n):
-        raise ValueError(f'El nombre {n} és senar')
-    elif n < 6:
-        raise ValueError(f'El nombre {n} és menor que 6')
-    return [(p,n-p) for p in xsrange(3,n//2+1) if p.is_prime() and (n-p).is_prime()]
+quina_nota(1234567)
 ```
 
 ```sage
-inici = perf_counter()
-G = Goldbach2(100000)
-final = perf_counter()
-temps_execucio2 = final - inici
-print(temps_execucio2)
+quina_nota(notes_eines[50000][0])
 ```
 
-Observeu que aquesta triga més del doble.
+Suposem ara que volem fer una funció que ens digui la mitjana de les notes de 10 alumnes a l'atzar. Ho podríem fer així:
 
 ```sage
-print(temps_execucio2 / temps_execucio)
+def mitjana(n = 10): # Valor per defecte
+    suma = 0
+    num_notes = len(notes_eines)
+    total_notes = 0
+    while total_notes < n:
+        try:
+            suma += quina_nota(randint(0, num_notes-1))
+            total_notes += 1
+        except ValueError:
+            pass
+    return RR(suma) / n
 ```
 
-També es pot fer amb `perf_counter_ns` per comptar el temps en nanosegons.
-Això ho podem utilitzar per a veure quina de les opcions que tinguem
-per a fer un càlcul triga menys en executar-se.
+```sage
+%time mitjana()
+```
 
-Un mòdul que també es pot utilitzar per a mirar el temps d'execució
-d'una funció és `timeit`. El que fa es executar moltes (les que el
-usuari li indiqui) vegades el que li demanes i en calcula el temps
-mitjà.
+Per millorar les funcions anteriors, podem mirar el temps que triga la funció `quina_nota` a cada iteració. Modificarem la funció `mitjana` de la següent manera.
 
-Es recomanable conèixer alguns dels mòduls més utilitzats, tot i que
-alguns no ens caldran normalment si utilitzem
-**SageMath**, com la majoria de mòduls de
-matemàtiques (`math`, `numpy`, etc).
+
+```sage
+def mitjana(n = 10): # Valor per defecte
+    suma = 0
+    num_notes = len(notes_eines)
+    total_notes = 0
+    t0 = cputime() # Es desa un enter que indica el temps
+    while total_notes < n:
+        try:
+            suma += quina_nota(randint(0, num_notes-1))
+            total_notes += 1
+            t1 = cputime()
+            print(f"L'última crida ha durat {1000*(t1 - t0)} milisegons. Notes acumulades: {total_notes}.")
+            t0 = t1
+        except ValueError:
+            pass
+    return RR(suma) / n
+```
+
+```sage
+mitjana()
+```
+
+Una altra funcionalitat que ens pot ser útil és `%prun` (de *profiler run*). Ens mostra un informe que ens diu quantes vegades s'ha cridat cada funció, i quin temps s'hi ha trigat.
+
+```sage
+%prun mitjana()
+```
+
+Si ens fixem en la sortida de la comanda anterior, podem veure que la funció `quina_nota` no és gaire ràpida. Podem intentar-la millorar i, de fet, n'hi ha prou amb fer servir un diccionari per accedir ràpidament a les notes:
+```sage
+dict_notes = dict(notes_eines)
+def quina_nota(NIU_alumne):
+    try:
+        return dict_notes[NIU_alumne]
+    except KeyError:
+        raise ValueError(f"El {NIU_alumne = } no s'ha trobat.")
+```
+
+Podem veure el resultat:
+
+```sage
+mitjana()
+```
+
+## Fitxers
+
+A vegades no volem escriure els resultats per pantalla, sino que els necessitem en un fitxer (per poder-los enviar a algú, o per afegir-los a un document que estem escrivint, per exemple). També ens pot convenir llegir un fitxer on hi tenim dades que volem estudiar. Una primera manera és amb les funcions `load()` i `save()` que ens proporciona el **SageMath**. Suposem que tenim una llista (o qualsevol objecte de **SageMath**):
+
+```sage
+L = [5,3,4,1,6,7,1,9,4,3,2]
+```
+
+La podem desar amb:
+```sage
+save(L, 'lamevallista')
+```
+
+Aquesta comanda crea un fitxer anomenat `lamevallista.sobj`. Quan vulguem el podem recuperar amb:
+
+```sage
+M = load('lamevallista')
+```
+
+L'extensió `.sobj` indica que es tracta d'un "objecte Sage". Alguns objectes ens permeten desar-los com a imatge (per exemple el resultat d'una funció `plot`). Això ho podem fer especificant una extensió vàlida (`.png`, `.pdf`, `.svg`, ...):
+
+```sage
+G = plot(sin(x), 0, 2*pi)
+save(G, 'sinus.png')
+```
+
+Ara bé, aquestes imatges han perdut la informació que venia del **SageMath**, i per tant no les podrem tornar a convertir a objectes de **SageMath**.
+
+Encara que el format `.sobj` és útil per desar informació de **SageMath** quan aturem el Kernel, no és un format útil per compartir, ja que sense el **SageMath** no el podrem llegir. Tornant al cas de la llista, ens podria interessar escriure un fitxer de text (o una fulla excel,...) amb la informació que hi tenim. D'alguna manera, volem poder "imprimir" en el fitxer, igual que la funció `print` ens imprimeix en pantalla. Això es pot aconseguir de la manera següent:
+
+```sage
+f = open('llista.txt', 'w', encoding='utf-8') # 'w' indica que volem escriure (write).
+for i in L:
+    f.write(f'{i}\n') # Cal un String
+f.close()
+```
+
+La primera línia obre el fitxer en mode escriptura. Li hem d'indicar la codificació (`utf-8`) perquè els caràcters especials s'escriguin bé. Ens retorna un objecte (`f`) de tipus "file", que té mètodes com ara el `.write()`, que és el que de fet escriu. Quan acabem, hem de tancar el fitxer (si no, es poden perdre dades). Això és fa amb el mètode `.close()`.
+
+És molt important tancar els fitxers, i a vegades pot passar que ens en descuidem, o que abans de tancar-los es produeixi un error i no arribem a la instrucció de tancar. Per evitar problemes, hi ha una estructura millor que ens garanteix que passi el que passi el fitxer es tancarà. L'exemple anterior es faria:
+```sage
+with open('llista2.txt', 'w', encoding='utf-8') as f:
+    for i in L:
+	    f.write(f'{i}\n') # Cal un String
+```
+
+Per llegir un fitxer, ho fem de manera semblant:
+```sage
+with open('llista.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        print(line)
+```
 
 ## Classes
 
