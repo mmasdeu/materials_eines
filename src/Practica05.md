@@ -279,8 +279,8 @@ class Triangle:
 
 ```sage
 T = Triangle((0,0), (0,12), (16,12))
-show(f'{T.vertexs = }')
-show(f'{T.baricentre() = }')
+print(f'{T.vertexs = }')
+print(f'{T.baricentre() = }')
 ```
 
 El que hem fet ha estat crear un triangle format pels vèrtexs a $(0,0)$,
@@ -347,14 +347,14 @@ class Triangle:
 ```
 
 ```sage
-T1 = Triangle([0,0],[0,12],[16,12])
-show(f'{T1.vertexs = }')
-show(f'{T1.costats() = }')
-show(f'{T1.perimetre() = }')
-show(f'{T1.area() = }')
-show(f'{T1.baricentre() = }')
-show(f'{T1.intradi() = }')
-show(f'{T1.circumradi() = }')
+T1 =Triangle([0,0],[0,12],[16,12])
+prinTrian{T1.vertexs = }')
+prinTrian{T1.costats() = }')
+prinTrian{T1.perimetre() = }')
+prinTrian{T1.area() = }')
+print(f'{T1.baricentre() = }')
+print(f'{T1.intradi() = }')
+print(f'{T1.circumradi() = }')
 ```
 
 Hem definit també igualtat de triangles; comprovem-ho amb un triangle traslladat
@@ -444,7 +444,7 @@ Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
 ### Exercici 1
 
 
-Comproveu, amb l'ús del mòdul time, quina de les dues maneres
+Comproveu, amb l'ús de la comanda `%timeit`, quina de les dues maneres
 d'ordenar una llista de nombres a l'atzar és més ràpida. Una,
 convertint la llista en conjunt i tornant-la a convertit en llista.
 L'altra, fent una funció que fa una copia de la llista, i creant una
@@ -481,28 +481,17 @@ Creem una llista a l'atzar de 1000 nombres del 1 al 30
 llist = [randint(1,30) for i in range(1000)]
 ```
 
-Importem el mòdul time 
-
-```sage
-from time import perf_counter
-```
 
 Ordenem la llista amb la primera funció comptant el temps
 
 ```sage
-inici = perf_counter()
-print (ord1(llist))
-final = perf_counter() 
-print(final-inici)
+%timeit print (ord1(llist))
 ```
 
 El mateix amb el segon mètode
 
 ```sage
-inici = perf_counter()
-print (ord2(llist))
-final = perf_counter() 
-print(final-inici)
+%timeit print (ord2(llist))
 ```
 
 -- end hide
