@@ -560,8 +560,8 @@ una seqüència qualsevol d'aquestes (amb `len`) o, quin és el valor més
 gran que arriba a tenir (amb `max`)
 
 ```sage
-len(tresxmesun(31))
-max(tresxmesun(31))
+print(f'{len(tresxmesun(31)) = }')
+print(f'{max(tresxmesun(31)) = }')
 ```
 
 O qualsevol altra característica que us sembli interessant (quants
@@ -578,9 +578,9 @@ presentar com resultat aquesta llista directament o un gràfic amb dels
 punts.
 
 ```sage
-def aprox(func,xini,it,ctrl):
+def aprox(func,xini,it,grafic=False): # Especifiquem el valor per defecte
     llista = [(xini+1/k,func(xini+1/k)) for k in [1..it]]
-    return llista if ctrl else points(llista)
+    return points(llista) if grafic else llista
 ```
 
 Si proveu, per exemple, amb la funció determinada per $f(x)=\sin(x)/x$ a
@@ -589,16 +589,16 @@ límit dels valors de $f(x)$ quan $x$ tendeix a $0$ és $1$) podeu fer
 
 ```sage
 f(x) = sin(x) / x
-aprox(f,0.,25,True)
+aprox(f, 0., 25) # També valdria aprox(f, 0., 25, False) o aprox(f, 0., 25, grafic=False)
 ```
 
 i obtindreu una llista de valors $(x,f(x))$ per a valors de $x$ propers
 a $0$. O podeu fer
 
 ```sage
-pts = aprox(f,0.,25,False)
-graf = plot(f,(0,1),color="red")
-(pts+graf).show(aspect_ratio=1,xmin=0,ymin=0)
+pts = aprox(f, 0.,25, grafic=True) # També valdria aprox(f, 0., 25, True)
+graf = plot(f, (0,1), color="red")
+(pts + graf).show(aspect_ratio=1, xmin=0, ymin=0)
 ```
 
 per obtenir un bonic gràfic amb els punts dibuixats sobre el gràfic de
