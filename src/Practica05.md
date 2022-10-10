@@ -1,5 +1,6 @@
 ---
 jupyter:
+  title: 'Pràctica 9: Complements a la programació en Python'
   authors:
   - name: Marc Masdeu
   - name: Xavier Xarles
@@ -14,7 +15,7 @@ jupyter:
     display_name: SageMath 9.7
     language: sage
     name: sagemath
-  title: "Pr\xE0ctica 9: Complements a la programaci\xF3 en Python"
+
 ---
 
 # Complements a la programació en Python
@@ -219,14 +220,14 @@ print([x for x in zip([1,2],[3,4],[5,6])])
 print([x for x in zip('abc',[1,2,3])])
 ```
 
-Si apliques zip(*llista) on llista és una llista, el que fa és "esborrar" els parentesis de la llista per poder fer-li el zip. (S'utilita per desfer un zip, per exemple.) Fixeu-vos la diferència entre fer un zip amb * o sense *
+Si apliques `zip(*llista)` on `llista` és una llista, el que fa és "esborrar" els parèntesis de la llista per poder fer-li el zip. (S'utilita per desfer un zip, per exemple.) Fixeu-vos la diferència entre fer un zip amb `*` o sense `*`
 
 ```sage
-print([a for a in zip(*[(1, 1, 2), (2, 3, 4)])])
+list(zip(*[(1, 1, 2), (2, 3, 4)]))
 ```
 
 ```sage
-print([a for a in zip((1, 1, 2), (2, 3, 4))])
+list(zip((1, 1, 2), (2, 3, 4)))
 ```
 
 
@@ -348,13 +349,13 @@ class Triangle:
 
 ```sage
 T1 = Triangle([0,0],[0,12],[16,12])
-show(f'{T1.vertexs = }')
-show(f'{T1.costats() = }')
-show(f'{T1.perimetre() = }')
-show(f'{T1.area() = }')
-show(f'{T1.baricentre() = }')
-show(f'{T1.intradi() = }')
-show(f'{T1.circumradi() = }')
+print(f'{T1.vertexs = }')
+print(f'{T1.costats() = }')
+print(f'{T1.perimetre() = }')
+print(f'{T1.area() = }')
+print(f'{T1.baricentre() = }')
+print(f'{T1.inradi() = }')
+print(f'{T1.circumradi() = }')
 ```
 
 Hem definit també igualtat de triangles; comprovem-ho amb un triangle traslladat
@@ -381,9 +382,9 @@ class TriangleRectangle(Triangle):
         self._catet1 = catet1
         self._catet2 = catet2
     def catets(self):
-	    return self._catet1, self._catet2
+        return self._catet1, self._catet2
     def hipotenusa(self):
-	    c1, c2 = self.catets()
+        c1, c2 = self.catets()
         return (c1**2 + c2**2)**.5
 ```
 
@@ -444,12 +445,12 @@ Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
 ### Exercici 1
 
 
-Comproveu, amb l'ús del mòdul time, quina de les dues maneres
-d'ordenar una llista de nombres a l'atzar és més ràpida. Una,
-convertint la llista en conjunt i tornant-la a convertit en llista.
-L'altra, fent una funció que fa una copia de la llista, i creant una
+Comproveu quina de les dues maneres
+d'eliminar repeticions d'llista de nombres a l'atzar és més ràpida. Una,
+convertint la llista en conjunt i tornant-la a convertir en llista.
+L'altra, fent una funció que fa una còpia de la llista, i creant una
 nova llista escollint el mínim i traient tots els elements de la
-copia de la llista repetits, fins que la llista sigui buida.
+còpia de la llista repetits, fins que la llista sigui buida.
 
 
 -- begin hide
@@ -459,10 +460,10 @@ copia de la llista repetits, fins que la llista sigui buida.
 reset()
 ```
 
-Funció per ordenar primera
+La primera funció:
 
 ```sage
-def ord2(llist):
+def unic1(llist):
     cllist = copy(llist)
     nllist = []
     while (len(cllist) > 0):
@@ -473,6 +474,12 @@ def ord2(llist):
     return nllist
 ```
 
+La secona:
+
+```sage
+def unic2(llist):
+	return list(set(llist))
+```
 
 Creem una llista a l'atzar de 1000 nombres del 1 al 30
 
@@ -481,28 +488,16 @@ Creem una llista a l'atzar de 1000 nombres del 1 al 30
 llist = [randint(1,30) for i in range(1000)]
 ```
 
-Importem el mòdul time 
-
-```sage
-from time import perf_counter
-```
-
 Ordenem la llista amb la primera funció comptant el temps
 
 ```sage
-inici = perf_counter()
-print (ord1(llist))
-final = perf_counter() 
-print(final-inici)
+%time V = unic1(llist)
 ```
 
 El mateix amb el segon mètode
 
 ```sage
-inici = perf_counter()
-print (ord2(llist))
-final = perf_counter() 
-print(final-inici)
+%time W = unic2(llist)
 ```
 
 -- end hide
@@ -526,15 +521,15 @@ Una possible manera. Ho he fet amb "llistes de nombres", no vectors
 ```sage
 def ordlex(u,v):
     '''Retorna cert si u <= v en ordre lexicogràfic'''
-    if type(u)!=list or type(v)!=list:
+    if type(u) != list or type(v)!=list:
         raise TypeError('No són llistes de nombres')
     if len(u) != len(v):
         raise TypeError('No tenen la mateixa llargada')
-    for i in range(len(v)):
-        if u[i] < v[i]:
-            return True
-        if u[i] > v[i]: 
-            return False
+	for ui, vi in zip(u, v):
+	    if ui < vi:
+		    return True
+		if ui > vi:
+		    return False
     return True
 ```
 
@@ -606,7 +601,7 @@ def EsTallen(S,T):
     '''
     if type(S) != set or type(T) != set:
         raise TypeError('No són conjunts')
-    if len(S) != 2 or len(T) != 2: 
+    if len(S) != 2 or len(T) != 2:
         raise TypeError('Els conjunts no tenen dos elements')
     if any(len(v)!= 2 for v in S.union(T)):
         raise TypeError('Han de tenir dues coordenades')
@@ -615,9 +610,9 @@ def EsTallen(S,T):
     A = matrix([V[0]-V[1],V[3]-V[2]]).det()
     B = matrix([V[3]-V[1],V[3]-V[2]]).det()
     C = matrix([V[0]-V[1],V[3]-V[1]]).det()
-    if A == 0: 
+    if A == 0:
         return False
-    elif A.sign()!=B.sign() or A.sign()!=C.sign(): 
+    elif A.sign() != B.sign() or A.sign() != C.sign():
         return False
     elif B/A >= 1 or C/A >= 1:
         return False
@@ -625,7 +620,7 @@ def EsTallen(S,T):
     return True
 ```
 
-A més he fet una funció Tallen que retorni el punt de tall a més (o bé 0 si no)
+A més he fet una funció Tallen que a més a més retorni el punt de tall (o bé `None` si no)
 
 ```sage
 def Tallen(S,T):
@@ -634,7 +629,7 @@ def Tallen(S,T):
     '''
     if type(S) != set or type(T) != set:
         raise TypeError('No són conjunts')
-    if len(S) != 2 or len(T) != 2: 
+    if len(S) != 2 or len(T) != 2:
         raise TypeError('Els conjunts no tenen dos elements')
     if any(len(v)!= 2 for v in S.union(T)):
         raise TypeError('Han de tenir dues coordenades')
@@ -643,12 +638,12 @@ def Tallen(S,T):
     A = matrix([V[0]-V[1],V[3]-V[2]]).det()
     B = matrix([V[3]-V[1],V[3]-V[2]]).det()
     C = matrix([V[0]-V[1],V[3]-V[1]]).det()
-    if A == 0: 
-        return False, 0
-    elif A.sign()!=B.sign() or A.sign()!=C.sign(): 
-        return False, 0
+    if A == 0:
+        return False, None
+    elif A.sign()!=B.sign() or A.sign()!=C.sign():
+        return False, None
     elif B/A >= 1 or C/A >= 1:
-        return False, 0 
+        return False, None
     t = B/A
     return True, t*V[0]+(1-t)*V[1]
 ```
@@ -658,17 +653,17 @@ Un exemple
 ```sage
 S = {(2.1,2),(2.3,1)}
 T = {(2.1,1),(2.3,2)}
-b,pt = Tallen(S,T)
+b, pt = Tallen(S,T)
 ```
 
 ```sage
-line([v for v in S])+line([v for v in T])+point(pt,color='red',size=30)
+line(S) + line(T) + point(pt,color='red',size=30)
 ```
 
 ```sage
 S = {(2.1,2),(2.3,2)}
 T = {(2.1,1),(2.3,1)}
-b,pt = Tallen(S,T)
+b, pt = Tallen(S,T)
 b
 ```
 
@@ -706,43 +701,43 @@ Definiu una classe dels Quadrilàters (convexos), determinada donant
 $4$ punts del pla.
 
 Observeu primer que si els quadrilàters no són convexos aleshores
-els vèrtexs no determinen el quadrilàter.
+els vèrtexs no determinen el quadrilàter. Els següents tres
+quadrilàters tenen els mateixos vèrtexs.
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex1.png)
+vèrtexs](quadnconvex1.png)\
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex2.png)
+vèrtexs](quadnconvex2.png)\
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex3.png)
+vèrtexs](quadnconvex3.png)\
 
 Per tant el primer que hem de fer és comprovar si els 4 punts formen
 o no un quadrilàter convex, i a més ordenar bé els vèrtexs. Tot això
 ho podem fer usant que en un quadrilàter convex els segments
 determinats pels vèrtexs oposats es tallen en un punt
-(necessàriament a l'interior del quadrilàter).
+(necessàriament a l'interior del quadrilàter). El primer dels dos quadrilàters següents és convex, però el segon no. Ho veiem
+amb els següents dos dibuixos.
 
 ![Quadrilàter convex amb les diagonals
-dibuixades](quadconvex.png)
+dibuixades](quadconvex.png)\
 
 ![El mateix però amb els vèrtexs mal
-posats](quadconvexn.png)
+posats](quadconvexn.png)\
 
 La classe pot tenir una funció àrea, i funcions que comprovin si el
-quadrilàter és un trapezi, si és un parał.lelogram, si és un rombe,
+quadrilàter és un trapezi, si és un paral·lelogram, si és un rombe,
 si és un rectangle, si és un quadrat, etc. També podeu provar de
 definir igualtat de quadrilàters de manera anàloga a com ho hem fet
-pels triangles però no és fàcil.
+pels triangles, però no és tan fàcil.
 
 -- begin hide
-Hi ha varis problemes tècnics a resoldre. Per exemple, he decidit que els punts siguin tuples, i per tant els transformo a tuples només començar. A més accepto com a quadrilater qualsevol llista de 4 punts, però a l'hora de obtenir els vèrtexs ordenats adequadament, si no determinen un quadrilater convex faig que retorni la llista buida. 
+Hi ha varis problemes tècnics a resoldre. Per exemple, he decidit que els punts siguin tuples, i per tant els transformo a tuples només començar. A més accepto com a quadrilàter qualsevol llista de 4 punts, però a l'hora d'obtenir els vèrtexs ordenats adequadament, si no determinen un quadrilater convex faig que retorni la llista buida.
 
+Podríem haver decidit que un quadrilàter és una llista de punts i si surt "degenerat" per haver agafat la llista mal ordenada llavors no tingués les altres instàncies. Però llavors hauríem de decidir que fer amb els quadrilàters no convexos.
 
-Podríem haver decidit que un quadrilàter és una llista de punts i si surt "degenerat" per haver agafat la llista mal ordenada llavors no tingués les altres instàncies. Però llavors hauríem de decidir que fer amb els quadrilàters no convexos. 
-
-
-Primer he definit una funció similar a la de EsTallen per saber si els costats determinades per dos conjunts de dos punts són paral·lels o no. 
+Primer he definit una funció similar a la de EsTallen per saber si els costats determinades per dos conjunts de dos punts són paral·lels o no.
 
 ```sage
 def SonParalels(S,T):
@@ -752,7 +747,7 @@ def SonParalels(S,T):
     '''
     if type(S) != set or type(T) != set:
         raise TypeError('No són conjunts')
-    if len(S) != 2 or len(T) != 2: 
+    if len(S) != 2 or len(T) != 2:
         raise TypeError('Els conjunts no tenen dos elements')
     if any(len(v)!= 2 for v in S.union(T)):
         raise TypeError('Han de tenir dues coordenades')
@@ -763,7 +758,7 @@ def SonParalels(S,T):
 ```
 
 ```sage
-class Quadrilater: 
+class Quadrilater:
     def __init__(self, punt1,punt2,punt3,punt4):
         self._p1 = tuple(punt1)
         self._p2 = tuple(punt2)
@@ -793,41 +788,42 @@ class Quadrilater:
         return sum(self.costats())
     def baricentre(self):
         V = self.vertexs()
-        if len(V)==0:
+        if len(V) == 0:
             return 
-        b,pt = Tallen({V[0],V[2]},{V[1],V[3]})
+        b, pt = Tallen({V[0],V[2]},{V[1],V[3]})
+		assert b
         return pt
     def area(self):
         V = self.vertexs()
-        if len(V)==0:
+        if len(V) == 0:
             return 0
         A1 = Triangle(V[0],V[1],V[2]).area()
         A2 = Triangle(V[0],V[3],V[2]).area()
         return A1+A2
-    def trapezi(self): #Mirem si tenen dos costats oposats paral·lels
+    def trapezi(self): # Mirem si tenen dos costats oposats paral·lels
         V = self.vertexs()
-        if len(V)==0:
+        if len(V) == 0:
             return False
         return SonParalels({V[0],V[1]},{V[2],V[3]}) or SonParalels({V[0],V[3]},{V[1],V[2]})
     # He fet dues instancies de paral·lelogram. Les dues van bé.
-    def paralelogramc(self): #Mirem si tenen costats oposats iguals
+    def paralelogramc(self): # Mirem si tenen costats oposats iguals
         C = self.costats()
-        if len(C)==0:
+        if len(C) == 0:
             return False
-        return C[0]==C[2] and C[1] == C[3]
-    def paralelogram(self):  #Mirem si tenen costats oposats paral·lels
+        return C[0] == C[2] and C[1] == C[3]
+    def paralelogram(self):  # Mirem si tenen costats oposats paral·lels
         V = self.vertexs()
-        if len(V)==0:
+        if len(V) == 0:
             return False
         return SonParalels({V[0],V[1]},{V[2],V[3]}) and SonParalels({V[0],V[3]},{V[1],V[2]})
     def rombe(self): #Mirem si tenen tots els costats iguals
         C = self.costats()
-        if len(C)==0:
+        if len(C) == 0:
             return False
-        return self.paralelogramc() and C[0] == C[1]        
+        return self.paralelogramc() and C[0] == C[1]
     def rectangle(self): # Paral·lelogram que té dos costats perpendiculars
         V = self.vertexs()
-        if len(V)==0:
+        if len(V) == 0:
             return False
         # Calculem el producte escalar dels dos costats amb vertex V[0]. Ha de ser 0.
         esc = (V[1][0]-V[0][0])*(V[3][0]-V[0][0])+(V[1][1]-V[0][1])*(V[3][1]-V[0][1])
@@ -837,14 +833,14 @@ class Quadrilater:
     # He fet una instància que fa un plot del quadrilàter per poder visualitzar el que fem 
     def plot(self):
         V = self.vertexs()
-        if len(V)==0:
-            return 
+        if len(V) == 0:
+            return
         pV = points(V,color='red',axes=False,aspect_ratio=1)
         lV = line(V[:2])
         lV += line(V[1:3])
         lV += line(V[2:])
         lV += line([V[3],V[0]])
-        return pV+lV
+        return pV + lV
     # Defineixo igualtat entre Quadrilaters si es poden descomposar en dos triangles iguals.
     # Trenquem el primer d'una manera, i el segon de les 2 possibles maneres
     # Cal comparar el primer triangle del primer quadrilater amb casacun dels 4 del segon
