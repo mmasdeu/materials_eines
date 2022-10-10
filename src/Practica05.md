@@ -474,7 +474,7 @@ def unic1(llist):
     return nllist
 ```
 
-La secona:
+La segona:
 
 ```sage
 def unic2(llist):
@@ -502,8 +502,42 @@ El mateix amb el segon mètode
 
 -- end hide
 
-
 ### Exercici 2
+
+Genereu un fitxer que contingui tres columnes (separades amb tabulador), amb $n$, $n^2$ i $n^3$ per $n$ des de $1$ fins a $500$. Feu una funció prengui com a paràmetre el nom d'un fitxer, i comprovi que ha estat generat de la forma indicada anteriorment.
+
+-- begin hide
+
+Per generar l'arxiu podem fer-ho amb el següent bloc de codi:
+
+```sage
+with open('out.txt','w') as f:
+    for n in [1,2..500]:
+	    f.write(f'{n}\t{n**2}\t{n**3}')
+```
+
+La funció següent comprova un fitxer, i si és incorrecte en retorna també el motiu.
+```sage
+def comprova(fname):
+    with open(fname,'r') as f:
+	    for i, line in enumerate(f):
+			V = line.split('\t')
+			if len(V) != 3:
+			    return False, f"La línia {i} = \"{line}\" no té el nombre correcte d'entrades"
+	        if sage_eval(V[0]) != i+1:
+			    return False, f'A la línia {i} = "{line}" la primera entrada és incorrecta'
+			if sage_eval(V[1]) != (i+1)**2:
+			    return False, f'A la línia {i} = "{line}" la segona entrada és incorrecta'
+            if sage_eval(V[2]) != (i+1)**3:
+			    return False, f'A la línia {i} = "{line}" la tercera entrada és incorrecta'
+	if i != 500:
+	    return False, f'El fitxer no té el nombre correcte de línies, en té {i} en comptes de 500'
+	return True, None
+```
+
+-- end hide
+
+### Exercici 3
 
 
 Donats dos vectors $u=(u_1,\dots,u_n)$ i $v=(v_1,\dots,v_n)$ de
@@ -563,7 +597,7 @@ ordlex(u,v)
 ```
 -- end hide
 
-### Exercici 3
+### Exercici 4
 
 
 Definiu una funció tal que, donades dues parelles de punts diferents
@@ -672,7 +706,7 @@ line([v for v in S])+line([v for v in T])
 ```
 -- end hide
 
-### Exercici 4
+### Exercici 5
 
 Definiu una classe `Isosceles`, formada per triangles isòsceles donats
 per la base i l'altura, definida a partir de la classe `Triangle`
@@ -694,7 +728,7 @@ show(T.area())
 -- end hide
 
 
-### Exercici 5
+### Exercici 6
 
 
 Definiu una classe dels Quadrilàters (convexos), determinada donant
