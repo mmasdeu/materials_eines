@@ -280,8 +280,8 @@ class Triangle:
 
 ```sage
 T = Triangle((0,0), (0,12), (16,12))
-show(f'{T.vertexs = }')
-show(f'{T.baricentre() = }')
+print(f'{T.vertexs = }')
+print(f'{T.baricentre() = }')
 ```
 
 El que hem fet ha estat crear un triangle format pels vèrtexs a $(0,0)$,
@@ -488,7 +488,7 @@ Creem una llista a l'atzar de 1000 nombres del 1 al 30
 llist = [randint(1,30) for i in range(1000)]
 ```
 
-Ordenem la llista amb la primera funció comptant el temps
+Processem la llista amb la primera funció comptant el temps
 
 ```sage
 %time V = unic1(llist)
