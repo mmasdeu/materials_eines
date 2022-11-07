@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title: 'Pràctica 9: Complements a la programació en Python'
+  title: 'Pràctica 5: Complements a la programació en Python'
   authors:
   - name: Marc Masdeu
   - name: Xavier Xarles

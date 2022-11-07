@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 4: Resoldre equacions'
+  title : 'Pràctica 6: Resoldre equacions'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -66,20 +66,24 @@ sigui, quan no hi ha símbols indeterminats), retorna un valor lògic
 `True` o `False`. Per exemple:
 
 ```sage
-show(3 < 5)
+3 < 5
 ```
 
 ```sage
-show(7 < 6)
+7 < 6
 ```
 
 En **SageMath** també podem fer les operacions lògiques `not`, `and` i `or`.
 Fixeu-vos bé en els resultat de les instruccions següents:
 
 ```sage
-show(not 7 > 6)
-show(not True)
-show(3 > 0 and 7 <= 10)
+not 7 > 6
+```
+```sage
+not True
+```
+```sage
+3 > 0 and 7 <= 10
 ```
 
 El dos costats d'una equació es poden extreure per separat (sense
@@ -87,8 +91,10 @@ modificar l'objecte inicial) amb les instruccions `lhs` i `rhs`,
 abreviatura de *left-hand side* i *right-hand side*.
 
 ```sage
-show(eq1.lhs())
-show(eq1.rhs())
+eq1.lhs()
+```
+```sage
+eq1.rhs()
 ```
 
 o sigui que podem construir una equació equivalent a la primera posant
@@ -97,7 +103,7 @@ tots els termes a un costat i deixant zero a l'altre (en un cert sentit,
 
 ```sage
 eq2 = eq1.lhs() - eq1.rhs() == 0
-show(eq2)
+print(eq2)
 ```
 
 Fent la gràfica de l'expressió de l'esquerra podem tenir una aproximació
@@ -115,14 +121,14 @@ Considerem aquesta: $3x^3-4x^2-43x+84=0$:
 ```sage
 eq3 = 3*x^3-4*x^2-43*x+84 == 0
 solucions = solve(eq3,x)
-solucions
+print(solucions)
 ```
 ```sage
 show(solucions)
 ```
 
 Observeu que el `show()` aquí ens amaga el fet que `solve()` retorna una
-*llista d'equacions*. Això ens permet fer fàcilment la comprovació que
+llista *d'equacions*. Això ens permet fer fàcilment la comprovació que
 són solució, usant `subs()`:
 
 ```sage
@@ -136,16 +142,12 @@ bool(eq3.subs(solucions[0]))
 ```
 
 En lloc de provar les solucions una a una, podem aprofitar que estan en
-una llista per comprovar-les totes a la vegada amb la funció `bool()`,
-que retorna un valor *booleà*:
+una llista per comprovar-les totes a la vegada. Podem fer-ho per exemple
+fent servir la funció `all`, que retorna `True` si i només si totes les
+entrades d'una llista són `True` (també hi ha la funció `any`...).
 
 ```sage
-[eq3.subs(sol) for sol in solucions]
-```
-
-La funcio `all` ens retorna `True` només si tots els elements són `True`:
-```sage
-all([bool(eq3.subs(sol)) for sol in solucions])
+all(eq3.subs(sol) for sol in solucions)
 ```
 
 També podem substituir les solucions en qualsevol altra expressió. Per
@@ -157,7 +159,9 @@ $3x^{2}-4x+3=0$.
 expr = x^3-2*x^2-3*x+7
 eq4 = 3*x^2-4*x-3==0
 solucions = solve(eq4,x)
-show(solucions)
+print(solucions)
+```
+```sage
 show([expr.subs(s).expand() for s in solucions])
 ```
 
@@ -226,7 +230,7 @@ arrels del polinomi $x^3-34x^2+4$.
 
 ```sage
 poli = x^3-34*x^2+4
-arrels = solve(poli==0, x)
+arrels = solve(poli == 0, x)
 show(arrels)
 ```
 
@@ -246,7 +250,7 @@ més clar.
 I ho podem confirmar encara millor si fem primer una simplificació:
 
 ```sage
-show([x.subs(s).simplify_full().n() for s in arrels])
+show([x.subs(s).simplify_full() for s in arrels])
 ```
 
 Es poden trobar exactament totes les solucions d'una equació polinomial
@@ -254,7 +258,7 @@ de grau fins a quatre. Però ja per a grau tres la fórmula *general* és horrib
 
 ```sage
 var('a b c d')
-show(solve(a*x^3+b*x^2+c*x+d==0, x))
+show(solve(a*x^3+b*x^2+c*x+d == 0, x))
 ```
 
 ## Equacions no polinomials
@@ -266,7 +270,7 @@ fàcilment la $x$ i expressar l'única solució que té com el logaritme
 d'alguna cosa. També `solve()` la troba:
 
 ```sage
-show(solve(5*e^(x/4)==43, x) )
+show(solve(5*e^(x/4) == 43, x) )
 ```
 
 Considereu ara trobar les solucions de $\sin x = 1/2$. Sabem de memòria
@@ -304,7 +308,7 @@ solve(abs(1-abs(1-x)) == 10, x, to_poly_solve='force')
 ```
 
 Per veure més opcions i exemples d'ús de `solve()`, busqueu a internet
-`sagemath symbolic equations and inequalities`
+`sagemath symbolic equations and inequalities`.
 
 ## Solucions aproximades
 
@@ -361,16 +365,20 @@ contingui el zero:
 eq5.find_root(-0.5, 0.5)
 ```
 
-Noteu que el resultat és una molt bona aproximació de zero.
+Noteu que el resultat és una molt bona aproximació de zero. Tot i així,
+és molt important tenir en compte que aquest mètode no és capaç de donar
+precisió arbitrària. Per algunes aplicacions, això pot ser una limitació
+clau.
 
 Per trobar les altres solucions, podem fer les gràfiques que ens permetin
 determinar intervals on n'hi hagi només una, i amb la instrucció
 anterior aplicada als diferents intervals, les trobarem totes.
 
 
-
 Un altre exemple en el que trobar totes les solucions dona una mica de
-feina és l'equació $$\frac{x^2}{20}-10 x= 15\cos(x+15)$$ Un gràfic de
+feina és l'equació $$\frac{x^2}{20}-10 x= 15\cos(x+15).$$
+
+Un gràfic de
 les dues corbes corresponents als dos costats de l'equació, sobre un
 domini més o menys raonable, mostra de forma immediata que cal buscar
 una solució entre $1$ i $2$:
@@ -414,20 +422,20 @@ funciona molt bé. Aquí tenim un parell d'exemples:
 ```sage
 var('y')
 sistema = [ 3*x + 2*y == 3, x-y == -4 ]
-solve(sistema, x, y)
+solve(sistema, [x, y])
 ```
 
 ```sage
 var('y z')
 sistema2 = [ x+y+z == 1, 3*x + y == 3, x-2*y-z == 0 ]
-solucio2 = solve(sistema2, x, y, z); show(solucio2)
+solucio2 = solve(sistema2, [x, y, z]); show(solucio2)
 ```
 
 Podeu comprovar que, efectivament, els valors corresponen a la solució
 del sistema fent les substitucions corresponents
 
 ```sage
-[eq.subs(solucio2) for eq in sistema2]
+all([eq.subs(solucio2) for eq in sistema2])
 ```
 
 Per a sistemes lineals indeterminats, el resultat conté els paràmetres
@@ -436,10 +444,10 @@ lliures que calguin.
 ```sage
 var('y z')
 sistema3 = [ 2*x - y + 4*z == 1, 3*x + y - z == 2 ]
-solucio3 = solve(sistema3, x, y, z); show(solucio3)
+solucio3 = solve(sistema3, [x, y, z]); show(solucio3)
 ```
 ```sage
-[ eq.subs(solucio3) for eq in sistema3 ]
+all([ eq.subs(solucio3) for eq in sistema3 ])
 ```
 
 Si ja sabem que el sistema és indeterminat, es pot fer que els
@@ -447,11 +455,11 @@ paràmetres lliures siguin determinades incògnites forçant a solucionar
 respecte les altres
 
 ```sage
-solve(sistema3, x, y)
+solve(sistema3, [x, y])
 ```
 
 ```sage
-solve(sistema3, x, z)
+solve(sistema3, [x, z])
 ```
 
 Si demanem la solució d'un nombre massa petit d'incògnites no s'obté
@@ -472,7 +480,7 @@ Es pot obtenir les solucions amb radicals com en l'exemple següent:
 var('y')
 conica1 = 2*x^2+3*y^2-2*x+y-5
 conica2 = 3*x^2-y^2+2*x+y-1
-show(solve([conica1==0, conica2==0], x, y))
+show(solve([conica1 == 0, conica2 == 0], [x, y]))
 ```
 
 O una solució numèrica com en aquest altre:
@@ -480,7 +488,16 @@ O una solució numèrica com en aquest altre:
 ```sage
 conica3 = 2*x^2+y^2-2*x+y-1
 conica4 = x^2-y^2+2*x+y-1
-show(solve([conica3==0, conica4==0], x, y))
+show(solve([conica3 == 0, conica4 == 0], [x, y]))
+```
+
+Quan resolem sistemes amb més d'una variable, pot ser convenient tenir una millor manera d'accedir a cada variable resultant.
+La opció `solution_dict` ens retorna una llista de diccionaris, on les claus són les incògnites:
+
+```sage
+sols = solve([conica3 == 0, conica4 == 0], [x, y], solution_dict=True)
+print(sols[0][x])
+print(sols[0][y])
 ```
 
 ## Exercicis
