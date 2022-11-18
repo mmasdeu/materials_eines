@@ -35,19 +35,33 @@ espereu:
 var('k')
 
 limit(k/(k+1),k=infinity)
+```
 
+```sage
 limit(k*(sqrt(k+1)-sqrt(k-1))/sqrt(k),k=infinity)
+```
 
+```sage
 limit(k.factorial()/k^k,k=oo)
+```
 
+```sage
 limit((-1)^k*sqrt(k)*sin(k^k)/(k+1),k=oo)
+```
 
+```sage
 limit((sqrt(k+1) - sqrt(k) + 1)^sqrt(k),k=oo)
+```
 
+```sage
 limit((k^3-8*k+7)/(200*k+1024),k=-oo)
+```
 
+```sage
 limit(e^k,k=oo)
+```
 
+```sage
 limit(e^k,k=-oo)
 ```
 
@@ -55,13 +69,21 @@ I en alguns casos en què la variable no tendeix a infinit:
 
 ```sage
 limit(sin(x)/x,x=0)
+```
 
+```sage
 limit((x-sin(x))/x^3,x=0)
+```
 
-limit((1-cos(x))/x^2),x=0)
+```sage
+limit((1-cos(x)) / x^2,x=0)
+```
 
+```sage
 limit((x^3 + 3*x^2-x-3)/(x-1),x=1)
+```
 
+```sage
 limit(e^(-1/x^2)/x^5,x=0)
 ```
 
@@ -158,6 +180,8 @@ respecte de la variable que es vulgui. Així, per exemple, es pot fer
 
 ```sage
 diff(x^3-2*x^2+4*x-5,x)
+```
+```sage
 (x^3-2*x^2+4*x-5).diff(x)
 ```
 
@@ -167,7 +191,9 @@ especificar respecte què es vol derivar ja que
 
 ```sage
 diff(x^3-2*x^2+4*x-5)
+```
 
+```sage
 (x^3-2*x^2+4*x-5).diff()
 ```
 
@@ -199,16 +225,18 @@ diff(f(x),x) # Derivada,
 
 diff(f(x),x,x) # Segona derivada,
 
-diff(f(x),x,x,x) # Tercera derivada\...
+diff(f(x),x,x,x) # Tercera derivada...
 ```
 
 O més en general,
 
 ```sage
 diff(f(x),x,2) # Segona derivada,
-
+```
+```sage
 diff(f(x),x,3) # Tercera derivada,
-
+```
+```sage
 diff(f(x),x,12) # Dotzena derivada.
 ```
 
@@ -234,11 +262,14 @@ les dues variables.
 
 ```sage
 diff(g(x,y),x,x)
-
+```
+```sage
 diff(g(x,y),y,y)
-
+```
+```sage
 diff(g(x,y),x,y)
-
+```
+```sage
 diff(g(x,y),y,x)
 ```
 
@@ -251,7 +282,7 @@ Un dels problemes típics d'una assignatura de càlcul infinitesimal
 elemental és el de determinar totes les característiques possibles del
 comportament d'una funció (asímptotes, creixement, extrems, convexitat,
 punts d'inflexió,...). En primera aproximació, el resultat d'una
-instrucció `plot` i una mica de tanteig ja és suficient per a obtenir
+instrucció `plot` i una mica de tempteig ja és suficient per a obtenir
 resultats força satisfactoris però, en realitat, la raó de ser d'un
 exercici d'aquest tipus és el fet que sense fer alguns límits,
 solucionar algunes equacions i calcular unes quantes derivades no serà
@@ -275,7 +306,7 @@ guardem en una llista `disc`:
 ```sage
 slcns = solve(x^2+4*x+3 == 0, x)
 
-disc=\[x.subs(sol) for sol in slcns\]
+disc = [x.subs(sol) for sol in slcns]
 disc
 ```
 
@@ -321,18 +352,18 @@ quan la variable s'aproxima als seus extrems*. Les instruccions
 ```sage
 f(x)=(x^3+6*x^2+12*x+8)/(x^2+4*x+3)
 
-show(limit(f(x),x=oo))
+print(f'{limit(f(x),x=oo) = }')
 
-show(limit(f(x),x=-oo))
+print(f'{limit(f(x),x=-oo) = }')
 ```
 
 mostren que no hi ha asímptotes horitzontals ja que són respectivament
 $+\infty$ i $-\infty$. No obstant, com que els límits
 
 ```sage
-m1=limit(f(x)/x,x=oo);show(m1)
-
-m2=limit(f(x)/x,x=-oo);show(m2)
+m1=limit(f(x)/x,x=oo)
+m2=limit(f(x)/x,x=-oo)
+print(f'{m1 = }, {m2 = }')
 ```
 
 existeixen i no són zero, hi ha l'opció que existeixin asímptotes
@@ -340,9 +371,11 @@ obliqües amb aquests valors com pendents. Per tal d'obtenir l'equació
 d'aquestes asímptotes s'hauran de calcular els límits
 
 ```sage
-n1=limit(f(x)-m1*x,x=oo);show(n1)
+n1=limit(f(x)-m1*x,x=oo)
+print(f'{n1 = }')
 
-n2=limit(f(x)-m2*x,x=-oo);show(n2)
+n2=limit(f(x)-m2*x,x=-oo)
+print(f'{n2 = }')
 ```
 
 i, aleshores, es podrà assegurar que el gràfic és asimptòtic a la recta
@@ -359,8 +392,8 @@ guardat a la variable `disc` i s'han determinat abans,
 
 ```sage
 for a in disc:
-    print(f"Límit quan x-> {a} per la dreta = {limit(f(x),x=a,dir='+')}")
-    print(f"Límit quan x-> {a} per l'esquerra = {limit(f(x),x=a,dir='-')}")
+    print(f"Límit quan x-> {a} per la dreta = {limit(f(x), x=a, dir='+')}")
+    print(f"Límit quan x-> {a} per l'esquerra = {limit(f(x), x=a, dir='-')}")
 ```
 
 mostra l'existència de les dues asímptotes verticals corresponents i el
@@ -372,7 +405,11 @@ l'altre.
 
 ```sage
 solve(f(x)==0,x) # Zeros de f(x)
+```
+```sage
 solve(f(x)>0,x) # On la funció és positiva
+```
+```sage
 solve(f(x)<0,x) # On és negativa
 ```
 
@@ -380,11 +417,10 @@ solve(f(x)<0,x) # On és negativa
 de repetir el mateix estudi per a la funció derivada*:
 
 ```sage
-df=diff(f)
+df = diff(f)
 show(df)
 show(df.simplify_full()) # Versió compacta de la derivada
 ```
-
 
 Observeu que el domini de definició de $f'(x)$ no ha canviat respecte el
 de $f(x)$.
@@ -392,10 +428,12 @@ de $f(x)$.
 Calculem ara els punts crítics i els intervals de creixement i
 decreixement de la funció:
 ```sage
-solve(df(x)==0,x) # Punts crítics de f(x)
-
-solve(df(x)>0,x) # On la funció creix
-
+solve(df(x) == 0,x) # Punts crítics de f(x)
+```
+```sage
+solve(df(x) > 0,x) # On la funció creix
+```
+```sage
 solve(df(x)<0,x) # On decreix
 ```
 
@@ -403,11 +441,11 @@ Observareu que hi ha tres punts crítics (màxims o mínims locals dels
 valors de la funció) que es poden guardar en una llista:
 
 ```sage
-sptscrt=solve(df(x)==0,x)
+sptscrt = solve(df(x)==0,x)
 
 pcrt= [ x.subs(ss) for ss in sptscrt ]
 
-show(pcrt)
+print(pcrt)
 ```
 
 Per altra banda, els intervals on la funció creix o decreix estaran
@@ -417,14 +455,14 @@ fer una llista d'aquests valors amb:
 ```sage
 cridcr = sorted(disc+pcrt)
 
-show(cridcr)
+print(cridcr)
 ```
 
 Per últim es pot passar a estudiar la concavitat i la convexitat de la
 funció usant la segona derivada:
 
 ```sage
-ddf=diff(f,2)
+ddf = diff(f,2)
 
 show(ddf)
 
@@ -446,9 +484,11 @@ dos valor complexos de bon principi fent l'assumpció de que $x$ és real:
 assume(x,'real')
 
 solve(ddf(x)==0,x)
-
+```
+```sage
 solve(ddf(x)>0,x) # On la funció és convexa
-
+```
+```sage
 solve(ddf(x)<0,x) # On la funció és concava
 ```
 
@@ -488,11 +528,14 @@ són vàlids $\pm\infty$).
 
 ```sage
 integral(f(x),x,0,3)
-
+```
+```sage
 integral(f(x),x,0,3).n()
-
+```
+```sage
 integral(f(x),x,1.,2.)
-
+```
+```sage
 integral(e^(-x^2),x,-infinity,infinity)
 ```
 
@@ -506,11 +549,14 @@ Això es pot il·lustrar usant l'opció `fill()` en una instrucció
 
 ```sage
 plot(f(x),(x,0,4))+plot(f(x),(x,1,2),fill='axis')
-
+```
+```sage
 integral(f(x),x,1,2).n()
-
+```
+```sage
 plot(sin(x)/x,(x,-50,50),fill='axis')
-
+```
+```sage
 integral(sin(x)/x,x,-50,50).n()
 ```
 
@@ -520,11 +566,10 @@ $F(x)$ tal que $F'(x)=f(x)$, simplement s'eliminen els límits
 d'integració a la sintaxi anterior.
 
 ```sage
-
-integral(f(x),x)
-
 h(x)=integral(f(x),x)
-
+print(h(x))
+```
+```sage
 diff(h(x),x)
 ```
 
@@ -547,13 +592,13 @@ veu a l'exemple següent:
 
 ```sage
 var('m')
-
 integral(x^m,x)
-
-assume(m!=-1)
-
+```
+```sage
+assume(m != -1)
 integral(x^m,x)
-
+```
+```sage
 integral(x^(-1),x)
 ```
 
