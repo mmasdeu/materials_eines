@@ -66,9 +66,9 @@ De la mateixa manera que es pot conèixer el valor de cada una de les
 components d'un vector també és possible modificar-les d'una en una.
 
 ```sage
-show(v)
+print(f'Abans, {v = }')
 v[1] = 7
-show(v)
+print(f'Després, {v = }')
 ```
 
 
@@ -92,8 +92,8 @@ $\mathbb{Q}$ es posa `QQ` en **SageMath** . Posant
 u.parent()
 ```
 
-respon `Vector space of dimension 4 over Rational Field`, el que ens
-indica el espai vectorial on viu el vector. Ho podem comprovar definint
+veiem que ens
+indica l'espai vectorial on viu el vector. Ho podem comprovar definint
 l'espai corresponent
 
 ```sage
@@ -120,8 +120,8 @@ alternativa de definir vectors: primer definir l'espai `V` on viuen i
 després posar `V(llista)`. ``
 
 ```sage
-w=Q4([1,-5,6,2])
-show(w)
+w = Q4([1,-5,6,2])
+print(w)
 w.parent()
 ```
 
@@ -130,15 +130,18 @@ w.parent()
 Per posar un exemple, suposeu que comencem amb un vector de components $(1,2,3,4)$
 
 ```sage
-v=vector([1,2,3,4]); show(v)
-vc=v; show(vc)
+v = vector([1,2,3,4])
+print(f'{v = }')
+vc = v
+print(f'{vc = })
 ```
 
-<font color=black> Si ara modifiqueu el vector `vc`, com que "apunta" al mateix lloc de memòria, el vector `v` també quedarà modificat. 
+Si ara modifiqueu el vector `vc`, com que "apunta" al mateix lloc de memòria, el vector `v` també quedarà modificat.
 
 ```sage
-vc[2]=0; show(vc)
-show(v)
+vc[2] = 0
+print(f'{vc = }')
+print(f'{v = }')
 ```
 
 
@@ -148,16 +151,18 @@ assignar una variable nova a aquesta còpia. La instrucció que es
 necessita és, òbviament, `copy`:
 
 ```sage
-vc=copy(v)
-show(vc);show(v)
-vc[2]=-1
-show(vc);show(v)
-v[0]=-2
-show(vc);show(v)
+vc = copy(v)
+print(f'{vc = }, {v = }')
+vc[2] = -1
+print(f'{vc = }, {v = }')
+v[0] = -2
+print(f'{vc = }, {v = }')
 ```
 
 Comproveu amb exemples que aquest comportament no succeeix amb variables que contenen constants o expressions simbòliques però que també passa el mateix quan es tracta de llistes.
 
+```sage
+```
 
 ### Suma de vectors, producte de vectors per escalars i producte escalar de vectors
 
@@ -169,23 +174,23 @@ producte escalar (tot i que la funció `dot_product` també calcula el
 producte escalar de vectors).
 
 ```sage
-3*u
+3 * u
 ```
 
 ```sage
-v/2
+v / 2
 ```
 
 ```sage
-0.5*v
+0.5 * v
 ```
 
 ```sage
-u+v
+u + v
 ```
 
 ```sage
-u*v
+u * v
 ```
 
 ```sage
@@ -196,34 +201,34 @@ Naturalment, es produirà un error si s'intenta realitzar una operació no
 permesa.
 
 ```sage
-u+5
+u + 5
 ```
 
 ```sage
- u+vector([1,2])
+ u + vector([1,2])
 ```
 
 ```sage
- u*vector([1,2])
+ u * vector([1,2])
 ```
 
-Ara bé, tingueu en compte que `0` s'interpreta com el vector zero i sí
+Ara bé, tingueu en compte que `0` s'interpreta com el vector zero i sí que es
 permet operar amb ell
 
 ```sage
-print(u+0)
-print(u-u==0)
+print(u + 0)
+print(u - u == 0)
 ```
 
 Si multipliquem un vector sobre el racionals per un nombre que no sigui
-(explícitament) racional, el vector canvia de lloc on viu. Al posar ``
+(explícitament) racional, el vector canvia de lloc on viu. Al posar
 
 ```sage
-(0.5*v).parent()
+(0.5 * v).parent()
 ```
 
-ens diu que viu al espai $\mathbb{RR}^4$ (de fet al espai $RR^4$, on
-$RR$ és el cos dels reals amb precisió simple, de 53 bits de precisió).
+ens diu que viu al espai $\mathbb{RR}^4$ (de fet al espai $\texttt{RR}^4$, on
+$\texttt{RR}$ és el "cos" dels reals amb precisió simple de 53 bits).
 
 Noteu que, en particular, el comportament de l'operador `+` és diferent
 si la suma es realitza entre vectors o llistes: quan la suma és de
@@ -249,7 +254,7 @@ mateixa longitud amb els elements de cada fila) i genera l'objecte de
 tipus matricial corresponent.
 
 ```sage
-A=matrix([[1,2],[3,4],[5,6],[7,8]]) 
+A = matrix([[1,2],[3,4],[5,6],[7,8]]) 
 show(A)
 ```
 
@@ -258,8 +263,9 @@ tuples de la mateixa longitud (que seran les files de la matriu
 resultant).
 
 ```sage
-u=vector([1,2,3]);v=vector([3,4,5])
-M=matrix([u,v])
+u = vector([1,2,3])
+v = vector([3,4,5])
+M = matrix([u,v])
 show(M)
 ```
 
@@ -267,8 +273,12 @@ Alternativament, es pot especificar el nombre de files i columnes i
 donar les dades com una llista individual (ordenant, és clar, per files)
 
 ```sage
-M0=matrix(2,4,[1,2,3,4,5,6,7,8]); show(M0)
-M10=matrix(10,10,range(100)); show(M10)
+M0 = matrix(2,4,[1,2,3,4,5,6,7,8])
+show(M0)
+```
+```sage
+M10 = matrix(10,10,range(100))
+show(M10)
 ```
 
 Si mireu la informació que proporciona la instrucció `matrix?` encara
@@ -306,10 +316,16 @@ Br = M10.matrix_from_rows([1,3,4])
 Bc = M10.matrix_from_columns([0,2])
 show(Br)
 show(Bc)
+```
+```sage
 Brc = M10.matrix_from_rows_and_columns([0,2],[1,2,4])
 show(Brc)
 ```
 
+```sage
+Bsub = M10.submatrix(1,1,2,3) # submatriu 2x3 que comença a la posició (1,1)
+show(Bsub)
+```
 ### Accedint als continguts d'una matriu
 
 Si es vol accedir al valor d'una de les posicions de la matriu n'hi
@@ -349,8 +365,8 @@ una matriu, entre els quals hi ha la comprovació del fet que sigui
 quadrada, aquesta comprovació es podria fer directament amb
 
 ```sage
-show(A.is_square())
-show(M10.is_square())
+print(A.is_square())
+print(M10.is_square())
 ```
 
 També podem canviar les files per les columnes (transposar la matriu)
@@ -358,7 +374,6 @@ amb la instrucció `transpose`
 
 ```sage
 show(A.transpose())
-show(transpose(A))
 ```
 
 ### Suma de matrius i producte per escalars
@@ -368,9 +383,9 @@ entre elles sempre que tinguin la mateixa mida. Les operacions es fan
 component a component.
 
 ```sage
-B1=matrix(3,2,range(6))
-B2=matrix(3,2,[3,3,3,1,1,1])
-B3=B1+5*B2
+B1 = matrix(3,2,range(6))
+B2 = matrix(3,2,[3,3,3,1,1,1])
+B3 = B1 + 5 * B2
 show(B3)
 ```
 
@@ -383,21 +398,24 @@ com a fila o columna, segons si es vol fer la multiplicació per la dreta
 o per l'esquerra (sempre que el producte que plantegem tingui sentit).
 
 ```sage
-u=vector([1,2,3]);show(u)
-w=vector([-1,1]);show(w)
-A=matrix([[1,1],[-1,2],[2,1]]);show(A)
+u = vector([1,2,3])
+print(f'{u = }')
+w = vector([-1,1])
+print(f'{w = }')
+A = matrix([[1,1],[-1,2],[2,1]])
+show(A)
 ```
 
 ```sage
-A*u
+A * u
 ```
 
 ```sage
-u*A
+u * A
 ```
 
 ```sage
-A*w
+A * w
 ```
 
 ### Producte de matrius
@@ -406,43 +424,48 @@ Naturalment, l'operador ` * ` realitza el producte de matrius sempre que
 estigui definit.
 
 ```sage
-A=matrix([[1,2,3],[4,5,6]])
-B=matrix([[1,2],[3,4],[5,6]])
-show(A,B)
+A = matrix([[1,2,3],[4,5,6]])
+B = matrix([[1,2],[3,4],[5,6]])
+show(A, B)
 show(A*B)
 show(B*A)
 ```
 
 ```sage
-C=matrix([[1,2,3],[4,5,6],[7,8,9]]);show(C)
+C = matrix([[1,2,3],[4,5,6],[7,8,9]])
+show(C)
 show(A*C)
-show(C*A)
 ```
+
 
 ### Matriu inversa i altres potències
 
 Les multiplicacions successives d'una matriu quadrada per si mateixa
 (potències) es poden obtenir amb l'operador de potències ordinari
-`^\wedge` i, en particular, la inversa (si existeix) es pot obtenir amb
+`^` i, en particular, la inversa (si existeix) es pot obtenir amb
 l'exponent $-1$.
 
 ```sage
-A=matrix([[1,1,0],[0,1,0],[0,0,-1]]);show(A)
+A = matrix([[1,1,0],[0,1,0],[0,0,-1]]);show(A)
 show(A^15)
 show(A^(-1))
 ```
 
 ```sage
-B=matrix([[1,1,1],[-1,2,1],[0,3,2]]);show(B)
+B = matrix([[1,1,1],[-1,2,1],[0,3,2]]);show(B)
 show(B^3)
 show(B^(-1))
 ```
 
 Encara que, si es vol, es pot calcular la inversa d'una matriu
-utilitzant la funció específica `inverse`
+utilitzant la funció específica `inverse` o l'operador `~`:
 
 ```sage
 show(A.inverse())
+```
+
+```sage
+show(~A)
 ```
 
 Fins i tot podem calcular potències simbòlicament!
@@ -460,7 +483,7 @@ show(B^n)
 
 En les matrius quadrades, la traça i el determinant juguen un paper molt
 important. Per tal de calcular el determinant d'una matriu quadrada es
-pot aplicar `det` o, si no tenim mandra d'escriure més lletres,
+pot aplicar `det` o, si no ens fa mandra escriure més lletres,
 `determinant`. Per calcular la traça, cal usar el mètode de les matrius
 `trace()`.
 
@@ -473,10 +496,6 @@ A.determinant()
 ```
 
 ```sage
-det(A)
-```
-
-```sage
 A.trace()
 ```
 
@@ -484,7 +503,7 @@ A.trace()
 Si la matriu no és quadrada ens dona un error
 
 ```sage
-Mc=matrix(2,3,[1,2,3,4,5,6])
+Mc = matrix(2,3,[1,2,3,4,5,6])
 Mc.det()
 ```
 
@@ -497,12 +516,8 @@ Mc.trace()
 La instrucció que calcula el rang de les matrius és `rank`
 
 ```sage
-B=matrix([[1,2,3],[2,1,-1],[1,-1,-4],[3,3,2]]);show(B)
+B = matrix([[1,2,3],[2,1,-1],[1,-1,-4],[3,3,2]]);show(B)
 B.rank()
-```
-
-```sage
-rank(B)
 ```
 
 Naturalment, quan el problema del càlcul del rang està posat en una
@@ -511,7 +526,7 @@ família de matrius depenent d'un, o més, paràmetres, la funció `rank` no
 exemple, si es considera la família de matrius depenent del paràmetre
 $k$ donada per
 $$
-A_k=\begin{pmatrix} 
+A_k=\begin{pmatrix}
  1 & k + 1 & -1 & 0 \\
 -1 & 2 & k & 1 \\
 k + 2 & -1 & -1 & 2 \, k - 1
@@ -521,7 +536,7 @@ el valor de la funció `rank` aplicada a l'expressió genèrica de les matrius d
 
 ```sage
 var('k')
-Ak=matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
+Ak = matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
 Ak.rank()
 ```
 
@@ -542,7 +557,7 @@ A0 = Ak.subs(k=0)
 show(A0)
 ```
 ```sage
-rank(A0)
+A0.rank()
 ```
 
 Fet que es pot preveure si es calcula, per exemple, el determinant de la
@@ -550,11 +565,11 @@ submatriu formada per les tres primeres columnes, se'n determinen les
 arrels als racionals i
 
 ```sage
-AA=Ak.matrix_from_columns([0,1,2])
-show(AA)
-d=AA.det().expand()
+Asub = Ak.matrix_from_columns([0,1,2])
+show(Asub)
+d = Asub.det().expand()
 show(d)
-sols=d.roots(ring=QQ)
+sols = d.roots(ring = QQ)
 show(sols)
 ```
 
@@ -620,9 +635,9 @@ s'apliqui l'esglaonament usant divisions (o, alternativament, utilitzar
 `echelon_form` i `rref`).
 
 ```sage
-A=matrix(QQ,3,5,[2,-4,0,-1,-5,0,0,2,1,5,-1,2,3,2,10]);show(A)
-B=vector([2,0,-1]);show(B)
-Am=A.augment(B,subdivide=True);show(Am)
+A = matrix(QQ,3,5,[2,-4,0,-1,-5,0,0,2,1,5,-1,2,3,2,10]);show(A)
+B = vector([2,0,-1]);show(B)
+Am = A.augment(B, subdivide=True);show(Am)
 ```
 
 Encara que $B$ sigui un vector, i per tant és una *fila*, la funció
@@ -653,7 +668,7 @@ de la forma
 $$\begin{aligned}
 x_0 &= 2\, x_1+\dfrac12\, x_3+\dfrac52\, x_4+1
 \\
-x_2 &= -\dfrac12\, x_3-\dfrac52\, x_4 
+x_2 &= -\dfrac12\, x_3-\dfrac52\, x_4
 \end{aligned}
 $$
 amb els valors de $x_1$, $x_3$ i $x_4$ arbitraris.
@@ -677,6 +692,14 @@ show(P)
 Podeu comprovar, fent la multiplicació, com el producte de `P` per la
 matriu original `Am` dona la forma reduïda `Ar`.
 
+Una altra manera és demanant directament la matriu $P$ quan cridem `echelon_form`:
+
+```sage
+Ar, P = Am.echelon_form(transformation=True)
+show(Ar)
+show(P)
+```
+
 ### Esgalonament de matrius amb paràmetres
 
 Que passa si fem la forma esglaonada per una matriu amb paràmetres?
@@ -693,11 +716,11 @@ obtenim un matriu horrorosa, que no és fàcil de simplificar (no funciona
 automàticament). Podem fer
 
 ```sage
-show(AkE.full_simplify())
+show(AkE.simplify_full())
 ```
 
 ```sage
-show([a.full_simplify() for a in AkE.column(3)])
+show([a.simplify_full() for a in AkE.column(3)])
 ```
 
 Però fent així semblaria que només hi ha problemes quan el denominador
@@ -719,7 +742,7 @@ show(AkE)
 ```
 
 Ara és evident que només quan els dos polinomis de la darrera fila són
-zero el rank és 2, i això només passa si $k=0$. Per exemple podeu
+zero el rang és 2, i això només passa si $k=0$. Per exemple podeu
 calcular el màxim comú divisor dels dos polinomis (ja que un zero comú
 serà un zero del mcm), i surt $k$.
 
@@ -751,7 +774,7 @@ AA.swap_rows(0,2); show(AA)
 Canvi de signe de la primera fila (índex $0$)
 
 ```sage
-AA.rescale_row(0,-1);show(AA)
+AA.rescale_row(0,-1); show(AA)
 ```
 
 Restar $2$ vegades la tercera fila (índex $2$) a la primera (índex $0$)
@@ -790,7 +813,7 @@ cos $K$ i un enter $n\ge 1$ tenim la instrucció `VectorSpace(K,n)` o bé
 `K^n`.
 
 ```sage
-E=QQ^4
+E = QQ^4
 ```
 
 Recordeu que els cossos més usuals estan definits a
@@ -818,7 +841,7 @@ amb coeficients a $\mathbb{Q}$,
 $\mathbb{Q}(t)=\{\frac{p(t)}{q(t)}\mid q(t)\neq 0\}$:
 
 ```sage
-E1=VectorSpace(FractionField(PolynomialRing(QQ,'x')),3)
+E1 = VectorSpace(FractionField(PolynomialRing(QQ,'x')),3)
 E1
 ```
 
@@ -828,16 +851,16 @@ span.
 
 
 ```sage
-u=E([5,-2,1,3])
-v=E([1,1,2,-1])
+u = E([5,-2,1,3])
+v = E([1,1,2,-1])
 ```
 
 ```sage
-w=3*u-6*v
+w = 3*u-6*v
 ```
 
 ```sage
-F=E.subspace([u,v,w])
+F = E.subspace([u,v,w])
 show(F)
 ```
 
@@ -857,7 +880,7 @@ Si no es vol treballar amb aquesta base, es pot especificar la base per
 al subespai amb
 
 ```sage
-F1=E.subspace_with_basis([u,v])
+F1 = E.subspace_with_basis([u,v])
 ```
 
 ```sage
@@ -873,7 +896,7 @@ Notem però que els dos espais, tot i tenir assignades bases diferents,
 són el mateix:
 
 ```sage
-F==F1
+F == F1
 ```
 
 Encara que un espai vectorial tingui una base assignada diferent, sempre
@@ -896,8 +919,8 @@ $(x,y,z,t)\in\mathbb{Q}^4$ tals que $x+y=0$ i $3\,x-y-z-t=0$ es pot fer
 el següent:
 
 ```sage
-A=matrix(QQ, [[1,1,0,0],[3,-1,-1,-1]])
-W=A.right_kernel()
+A = matrix(QQ, [[1,1,0,0],[3,-1,-1,-1]])
+W = A.right_kernel()
 W
 ```
 
@@ -934,7 +957,7 @@ l'operador `+`, sempre i quan l'expressió tingui sentit, és a dir, que
 siguin subespais vectorials d'un espai vectorial en comú.
 
 ```sage
-F+W
+F + W
 ```
 
 ```sage
@@ -942,19 +965,13 @@ V=(QQ^3).subspace([(1,1,-1)])
 ```
 
 ```sage
-F+V    #Ha de donar error
+F + V    #Ha de donar error
 ```
 
-<font color=black> Podem fer sumes de més d'un espai
+Podem fer sumes de més d'un espai:
 
 ```sage
  span([u])+span([v])+span([w])
-```
-
-Podem fer sumes de més d'un espai
-
-```sage
-span(\[u\])+span(\[v\])+span(\[w\])
 ```
 
 La intersecció d'espais vectorials es crea com a una propietat d'un dels
@@ -978,15 +995,15 @@ V=\{(x,y,z,t)\in \mathbb{Q}^4 \mid 3\,x-2\,y-z-t=x-y-t=2\,x-y-z=0\}.\end{gathere
 Per tal de *crear* els espais $U$ i $V$ n'hi ha prou amb:
 
 ```sage
-U=span([(1,-1,1,-1),(1,2,1,1),(2,-1,2,0),(4,0,4,2)],QQ)
+U = span([(1,-1,1,-1),(1,2,1,1),(2,-1,2,0),(4,0,4,2)],QQ)
 ```
 
 ```sage
-B=matrix(QQ,[[3,-2,-1,-1],[1,-1,0,-1],[2,-1,-1,0]])
+B = matrix(QQ,[[3,-2,-1,-1],[1,-1,0,-1],[2,-1,-1,0]])
 ```
 
 ```sage
-V=B.right_kernel()
+V = B.right_kernel()
 ```
 
 I ara es poden obtenir les dimensions i bases dels espais $U$, $V$,
