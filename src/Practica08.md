@@ -692,13 +692,6 @@ show(P)
 Podeu comprovar, fent la multiplicació, com el producte de `P` per la
 matriu original `Am` dona la forma reduïda `Ar`.
 
-Una altra manera és demanant directament la matriu $P$ quan cridem `echelon_form`:
-
-```sage
-Ar, P = Am.echelon_form(transformation=True,algorithm='flint')
-show(Ar)
-show(P)
-```
 
 ### Esgalonament de matrius amb paràmetres
 
