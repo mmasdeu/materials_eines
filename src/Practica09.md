@@ -43,9 +43,9 @@ Per exemple:
 mostra que $124846$ és un nombre parell que no és múltiple de $4$.
 
 
-Contrariament a la definició usual, el càlcul del residu mòdul un enter
+Contràriament a la definició usual, el càlcul del residu mòdul un enter
 qualsevol segueix el conveni de donar un resultat del mateix signe i
-menor en valor absolut que el denominador com es pot comprovar en els
+menor en valor absolut que el denominador, com es pot comprovar en els
 exemples següents.
 
 ```sage
@@ -136,7 +136,7 @@ seus divisors diferents d'ell mateix, és clar)
 ```sage
 def esperfecte(k):
     sumdiv = sum(d for d in k.divisors())
-	return sumdiv == 2 * k
+    return sumdiv == 2 * k
 ```
 
 Sabríeu fer, ara, una llista amb els números perfectes menors que 1000?
@@ -255,12 +255,12 @@ són, respectivament, el màxim comú divisor, $\alpha$ i $\beta$. Per
 exemple:
 
 ```sage
-a=39854; b=765756; show(gcd(a,b))
+a=39854; b=765756
+print(f'{gcd(a,b) = }')
 ```
 ```sage
 g, alpha, beta = xgcd(a,b)
-show(g)
-show(f'{alpha * a + beta * b = }')
+print(f'{g = }, {alpha * a + beta * b = }')
 ```
 
 Ara bé, si el que volem és obtenir identitats de Bézout per a més de dos
@@ -271,8 +271,8 @@ Primer notem que $\text{mcd}(a,b,c)=\text{mcd}(\text{mcd}(a,b),c)$:
 
 ```sage
 a=72776; b=9944; c=86823
-show(gcd([a,b,c]))
-show(gcd(gcd(a,b),c))
+print(gcd([a,b,c]))
+print(gcd(gcd(a,b),c))
 ```
 
 
@@ -294,8 +294,8 @@ I com que $d_{1} = \alpha_{1} \times d_{0} + \beta_{1} \times c$,
 obtenim el resultat que volem substituint $d_0$:
 
 ```sage
-alpha = alpha1*alpha0
-beta = alpha1*beta0
+alpha = alpha1 * alpha0
+beta = alpha1 * beta0
 gamma = beta1
 
 print(f'{gcd([a,b,c])} = {alpha} * {a} + {beta} * {b} + {gamma} * {c}')
@@ -375,7 +375,7 @@ assume(y,'integer')
 assume(z,'integer')
 
 tp = solve(x^2 + y^2 == z^2,(x,y,z))
-show(tp)
+print(tp)
 ```
 
 I si volem una llista de valors concrets
@@ -523,8 +523,10 @@ parent(sqrt(Z17(5)))
 
 
 En aquests últims exemples es veu com es poden utilitzar expressions del
-tipus `in Z26`. Això pot servir a l'hora de fer llistes com la que
-apareix en l'exemple següent, on es fabrica la llista dels quadrats a
+tipus `in Z26`.
+
+També es poden iterar pels seus elements, com podeu veure
+a l'exemple següent, on es fabrica la llista dels quadrats a
 $\mathbb{Z}/26\mathbb{Z}$.
 
 ```sage
@@ -548,7 +550,7 @@ S = [a]
 k = 2
 while a^k not in S:
     S.append(a^k)
-    k+=1
+    k += 1
 S
 ```
 
@@ -591,7 +593,7 @@ aquesta última ens donarà un error si $n$ no és una potència d'un primer
 anell diferent si $n$ és una potència d'un primer (ja que
 $\mathbb{Z}/n\mathbb{Z}$ no és mai un cos si $n$ no és un primer). Per
 exemple `GF(4)` ens donarà un cos amb 4 elements que no és
-$\mathbb{Z}/4\mathbb{Z}$ (això us ho explicaran a segon).
+$\mathbb{Z}/4\mathbb{Z}$.
 
 
 ## Equacions *mòdul $n$*
