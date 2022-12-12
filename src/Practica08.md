@@ -133,7 +133,7 @@ Per posar un exemple, suposeu que comencem amb un vector de components $(1,2,3,4
 v = vector([1,2,3,4])
 print(f'{v = }')
 vc = v
-print(f'{vc = })
+print(f'{vc = }')
 ```
 
 Si ara modifiqueu el vector `vc`, com que "apunta" al mateix lloc de memòria, el vector `v` també quedarà modificat.
@@ -692,13 +692,6 @@ show(P)
 Podeu comprovar, fent la multiplicació, com el producte de `P` per la
 matriu original `Am` dona la forma reduïda `Ar`.
 
-Una altra manera és demanant directament la matriu $P$ quan cridem `echelon_form`:
-
-```sage
-Ar, P = Am.echelon_form(transformation=True)
-show(Ar)
-show(P)
-```
 
 ### Esgalonament de matrius amb paràmetres
 
