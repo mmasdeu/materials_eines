@@ -594,10 +594,10 @@ g = Z26.unit_group().gen() # és cíclic, per tant té un generador
 Fixeu-vos en el resultat d'aquestes instruccions:
 
 ```sage
-print(f'{g.multiplicative_order() = })
-print(f'{g.order() = })
-print(f'{Z26(g).multiplicative_order() = })
-print(f'{Z26(g).order() = })
+print(f'{g.multiplicative_order() = }')
+print(f'{g.order() = }')
+print(f'{Z26(g).multiplicative_order() = }')
+print(f'{Z26(g).order() = }')
 ```
 
 
