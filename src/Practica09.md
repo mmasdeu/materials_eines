@@ -61,7 +61,7 @@ exemples següents.
 A part de les aplicacions purament aritmètiques, la reducció mòdul un
 enter pot ser molt útil en un exemple com el següent:
 
-```
+```sage
 var('k')
 colors = ['red', 'green', 'blue']
 dibuix = plot(1,0,1, color=colors[0], aspect_ratio=1)
@@ -134,9 +134,7 @@ que ens digui si un número qualsevol és *perfecte* (igual a la suma dels
 seus divisors diferents d'ell mateix, és clar)
 
 ```sage
-def esperfecte(k):
-    sumdiv = sum(d for d in k.divisors())
-    return sumdiv == 2 * k
+esperfecte = lambda k : sum(d for d in k.divisors()) == 2 * k
 ```
 
 Sabríeu fer, ara, una llista amb els números perfectes menors que 1000?
@@ -247,7 +245,7 @@ Hi ha problemes en els que no n'hi ha prou amb la informació del màxim
 comú divisor i es volen conèixer els coeficients d'una *identitat de
 Bézout* per a un parell d'enters (recordeu que una identitat de Bézout
 per al parell $a$, $b$ consisteix a tenir una igualtat del tipus
-$$\text{mcd}(a,b) = \alpha\times a +\beta \times b\,,$$ on $\alpha$ i
+$$\text{mcd}(a,b) = \alpha\cdot a +\beta \cdot b\,,$$ on $\alpha$ i
 $\beta$ són les coeficients que s'han de determinar i sempre
 existeixen). Per tal d'obtenir aquest resultat es pot utilitzar la
 instrucció `xgcd()` que dona un resultat format per tres elements que
@@ -283,14 +281,14 @@ coeficients que obtenim:
 d0, alpha0, beta0 = xgcd(a,b)
 ```
 
-De forma que $d_{0}= \alpha_{0} \times a + \beta_{0} \times b$. Ara fem
+De forma que $d_{0}= \alpha_{0} \cdot a + \beta_{0} \cdot b$. Ara fem
 una identitat per $d_0$ i $c$:
 
 ```sage
 d1, alpha1, beta1 = xgcd(d0, c)
 ```
 
-I com que $d_{1} = \alpha_{1} \times d_{0} + \beta_{1} \times c$,
+I com que $d_{1} = \alpha_{1} \cdot d_{0} + \beta_{1} \cdot c$,
 obtenim el resultat que volem substituint $d_0$:
 
 ```sage
@@ -325,8 +323,8 @@ x \equiv 4\ (\text{mod }8)\\\end{gathered}$$ n'hi haurà prou amb
 s = crt([2,4],[6,8])
 
 print(f'Solucio = {s}')
-print(f'{s % 6 = }')
-print(f'{s % 8 = }')
+print(f's % 6 = {s % 6}')
+print(f's % 8 = {s % 8}')
 ```
 
 per tal de conèixer una solució particular, i calcular el mínim comú
@@ -473,6 +471,10 @@ considerat el valors continguts com elements mòdul $26$:
 a.parent()
 ```
 
+```sage
+show(a.parent())
+```
+
 Es pot treballar amb expressions més complexes sempre i quan les
 operacions que es realitzin siguin permeses (per exemple, si es vol
 dividir per un element, aquest ha de ser invertible)
@@ -579,6 +581,24 @@ Z26.unit_group()
 
 Aquest últim objecte ens permet treballar amb el grup dels elements
 invertibles.
+
+```sage
+for g in Z26.unit_group():
+    print(f'{g = }, {Z26(g) = }')
+```
+
+```sage
+g = Z26.unit_group().gen() # és cíclic, per tant té un generador
+```
+
+Fixeu-vos en el resultat d'aquestes instruccions:
+
+```sage
+print(f'{g.multiplicative_order() = })
+print(f'{g.order() = })
+print(f'{Z26(g).multiplicative_order() = })
+print(f'{Z26(g).order() = })
+```
 
 
 Com ja sabeu, si $n=p$ és un nombre primer, aleshores
@@ -736,7 +756,7 @@ Definiu una funció de **SageMath**, anomenada
 retorni el màxim comú divisor $d=\text{mcd}(a,b,c)$ i els
 coeficients $\lambda$, $\mu$ i $\nu$ d'una identitat de Bézout per a
 aquests números de forma que
-$$d=\lambda\times a+\mu\times b+\nu\times c.$$
+$$d=\lambda\cdot a+\mu\cdot b+\nu\cdot c.$$
 Sabeu modificar
 `xxgcd` per tal que accepti com argument una llista d'enters, de
 longitud arbitrària i doni com a resultat els coeficients d'una
@@ -793,16 +813,14 @@ d'aquesta funció (`xcrt`) que, amb les mateixes dades, doni com a
 resultat una llista de dos elements: el valor de la solució
 particular i el mínim comú múltiple dels mòduls.
 
-
-```sage
 -- begin hide
+```sage
 def xcrt(C,M):
     return [crt(C,M), lcm(M)]
 
 xcrt([2,4,8,18],[6,8,20,50]) # exemple
--- end hide
 ```
-
+-- end hide
 
 ### Exercici 6
 
