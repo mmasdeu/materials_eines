@@ -183,14 +183,14 @@ d'obtenir aquest resultat i una funció com la següent, que aplica l'algoritme 
 
 ```sage
 def euclides(a,b):
-	m = max(abs(a),abs(b))
-	n = min(abs(a),abs(b))
-	r = m % n
-	while r > 0:
-		m = n
-		n = r
-		r = m % n
-	return n
+    m = max(abs(a),abs(b))
+    n = min(abs(a),abs(b))
+    r = m % n
+    while r > 0:
+        m = n
+        n = r
+        r = m % n
+    return n
 ```
 
 
@@ -381,7 +381,7 @@ I si volem una llista de valors concrets
 ftp(p,q) = tp
 for r in [1..10]:
     for s in [1..r-1]:
-	    print(ftp(r,s))
+        print(ftp(r,s))
 ```
 
 Noteu que la forma com apareixen les solucions és diferent a la que
