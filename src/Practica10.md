@@ -18,8 +18,6 @@ jupyter:
 
 ## Exercici 1
 
-## Exerici 10
-
 1. Definiu una funció SumaDivisorsSenars(n) que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu SumaDivisorsSenars(15) i SumaDivisorsSenars(1890).
 
 2. Definiu una funció Func(n) per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\leq n$ tals que SumaDivisorsSenars$(k)$ és $\ge k$. Calculeu Func(100). 
