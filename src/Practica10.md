@@ -14,7 +14,7 @@ jupyter:
     name: sagemath
 ---
 
-### Exercici 1
+# Exercici 1
 
 1. Definiu una funció `SumaDivisorsSenars(n)` que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu `SumaDivisorsSenars(15)` i `SumaDivisorsSenars(1890)`.
 
@@ -76,9 +76,10 @@ for _ in range(14):
 print(L)
 print(len(L))
 ```
+-- end hide
 
 
-### Exercici 2
+# Exercici 2
 
 Considereu les successions determinades, donats dos nombres positius $a$, $b$, per
 $$
@@ -144,7 +145,7 @@ Podem deduïr "experimentalment" que Sk tendeix al major dels dos nombres, mentr
 
 -- end hide
 
-### Exercici 3
+# Exercici 3
 
 
 Considereu la successió $a_{k}$ definida per les condicions
@@ -228,7 +229,7 @@ A
 ```
 -- end hide
 
-### Exercici 4
+# Exercici 4
 
 
 Les parelles de primers bessons són parelles de primers de la forma $(p,p+2)$. Definiu una funció que permeti fer una llista de les parelles de primers bessons menors que un màxim donat.
@@ -276,7 +277,7 @@ primersbessons(7)
 -- end hide
 
 
-### Exercici 5
+# Exercici 5
 
 
 La conjectura de Goldbach afirma que tot enter parell més gran que 2 es pot escriure com la suma de dos primers. Per exemple, $6=3+3$, $12=7+5$ o $64=17+47$. Aquestes particions com a suma de dos primers s'anomenen particions de Goldbach.  Creeu una funció Goldbach(n) que retorni totes les possibles particions de Goldbach de $n$ (sense importar l'ordre). Si denotem per $r(2k)$ el nombre de particions de Goldbach de $2k$, la conjectura afirma que $r(2k)>0$ per a tot $k>1$. Representeu en un gràfic els valors $(k,r(2k))$ per a $k\in [2,2000]$.
@@ -336,7 +337,7 @@ Goldbach(10)
 ```
 -- end hide
 
-### Exercici 6
+# Exercici 6
 
 
 Donat $k\in \mathbb{N}$, la funció phi d'Euler, $\varphi(k)$ és una funció que es defineix fàcilment en termes aritmètics, i que es pot calcular com $$\varphi(k)=\prod_{i=1}^r (p_i-1)\,p_i^{\alpha_i-1}$$ on $k=p_1^{\alpha_1}\cdots p_r^{\alpha_r}$ és la descomposició de $k$ en primers diferents. 
@@ -410,7 +411,7 @@ Unaaltrephi(n)
 -- end hide
 
 
-### Exercici 7
+# Exercici 7
 
 
 Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,...) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
@@ -511,7 +512,7 @@ print(total)
 ```
 -- end hide
 
-### Exercici 8
+# Exercici 8
 
 En aquest exercici veurem que és possible treballar amb relacions d'equivalència i quocients per a conjunts finits. Considerarem un conjunt finit (de *Python*, o sigui construït via `{ }` o be via `set( )`). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
 
@@ -762,3 +763,4 @@ PS[3]
 PS[5]
 ```
 
+-- end hide
