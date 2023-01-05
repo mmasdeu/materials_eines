@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Exercicis de consoolidació'
+  title : 'Exercicis de consolidació'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -751,18 +751,18 @@ PS[5]
 ## Exercici 9
 
 Considereu la família de matrius $A_t \in M_{3x4}(\mathbb{Q})$, depenent d'un parametre $t$, donada per
-$$
+\[
 A_t=\begin{pmatrix} 
  1 & t-1  & -1 & -2 \\
 -1 & 3 & t-1 & 3 \\
 t + 1 & -t-2 & -1 & -5
 \end{pmatrix}
-$$
+\]
 
 1. Calculeu el rank de la matriu $A_t$ en funció del paràmetre t.
 2. Calculeu una base del espai generat per les files de $A_t$ per a $t=100$ i pels $t$'s on el rang de $A_t$ no és $=3$.
 3. Calculeu en funció de $t$ les solucions del sistema d'equacions que té com a matriu ampliada la matriu $A_t$, o sigui el sistema
-$$
+\[
 \begin{pmatrix} 
  1 & t-1  & -1  \\
 -1 & 3 & t-1  \\
@@ -778,7 +778,7 @@ x_2
 3 \\
  -5
 \end{pmatrix}
-$$
+\]
 
 
 -- begin hide
