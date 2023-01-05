@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Practica 10'
+  title : 'Pràctica 10: Exercicis de consolidació'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -13,20 +13,18 @@ jupyter:
     language: sage
     name: sagemath
 ---
-# Exercicis de consolidació
 
+### Exercici 1
 
-## Exercici 1
+1. Definiu una funció `SumaDivisorsSenars(n)` que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu `SumaDivisorsSenars(15)` i `SumaDivisorsSenars(1890)`.
 
-1. Definiu una funció SumaDivisorsSenars(n) que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu SumaDivisorsSenars(15) i SumaDivisorsSenars(1890).
+2. Definiu una funció `Func(n)` per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\leq n$ tals que `SumaDivisorsSenars$(k)` és $\ge k$. Calculeu `Func(100)`.
 
-2. Definiu una funció Func(n) per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\leq n$ tals que SumaDivisorsSenars$(k)$ és $\ge k$. Calculeu Func(100). 
-
-3. Feu una llista $L$ de longitut 15 que comenci amb $L[0]=1069$ i de manera que $L[i+1]$ sigui igual a  SumaDivisorsSenars$(L[i])$ per a $i\ge 0$.
+3. Feu una llista $L$ de longitud 15 que comenci amb `L[0]=1069` i de manera que `L[i+1]` sigui igual a  `SumaDivisorsSenars(L[i])` per a $i\ge 0$.
 
 -- begin hide
 
-### Part 1
+#### Part 1
 
 ```sage
 def SumaDivisorsSenars(n):
@@ -37,14 +35,14 @@ def SumaDivisorsSenars(n):
 ```
 
 ```sage
-SumaDivisorsSenars(15) 
+SumaDivisorsSenars(15)
 ```
 
 ```sage
 SumaDivisorsSenars(1890)
 ```
 
-### Part 2
+#### Part 2
 
 ```sage
 def Func(n):
@@ -55,7 +53,7 @@ def Func(n):
 Func(100)
 ```
 
-### Part 3
+#### Part 3
 
 Una manera:
 
@@ -69,24 +67,24 @@ print(L)
 print(len(L))
 ```
 
-Una altra sense usar la variable auxiliar 'a':
+Una altra sense usar la variable auxiliar `a`:
 
 ```sage
-L=[1069]
+L = [1069]
 for _ in range(14):
-    L.append( SumaDivisorsSenars(L[-1]))
+    L.append(SumaDivisorsSenars(L[-1]))
 print(L)
 print(len(L))
 ```
 
 
-## Exercici 2
+### Exercici 2
 
 Considereu les successions determinades, donats dos nombres positius $a$, $b$, per
 $$
 S_{k}= \sqrt[k]{a^{k}+b^{k}},\qquad T_{k}=\frac{a^{k}-b^{k}}{a^{k}+b^{k}}
 $$
-Per tal de poder experimentar amb els seus valors definiu dues funcions de tres arguments (a,b,k) que donin, respectivament, els valors de $S_{k}$ i $T_{k}$ per a un parell $(a,b)$ donat. A continuació feu una llista dels $25$ primers termes d'aquestes dues successions triant $2$ o $3$ parelles $(a,b)$ diferents. Finalment, després dels resultats dels experiments, quin límit conjectureu que tenen cada una d'aquestes dues successions?
+Per tal de poder experimentar amb els seus valors definiu dues funcions de tres arguments $(a,b,k)$ que donin, respectivament, els valors de $S_{k}$ i $T_{k}$ per a un parell $(a,b)$ donat. A continuació feu una llista dels $25$ primers termes d'aquestes dues successions triant $2$ o $3$ parelles $(a,b)$ diferents. Finalment, després dels resultats dels experiments, quin límit conjectureu que tenen cada una d'aquestes dues successions?
 
 -- begin hide
 ```sage
@@ -109,8 +107,8 @@ b=3
 De fet només m'interessa l'últim element de la llista.
 
 ```sage
-a=2
-b=5
+a = 2
+b = 5
 [Sk(a,b,k) for k in srange(1,25)][-1]
 ```
 
@@ -119,8 +117,8 @@ b=5
 ```
 
 ```sage
-a=5
-b=11
+a = 5
+b = 11
 [Sk(a,b,k) for k in srange(1,25)][-1]
 ```
 
@@ -129,8 +127,8 @@ b=11
 ```
 
 ```sage
-a=11
-b=5
+a = 11
+b = 5
 [Sk(a,b,k) for k in srange(1,25)][-1]
 ```
 
@@ -141,12 +139,12 @@ b=5
 Observeu que no ens cal calcular tots els elements de la llista per a trobar l'últim!
 
 
-Podem deduïr "experimentalment" que Sk tendeix al major dels dos nombres, mentre que Tk tendeix a -1 si a<b i a 1 si a>b
+Podem deduïr "experimentalment" que Sk tendeix al major dels dos nombres, mentre que Tk tendeix a -1 si $a<b$ i a 1 si $a>b$.
 
 
 -- end hide
 
-## Exercici 3
+### Exercici 3
 
 
 Considereu la successió $a_{k}$ definida per les condicions
@@ -157,7 +155,7 @@ Feu una llista prou llarga dels seus valors per tal de poder conjecturar quin se
 Què passa si canvieu el valor inicial $a_{0}$?
 
 -- begin hide
-El que he fet ha estat anar repetint fins que la diferència entre un i l'anterior sigui $<10^{-10}$. El primer valor $a0$ és per tal que es superi la condició del while.
+El que he fet ha estat anar repetint fins que la diferència entre un i l'anterior sigui $<10^{-10}$. El primer valor $a0$ és per tal que es superi la condició del `while`.
 
 ```sage
 a=3.
@@ -230,7 +228,7 @@ A
 ```
 -- end hide
 
-## Exercici 4
+### Exercici 4
 
 
 Les parelles de primers bessons són parelles de primers de la forma $(p,p+2)$. Definiu una funció que permeti fer una llista de les parelles de primers bessons menors que un màxim donat.
@@ -278,7 +276,7 @@ primersbessons(7)
 -- end hide
 
 
-## Exercici 5
+### Exercici 5
 
 
 La conjectura de Goldbach afirma que tot enter parell més gran que 2 es pot escriure com la suma de dos primers. Per exemple, $6=3+3$, $12=7+5$ o $64=17+47$. Aquestes particions com a suma de dos primers s'anomenen particions de Goldbach.  Creeu una funció Goldbach(n) que retorni totes les possibles particions de Goldbach de $n$ (sense importar l'ordre). Si denotem per $r(2k)$ el nombre de particions de Goldbach de $2k$, la conjectura afirma que $r(2k)>0$ per a tot $k>1$. Representeu en un gràfic els valors $(k,r(2k))$ per a $k\in [2,2000]$.
@@ -338,16 +336,16 @@ Goldbach(10)
 ```
 -- end hide
 
-## Exercici 6
+### Exercici 6
 
 
 Donat $k\in \mathbb{N}$, la funció phi d'Euler, $\varphi(k)$ és una funció que es defineix fàcilment en termes aritmètics, i que es pot calcular com $$\varphi(k)=\prod_{i=1}^r (p_i-1)\,p_i^{\alpha_i-1}$$ on $k=p_1^{\alpha_1}\cdots p_r^{\alpha_r}$ és la descomposició de $k$ en primers diferents. 
 
-1. Factoritzeu un enter qualsevol fent A=factor(....) i observeu com s'estructura A, mirant per exemple la factorització i el contingut de A[1].
+1. Factoritzeu un enter qualsevol fent `A = factor(...)` i observeu com s'estructura `A`, mirant per exemple la factorització i el contingut de `A[1]`.
 
 2. Useu això per a construir una funció que calculi $\varphi(k)$ per a qualsevol natural $k$.
 
-3. Comproveu que el resultat coincideix amb el de la instrucció euler\_phi(k).
+3. Comproveu que el resultat coincideix amb el de la instrucció `euler\_phi(k)`.
 
 -- begin hide
 Calculo un valor del qual se la seva factorizació per veure com és el resultat d'aplicar la funció factor()
@@ -396,7 +394,7 @@ Lamevaphi(n)
 euler_phi(n)
 ```
 
-Una altre versió més comprimida, usant la funció prod que té el Sage i amb un raise. 
+Una altre versió més comprimida, usant la funció `prod` que té el Sage i amb un `raise`.
 
 ```sage
 def Unaaltrephi(n):
@@ -412,10 +410,10 @@ Unaaltrephi(n)
 -- end hide
 
 
-## Exercici 7
+### Exercici 7
 
 
-Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,$\ldots$) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
+Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,...) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
 
 Un exercici més complet consisteix a repetir moltes vegades l'experiment comptant al final la proporció de vegades que s'acaba guanyant la quantitat que satisfà al jugador.
 
@@ -423,7 +421,7 @@ Un exercici més complet consisteix a repetir moltes vegades l'experiment compta
 
 Tenim dues opcions respecte el mètode: o bé quan dobles l'aposta la mantens si guanyes, o bé si guanyes retornes a apostar 1.
 
-Fem el primer cas (executeu-ho varies vegades per a veure com va canviant9
+Fem el primer cas (executeu-ho varies vegades per a veure com va canviant
 
 ```sage
 ap=1
@@ -448,7 +446,7 @@ points([(i,T[i]) for i in range(len(T))])
 T
 ```
 
-Per a veure més casos he fet una funció aposta de manera que respont True si i només si es guanya la aposta, i el guany final.
+Per a veure més casos he fet una funció aposta de manera que respon `True` si i només si es guanya la aposta, i el guany final.
 
 ```sage
 def aposta():
@@ -468,7 +466,7 @@ def aposta():
 aposta()
 ```
 
-Ara repeteixo el joc 1000 vegades a veure el % de vegades que es guanya.
+Ara repeteixo el joc 1000 vegades a veure el percentatge de vegades que es guanya.
 
 ```sage
 t=0
@@ -482,7 +480,7 @@ print(t/1000.*100)
 print(total)
 ```
 
-Em surt aproximadament entre 2% i 4%, però alguns cops es guanya diners
+Em surt aproximadament entre 2% i 4%, però alguns cops es guanya diners.
 
 
 El mateix però amb la segona versió del mètode.
@@ -513,9 +511,9 @@ print(total)
 ```
 -- end hide
 
-## Exercici 8
+### Exercici 8
 
-En aquest exercici veurem que es possible treballar amb relacions d'equivalencia i quocients per a conjunts finits. Considerarem un conjunt finit (de Python, o sigui construït via $\{\ \}$ o be via set( )). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
+En aquest exercici veurem que és possible treballar amb relacions d'equivalència i quocients per a conjunts finits. Considerarem un conjunt finit (de *Python*, o sigui construït via `{ }` o be via `set( )`). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
 
 1. Recordeu que una relació en un conjunt $S$ és un subconjunt de $S^2$. Per a poder definir $S^2$ com a conjunt podeu utilitzar $$\{(a,b) \text{ for a in }S \text{ for b in }S\}.$$ Definiu una funció es\_relacio de SageMath tal que donats dos conjunts $S$ i $R$ comprovi si $R$ és una relació de $S$; de pas pot comprovar també si els dos son conjunts amb $type(S) =set$. Comproveu que `es_relacio({1},{(1,1)})` respon `True` i que `es_relacio({1},{1})` respon `False`.
 
@@ -649,7 +647,7 @@ def quocient(S,R):
 ### Part 4
 
 
-He fet una funció que a cada element de S, respon l'element del quocient que li correspon.
+He fet una funció que a cada element de `S`, respon l'element del quocient que li correspon.
 
 ```sage
 def representant_quocient(s,Qs,S,R):
