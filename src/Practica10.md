@@ -28,10 +28,13 @@ jupyter:
 
 ```sage
 def SumaDivisorsSenars(n):
-    if not(type(n)==Integer) or (n <=0):
-        print('No es un enter de Sage >0')
-        return
-    return sum(d for d in divisors(n) if is_odd(d))
+    try:
+	    n = ZZ(n)
+    except TypeError:
+	    raise TypeError('n ha de ser un enter de Sage')
+	if n <= 0:
+        raise ValueError('n ha de ser positiu')
+    return sum(d for d in divisors(n) if d % 2 == 1)
 ```
 
 ```sage
@@ -45,8 +48,7 @@ SumaDivisorsSenars(1890)
 #### Part 2
 
 ```sage
-def Func(n):
-    return [k for k in srange(2,n+1) if not(k.is_prime()) and SumaDivisorsSenars(k)>=k]
+Func = lambda n : [k for k in srange(2,n+1) if not k.is_prime() and SumaDivisorsSenars(k) >= k]
 ```
 
 ```sage
@@ -95,9 +97,16 @@ def Tk(a,b,k):
     return ((a**k-b**k)/(a**k+b**k)).n()
 ```
 
+O bé amb notació lambda:
+
 ```sage
-a=2
-b=3
+Sk = lambda a, b, k : (a**k + b**k)**(1/k)
+Tk = lambda a, b, k : (a**k-b**k)/(a**k+b**k)
+```
+
+```sage
+a=2.0
+b=3.0
 [Sk(a,b,k) for k in srange(1,25)]
 ```
 
@@ -108,8 +117,8 @@ b=3
 De fet només m'interessa l'últim element de la llista.
 
 ```sage
-a = 2
-b = 5
+a = 2.0
+b = 5.0
 [Sk(a,b,k) for k in srange(1,25)][-1]
 ```
 
@@ -118,8 +127,8 @@ b = 5
 ```
 
 ```sage
-a = 5
-b = 11
+a = 5.0
+b = 11.0
 [Sk(a,b,k) for k in srange(1,25)][-1]
 ```
 
@@ -128,19 +137,19 @@ b = 11
 ```
 
 ```sage
-a = 11
-b = 5
-[Sk(a,b,k) for k in srange(1,25)][-1]
+a = 11.0
+b = 5.0
+Sk(a,b,24)
 ```
 
 ```sage
-[Tk(a,b,k) for k in srange(1,25)][-1]
+Tk(a,b,24)
 ```
 
 Observeu que no ens cal calcular tots els elements de la llista per a trobar l'últim!
 
 
-Podem deduïr "experimentalment" que Sk tendeix al major dels dos nombres, mentre que Tk tendeix a -1 si $a<b$ i a 1 si $a>b$.
+Podem deduïr "experimentalment" que $S_k$ tendeix al major dels dos nombres, mentre que $T_k$ tendeix a -1 si $a<b$ i a 1 si $a>b$.
 
 
 -- end hide
@@ -159,74 +168,53 @@ Què passa si canvieu el valor inicial $a_{0}$?
 El que he fet ha estat anar repetint fins que la diferència entre un i l'anterior sigui $<10^{-10}$. El primer valor $a0$ és per tal que es superi la condició del `while`.
 
 ```sage
-a=3.
-a0=a+1
-A=[a]
-while (abs(a-a0)>10^(-10)):
-    a0=a
-    a=(a^2-1)/(2*a-3)
+a = 3.
+a0 = a+1
+A = [a]
+while abs(a-a0) > 10^-10:
+    a0 = a
+    a = (a^2-1) / (2*a-3)
     A.append(a)
 A
+```
+
+Una altra opció, més curta. Observeu que hem de començar amb una llista de dos elements.
+```sage
+def itera(x0, tol=10^-10):
+    A = [x0+1, x0]
+    while abs(A[-1] - A[-2]) > tol:
+        A.append((A[-1]^2-1) / (2*A[-1] - 3))
+    return A
 ```
 
 Podeu comprovar que el darrer valor és una solució de l'equació $(x-1)^2-x$:
 
 ```sage
+a = A[-1]
 (a-1)^2-a
 ```
 
 ```sage
-a=-2.
-a0=a+1
-A=[a]
-while (abs(a-a0)>10^(-10)):
-    a0=a
-    a=(a^2-1)/(2*a-3)
-    A.append(a)
+A = itera(-2.)
 A
 ```
 
 ```sage
+a = A[-1]
 (a-1)^2-a
 ```
 
 ```sage
-a=5.
-a0=a+1
-A=[a]
-while (abs(a-a0)>10^(-10)):
-    a0=a
-    a=(a^2-1)/(2*a-3)
-    A.append(a)
-A
-```
-
-```sage
+a = itera(5.)[-1]
 (a-1)^2-a
 ```
 
 Podeu veure que la resposta és sempre una arrel de (x-1)^2-x, si es comença amb un nombre més gran que 3/2 ens dona la gran, i si és més petit dona la petita (si es comença amb 1.5 dona error (o infinit))
 
 ```sage
-a=1.5
-a0=a+1
-A=[a]
-while (abs(a-a0)>10^(-10)):
-    a0=a
-    a=(a^2-1)/(2*a-3)
-    A.append(a)
-A
+itera(1.5)
 ```
 
-També ho podríem haver fet amb un llista sense la $a$ i la $a0$. Primer fem un primer càlcul per a tenir dos valors i comparar amb el while. 
-
-```sage
-A=[3.]
-A.append((A[-1]^2-1)/(2*A[-1]-3))
-while (abs(A[-1]-A[-2])>10^(-10)):
-    A.append((A[-1]^2-1)/(2*A[-1]-3))
-A
-```
 -- end hide
 
 # Exercici 4
@@ -238,9 +226,9 @@ Les parelles de primers bessons són parelles de primers de la forma $(p,p+2)$. 
 ```sage
 def primersbessons(n):
     """ Retorna la llista de parelles de primers bessons fins a n """
-    if type(n)!=Integer or n%2!=0:
-        print("El valor donat no és un enter parell")
-        return None
+	n = ZZ(n)
+    if n % 2 != 0:
+        raise ValueError("El valor donat no és un enter parell")
     return [(p,p+2) for p in srange(3,n) if p.is_prime() and (p+2).is_prime()]
 ```
 
@@ -262,18 +250,6 @@ primersbessons(7)
 primersbessons(12/2)
 ```
 
-Pels errors, de fet és millor usar la funció raise, que justament serveix per quan hi ha un error. 
-
-```sage
-def primersbessons(n):
-    if type(n)!=Integer or n%2!=0:
-        raise TypeError("El valor donat no és un enter parell")
-    return [(p,p+2) for p in srange(3,n) if p.is_prime() and (p+2).is_prime()]
-```
-
-```sage
-primersbessons(7)
-```
 -- end hide
 
 
@@ -283,12 +259,15 @@ primersbessons(7)
 La conjectura de Goldbach afirma que tot enter parell més gran que 2 es pot escriure com la suma de dos primers. Per exemple, $6=3+3$, $12=7+5$ o $64=17+47$. Aquestes particions com a suma de dos primers s'anomenen particions de Goldbach.  Creeu una funció Goldbach(n) que retorni totes les possibles particions de Goldbach de $n$ (sense importar l'ordre). Si denotem per $r(2k)$ el nombre de particions de Goldbach de $2k$, la conjectura afirma que $r(2k)>0$ per a tot $k>1$. Representeu en un gràfic els valors $(k,r(2k))$ per a $k\in [2,2000]$.
 
 -- begin hide
+Emetem un misstage d'error del tipus `TypeError` si no és un enter de Sage o `ValueError` si el nombre no és parell i $>4$.
+
 ```sage
 def Goldbach(n):
     """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n)!=Integer or not(2.divides(n)) or n<6:
-        print('Ha de ser un enter parell més gran que 4')
-        return None
+    if type(n) != Integer:
+        raise TypeError('Ha de ser un enter de Sage')
+    if n % 2 == 1 or n < 6:
+        raise ValueError(f'El nombre {n} ha de ser un enter parell més gran que 4')
     return [(p,n-p) for p in prime_range(3,n//2+1) if (n-p).is_prime()]
 ```
 
@@ -312,17 +291,6 @@ pt=[(k,len(Goldbach(2*k))) for k in srange(3,2000)]
 points(pt)
 ```
 
-Aquesta versió emet un misstage d'error del tipus `TypeError` si no és un enter de Sage o `ValueError` si el nombre no és parell i $>4$.
-
-```sage
-def Goldbach(n):
-    """ Retorna la llista de parelles de primers senars que sumen n """
-    if type(n)!=Integer:
-        raise TypeError('Ha de ser un enter de Sage')
-    if not(2.divides(n)) or n<6:
-        raise ValueError('El nombre '+str(n)+' ha de ser un enter parell més gran que 4')
-    return [(p,n-p) for p in prime_range(3,n//2+1) if (n-p).is_prime()]
-```
 
 ```sage
 Goldbach('a')
@@ -352,12 +320,12 @@ Donat $k\in \mathbb{N}$, la funció phi d'Euler, $\varphi(k)$ és una funció qu
 Calculo un valor del qual se la seva factorizació per veure com és el resultat d'aplicar la funció factor()
 
 ```sage
-n = 2**3*3**2*5
+n = 2**3 * 3**2 * 5
 n
 ```
 
 ```sage
-A=factor(n)
+A = factor(n)
 A
 ```
 
@@ -373,18 +341,20 @@ A[1]
 list(A)
 ```
 
-Veiem que, tot i el que ens ensenya quan li demanem que ens ho mostri, de fet la factorització d'un nombre és una llista de tuples de la forma (a,b), on a és el primer i b la poténcia en la que divideix el nombre. 
+Veiem que, tot i el que ens ensenya quan li demanem que ens ho mostri, de fet la factorització d'un nombre es comporta com una llista de tuples de la forma (a,b), on a és el primer i b la potència en la que divideix el nombre.
 
 ```sage
 def Lamevaphi(n):
     """ Una versió de la fi d'Euler """
-    if type(n)!=Integer or n<2:
-        print('Ha de ser un enter més gran que 1')
-    A=factor(n)
-    p=1
-    for a in A:
-        p*=(a[0]-1)*a[0]**(a[1]-1)
-    return p
+    if type(n) != Integer:
+        raise TypeError('n ha de ser un enter de Sage')
+	if n<2:
+        raise ValueError('Ha de ser un enter més gran que 1')
+    A = factor(n)
+    ans = 1
+    for p, e in A:
+        ans *= (p-1) * p**(e-1)
+    return ans
 ```
 
 ```sage
@@ -395,14 +365,16 @@ Lamevaphi(n)
 euler_phi(n)
 ```
 
-Una altre versió més comprimida, usant la funció `prod` que té el Sage i amb un `raise`.
+Una altre versió més comprimida, usant la funció `prod` que té el Sage.
 
 ```sage
 def Unaaltrephi(n):
     """ Una versió de la fi d'Euler """
-    if type(n)!=Integer or n<2:
-        raise TypeError('Ha de ser un enter més gran que 1')
-    return prod((a[0]-1)*a[0]**(a[1]-1) for a in factor(n))
+    if type(n) != Integer:
+        raise TypeError('n ha de ser un enter de Sage')
+	if n<2:
+        raise ValueError('Ha de ser un enter més gran que 1')
+	return prod((p-1) * p**(e-1) for p, e in factor(n))
 ```
 
 ```sage
@@ -428,14 +400,14 @@ Fem el primer cas (executeu-ho varies vegades per a veure com va canviant
 ap=1
 tot=100
 T=[tot]
-while (tot>ap) and (tot<1000):
-    tot-=ap
+while tot > ap and tot < 1000:
+    tot -= ap
     T.append(tot)
-    tir=randint(0,1)
-    if tir==1:
-        tot+=2*ap
+    tir = randint(0,1)
+    if tir == 1:
+        tot += 2*ap
     else:
-        ap*=2
+        ap *= 2
 print(tot)
 ```
 
@@ -451,16 +423,16 @@ Per a veure més casos he fet una funció aposta de manera que respon `True` si 
 
 ```sage
 def aposta():
-    ap=1
-    tot=100
-    while (tot>ap) and (tot<1000):
-        tot-=ap
-        tir=randint(0,1)
-        if tir==1:
-            tot+=2*ap
+    ap = 1
+    tot = 100
+    while tot > ap and tot < 1000:
+        tot -= ap
+        tir = randint(0,1)
+        if tir == 1:
+            tot += 2*ap
         else:
-            ap*=2
-    return tot>=1000, tot-100
+            ap *= 2
+    return tot >= 1000, tot - 100
 ```
 
 ```sage
@@ -473,10 +445,10 @@ Ara repeteixo el joc 1000 vegades a veure el percentatge de vegades que es guany
 t=0
 total=0
 for k in range(1000):
-    ap,guany=aposta()
+    ap, guany = aposta()
     if ap:
-        t+=1
-    total+=guany
+        t += 1
+    total += guany
 print(t/1000.*100)
 print(total)
 ```
@@ -488,25 +460,25 @@ El mateix però amb la segona versió del mètode.
 
 ```sage
 def aposta():
-    ap=1
-    tot=100
-    while (tot>ap) and (tot<1000):
-        tot-=ap
-        tir=randint(0,1)
-        if tir==1:
-            tot+=2*ap
-            ap=1
+    ap = 1
+    tot = 100
+    while tot > ap and tot < 1000:
+        tot -= ap
+        tir = randint(0,1)
+        if tir == 1:
+            tot += 2*ap
+            ap = 1
         else:
-            ap*=2
-    return tot>=1000, tot-100
+            ap *= 2
+    return tot >= 1000, tot-100
 
-t=0
-total=0
+t = 0
+total = 0
 for k in range(1000):
-    ap,guany=aposta()
+    ap, guany = aposta()
     if ap:
-        t+=1
-    total+=guany
+        t += 1
+    total += guany
 print(t/1000.*100)
 print(total)
 ```
@@ -533,11 +505,9 @@ En aquest exercici veurem que és possible treballar amb relacions d'equivalènc
 ```sage
 def es_relacio(S,R):
     """Comprova si R és un subconjunt de S^2"""
-    if type(S)!=set or type(R) !=set:
-        print('No són conjunts')
-        return False
-    S2={(a,b) for a in S for b in S}
-    return R.issubset(S2)
+    if type(S) != set or type(R) !=set:
+        raise TypeError('No són conjunts')
+	return all(r1 in S and r2 in S for r1, r2 in R)
 ```
 
 Comprovem alguns casos fàcils
@@ -559,51 +529,28 @@ es_relacio({1},{(1,1)})
 ```sage
 def es_reflexiva(S,R):
     """ Comprova si R es una relacio reflexiva de S"""
-    if not(es_relacio(S,R)):
+    if not es_relacio(S,R):
         print('No és una relacio')
         return False
-    D={(a,a) for a in S}
-    return D.issubset(R)
+	return all((a,a) in R for a in S)
 ```
 
 ```sage
 def es_simetrica(S,R):
     """ Comprova si R es una relació simmètrica de S"""
-    if not(es_relacio(S,R)):
+    if not es_relacio(S,R):
         print('No es una relacio')
         return False
-    for s in R:
-        i=(s[1],s[0])
-        if not(i in R):
-            return False
-    return True
-```
-
-Una manera més concisa però més lenta i que ocupa més espai
-
-```sage
-def es_simetrica2(S,R):
-    """ Comprova si R es una relació simmètrica de S"""
-    if not(es_relacio(S,R)):
-        print('No es una relacio')
-        return False
-    Ri={s for s in R if (s[1],s[0]) in R}
-    return R==Ri
+	return all((r2,r1) in R for r1, r2 in R)
 ```
 
 ```sage
 def es_transitiva(S,R):
     """ Comprova si R es una relació transitiva de S"""
-    if not(es_relacio(S,R)):
+    if not es_relacio(S,R):
         print('No és una relacio')
         return False
-    for s in R:
-        Ts=[t for t in R if t[0]==s[1]]
-        for t in Ts:
-            st=(s[0],t[1])
-            if not(st in R):
-                return False
-    return True
+	return all((a1, b2) in R for a1, a2 in R for b1, b2 in R if a2 == b1)
 ```
 
 ```sage
@@ -620,30 +567,28 @@ def es_equivalencia(S,R):
 ```sage
 def classe(a,S,R):
     """ Calcula el subconjunt de S dels equivalents a a per R"""
-    if not(a in S):
-        print("l'element no és de S")
-        return 
-    if not(es_equivalencia(S,R)):
-        print("No és d'equivalencia")
-        return 
-    return {s[1] for s in R if s[0]==a}
+    if a not in S:
+        raise ValueError("l'element no és de S")
+    if not es_equivalencia(S,R):
+        raise ValueError("No és d'equivalencia")
+    return {s2 for s1, s2 in R if s1 == a}
 ```
 
 ```sage
 def quocient(S,R):
     """ Calcula un subconjunt de S que conté un element per a cada classe respecte R"""
-    if not(es_equivalencia(S,R)):
-        print("No es d'equivalencia")
-        return 
-    Sc=copy(S)
-    Qs=set()
-    while len(Sc)>0:
-        a=Sc.pop()
-        ca=classe(a,S,R)
+    if not es_equivalencia(S,R):
+        raise ValueError("No es d'equivalencia")
+    Sc = copy(S)
+    Qs = {}
+    while len(Sc) > 0:
+        a = Sc.pop()
+        ca = classe(a,S,R)
         Qs.add(a)
-        Sc=Sc.difference(ca)    
+        Sc = Sc.difference(ca)
     return Qs
 ```
+
 
 ### Part 4
 
@@ -653,25 +598,35 @@ He fet una funció que a cada element de `S`, respon l'element del quocient que 
 ```sage
 def representant_quocient(s,Qs,S,R):
     """ Per a cada s de S, calcula quin element de Qs és equivalent a s"""
+	cl = classe(s,S,R) # és important definir cl fora del "for". Si no, la recalcularem moltes vegades
     for a in Qs:
-        if a in classe(s,S,R):
+        if a in cl:
             return a
+```
+
+Una manera més ràpida és fer servir la funció `next`, que ens dona el primer element d'un iterador:
+
+```sage
+def representant_quocient(s,Qs,S,R):
+    """ Per a cada s de S, calcula quin element de Qs és equivalent a s"""
+	cl = classe(s,S,R)
+	return next(a for a in Qs if a in cl)
 ```
 
 ```sage
 def projeccio(S,R):
     """ Retorna un diccionari on les claus és S i els valors el quocient"""
-    Qs=quocient(S,R)
-    PS={s:representant_quocient(s,Qs,S,R) for s in S}
-    return PS
+    Qs = quocient(S,R)
+    return {s : representant_quocient(s,Qs,S,R) for s in S}
+
 ```
 
 ### Part 5
 
 ```sage
-S=set([1..10])
-S2={(a,b) for a in S for b in S}
-R={s for s in S2 if s[0]<s[1]}
+S = set([1..10])
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if s[0] < s[1]}
 ```
 
 ```sage
@@ -695,9 +650,9 @@ es_simetrica2(S,R)
 ```
 
 ```sage
-S=set([1..10])
-S2={(a,b) for a in S for b in S}
-R={s for s in S2 if s[0]<=s[1]}
+S = set([1..10])
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if s[0] <= s[1]}
 ```
 
 ```sage
@@ -721,9 +676,9 @@ es_simetrica2(S,R)
 ```
 
 ```sage
-S=set(Zmod(10))
-S2={(a,b) for a in S for b in S}
-R={s for s in S2 if 2*s[0]==2*s[1]}
+S = set(Zmod(10))
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if 2*s[0] == 2*s[1]}
 ```
 
 ```sage
@@ -752,7 +707,7 @@ classe(1,S,R)
 ```
 
 ```sage
-PS=projeccio(S,R)
+PS = projeccio(S,R)
 ```
 
 ```sage
