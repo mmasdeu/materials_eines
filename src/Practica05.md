@@ -545,8 +545,8 @@ def comprova(fname):
 
 Donats dos vectors $u=(u_1,\dots,u_n)$ i $v=(v_1,\dots,v_n)$ de
 $\mathbb{R}^n$, diem que $u\le v$ en l'ordre lexicogràfic, si, o bé
-són iguals, o bé $u_1<v_1$, o bé existeix un $i\le n$ tal que
-$u_j=v_j$ per a tot $j<i$ i $u_i<v_i$. Feu una funció `ordlex(u,v)`
+són iguals, o bé $u_1 < v_1$, o bé existeix un $i\le n$ tal que
+$u_j=v_j$ per a tot $j < i$ i $u_i < v_i$. Feu una funció `ordlex(u,v)`
 que comprovi que $u$ i $v$ són vectors de la mateixa llargada, i si
 no ho són doni un error `TypeError` i si ho són retorni `True` si
 $u\le v$ en l'ordre lexicogràfic, i si no retorni `False`.
@@ -573,7 +573,7 @@ def ordlex(u,v):
     return True
 ```
 
-Observeu que es compleix el que es demana, ja que si $u[1]<v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j<i$ i $u[i]<v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
+Observeu que es compleix el que es demana, ja que si $u[1] < v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j < i$ i $u[i] < v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
 
 ```sage
 u = [1,1,1,1]
@@ -616,16 +616,16 @@ tuples, etc). La resposta he de ser True si tallen, False si no.
 
 Indicació: Per a fer-ho podeu utilitzar que els punts del segment
 obert que uneix dos punts del pla $p_1$ i $p_2$ són els de la forma
-$tp_1+(1-t)p_2$, on $0< t <1$. Per tant, si tenim ara una altre
+$tp_1+(1-t)p_2$, on $0 < t < 1$. Per tant, si tenim ara una altre
 parella de punts $p_3$ i $p_4$, volem comprovar si hi ha o no
-$0<s,t<1$ de manera que $$tp_1+(1-t)p_2=sp_3+(1-s)p_4.$$ Utilitzant
+$0 < s,t < 1$ de manera que $$tp_1+(1-t)p_2=sp_3+(1-s)p_4.$$ Utilitzant
 la regla de Cramer això es tradueix a una desigualtat entre
 determinants: el determinant $A$ de la matriu que té com a columnes
 (o files) $p_1-p_2$ i $p_4-p_3$ ha de ser diferent de $0$ (per tal
 que no siguin parał.els o coincidents), i, si denotem per $B$ el
 determinant de la matriu que té com a columnes (o files) $p_4-p_2$ i
 $p_4-p_3$ i per $C$ el mateix però amb columnes (o files) $p_1-p_2$
-i $p_4-p_2$, llavors $$0<\frac{B}{A}<1 \text{ i } 0<\frac{C}{A}<1$$
+i $p_4-p_2$, llavors $$0 < \frac{B}{A} < 1 \text{ i } 0<\frac{C}{A} < 1$$
 (doncs aquests quocients corresponen a la $t$ i la $s$ de la
 equació).
 
