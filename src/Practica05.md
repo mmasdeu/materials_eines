@@ -186,7 +186,7 @@ La primera línia obre el fitxer en mode escriptura. Li hem d'indicar la codific
 ```sage
 with open('llista2.txt', 'w', encoding='utf-8') as f:
     for i in L:
-	    f.write(f'{i}\n') # Cal un String
+        f.write(f'{i}\n') # Cal un String
 ```
 
 Per llegir un fitxer, ho fem de manera semblant:
@@ -403,11 +403,14 @@ T1 == T2
 
 ```sage
 print('Hipotenusa =', T2.hipotenusa())
-print('Hipotenusa =', T1.hipotenusa())
-
 ```
 
-Tot i que tenen els mateixos vèrtexs, i de fet són iguals (com a triangles), el triangle T1 no té definida la hipotenusa, ja que no està definit com a triangle rectangle.
+
+```sage
+print('Hipotenusa =', T1.hipotenusa())
+```
+
+Tot i que tenen els mateixos vèrtexs, i de fet són iguals (com a triangles), el triangle `T1` no té definida la hipotenusa, ja que no està definit com a triangle rectangle.
 
 
 
@@ -513,26 +516,26 @@ Per generar l'arxiu podem fer-ho amb el següent bloc de codi:
 ```sage
 with open('out.txt','w') as f:
     for n in [1,2..500]:
-	    f.write(f'{n}\t{n**2}\t{n**3}')
+        f.write(f'{n}\t{n**2}\t{n**3}')
 ```
 
 La funció següent comprova un fitxer, i si és incorrecte en retorna també el motiu.
 ```sage
 def comprova(fname):
     with open(fname,'r') as f:
-	    for i, line in enumerate(f):
-			V = line.split('\t')
-			if len(V) != 3:
-			    return False, f"La línia {i} = \"{line}\" no té el nombre correcte d'entrades"
-	        if sage_eval(V[0]) != i+1:
-			    return False, f'A la línia {i} = "{line}" la primera entrada és incorrecta'
-			if sage_eval(V[1]) != (i+1)**2:
-			    return False, f'A la línia {i} = "{line}" la segona entrada és incorrecta'
+        for i, line in enumerate(f):
+            V = line.split('\t')
+            if len(V) != 3:
+                return False, f"La línia {i} = \"{line}\" no té el nombre correcte d'entrades"
+            if sage_eval(V[0]) != i+1:
+                return False, f'A la línia {i} = "{line}" la primera entrada és incorrecta'
+            if sage_eval(V[1]) != (i+1)**2:
+                return False, f'A la línia {i} = "{line}" la segona entrada és incorrecta'
             if sage_eval(V[2]) != (i+1)**3:
-			    return False, f'A la línia {i} = "{line}" la tercera entrada és incorrecta'
-	if i != 500:
-	    return False, f'El fitxer no té el nombre correcte de línies, en té {i} en comptes de 500'
-	return True, None
+                return False, f'A la línia {i} = "{line}" la tercera entrada és incorrecta'
+    if i != 500:
+        return False, f'El fitxer no té el nombre correcte de línies, en té {i} en comptes de 500'
+    return True, None
 ```
 
 -- end hide
@@ -559,15 +562,18 @@ def ordlex(u,v):
         raise TypeError('No són llistes de nombres')
     if len(u) != len(v):
         raise TypeError('No tenen la mateixa llargada')
-	for ui, vi in zip(u, v):
-	    if ui < vi:
-		    return True
-		if ui > vi:
-		    return False
+    # Amb una sola línia:
+    # return next((ui < vi for ui, vi in zip(u,v) if ui != vi), True)
+    # Amb for i ifs:
+    for ui, vi in zip(u, v):
+        if ui < vi:
+            return True
+        if ui > vi:
+            return False
     return True
 ```
 
-Observeu que es cumpleix el que es demana, ja que si $u[1]<v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j<i$ i $u[i]<v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
+Observeu que es compleix el que es demana, ja que si $u[1]<v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j<i$ i $u[i]<v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
 
 ```sage
 u = [1,1,1,1]
@@ -739,13 +745,13 @@ els vèrtexs no determinen el quadrilàter. Els següents tres
 quadrilàters tenen els mateixos vèrtexs.
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex1.png)\
+vèrtexs](quadnconvex1.png)
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex2.png)\
+vèrtexs](quadnconvex2.png)
 
 ![Tres quadrilàters no convexos diferents amb els mateixos
-vèrtexs](quadnconvex3.png)\
+vèrtexs](quadnconvex3.png)
 
 Per tant el primer que hem de fer és comprovar si els 4 punts formen
 o no un quadrilàter convex, i a més ordenar bé els vèrtexs. Tot això

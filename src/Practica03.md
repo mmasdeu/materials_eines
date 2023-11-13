@@ -98,7 +98,7 @@ str(temperatura)
 Això ens permet construïr cadenes
 
 ```sage
-print('Avui hem arribat a ' + str(temperatura) + 'graus!')
+print('Avui hem arribat a ' + str(temperatura) + ' graus!')
 ```
 
 La manera recomanada de construir cadenes amb paràmetres és una altra. Es tracta
@@ -160,13 +160,13 @@ objecte d'aquest tipus quan es fa una assignació com, per exemple, la
 següent:
 
 ```sage
-f(x)=cos(pi*x)+7
+f(x) = cos(pi*x) + 7
 print(f)
 ```
 
 (que generarà un símbol `f` que reacciona com la funció definida per la
 condició $f(x)=\cos(\pi\, x)+7$ o, més concretament, qualsevol expressió
-de la forma `f(v)` s'avaluarà com `cos(pi*v)+7`). De forma que es poden
+de la forma `f(v)` s'avaluarà com `cos(pi*v) + 7`). De forma que es poden
 avaluar expressions del tipus:
 
 ```sage
@@ -195,7 +195,7 @@ inconvenient en definir una funció utilitzant com a nom de la seva
 variable qualsevol que es vulgui. Per exemple:
 
 ```sage
-g(t)=2*t^2 - 1
+g(t) = 2*t^2 - 1
 print(g)
 ```
 ```sage
@@ -255,7 +255,7 @@ El nombre d'arguments (variables) d'una funció és arbitrari i, per tant,
 és perfectament raonable fer la definició següent:
 
 ```sage
-h(x,y) = x^2-x*y+ln(x^2+y^2)
+h(x,y) = x^2 - x*y + ln(x^2+y^2)
 print(h)
 ```
 ```sage
@@ -291,7 +291,7 @@ print(f(y^2+1))
 El mecanisme també és vàlid amb més d'una variable com a:
 
 ```sage
-g=(x^2-y^2+sin(x*y)).function(x,y)
+g = (x^2-y^2+sin(x*y)).function(x,y)
 print(g)
 ```
 
