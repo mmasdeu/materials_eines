@@ -275,7 +275,7 @@ class Triangle:
         self.vertexs = (punt1, punt2, punt3)
 
     def baricentre(self):
-        return (sum(a)/3 for a in zip(self.vertexs))
+        return tuple(sum(a)/3 for a in zip(*self.vertexs))
 ```
 
 ```sage
@@ -332,7 +332,7 @@ class Triangle:
 
     def baricentre(self):
         p = self.vertexs
-        return (sum(a)/3 for a in zip(*p))
+        return tuple(sum(a)/3 for a in zip(*p))
 
     def inradi(self):
         return 2 * self.area() / self.perimetre()
