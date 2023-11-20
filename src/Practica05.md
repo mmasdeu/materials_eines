@@ -81,11 +81,10 @@ Suposem ara que volem fer una funció que ens digui la mitjana de les notes de 1
 ```sage
 def mitjana(n = 10): # Valor per defecte
     suma = 0
-    num_notes = len(notes_eines)
     total_notes = 0
     while total_notes < n:
         try:
-            suma += quina_nota(randint(0, num_notes-1))
+            suma += quina_nota(randint(0, 10**7))
             total_notes += 1
         except ValueError:
             pass
@@ -102,12 +101,11 @@ Per millorar les funcions anteriors, podem mirar el temps que triga la funció `
 ```sage
 def mitjana(n = 10): # Valor per defecte
     suma = 0
-    num_notes = len(notes_eines)
     total_notes = 0
     t0 = cputime() # Es desa un enter que indica el temps
     while total_notes < n:
         try:
-            suma += quina_nota(randint(0, num_notes-1))
+            suma += quina_nota(randint(0, 10**7))
             total_notes += 1
             t1 = cputime()
             print(f"L'última crida ha durat {1000*(t1 - t0)} milisegons. Notes acumulades: {total_notes}.")
