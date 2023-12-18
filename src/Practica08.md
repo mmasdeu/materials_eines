@@ -103,7 +103,7 @@ u in Q4
 
 L'espai `VectorSpace(QQ, 4)` també és pot definir de manera més curta com
 `QQ^4`. Compte, però, que normalment el
-**SageMath**  assigna el vector al espai més petit
+**SageMath**  assigna el vector a l'espai més petit
 on pot fer-ho. Així el vector `v` que té coefficients enters de fet es
 pensa que viu en "l'espai vectorial $\mathbb{Z}^4$ sobre $\mathbb{Z}$
 de dimensió $4$" (que de fet no és un espai vectorial, sinò un mòdul).
@@ -227,7 +227,7 @@ Si multipliquem un vector sobre el racionals per un nombre que no sigui
 (0.5 * v).parent()
 ```
 
-ens diu que viu al espai $\mathbb{RR}^4$ (de fet al espai $\texttt{RR}^4$, on
+ens diu que viu a l'espai $\mathbb{R}^4$ (de fet a l'espai $\texttt{RR}^4$, on
 $\texttt{RR}$ és el "cos" dels reals amb precisió simple de 53 bits).
 
 Noteu que, en particular, el comportament de l'operador `+` és diferent

@@ -449,7 +449,7 @@ Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
 
 
 Comproveu quina de les dues maneres
-d'eliminar repeticions d'llista de nombres a l'atzar és més ràpida. Una,
+d'eliminar repeticions d'una llista de nombres a l'atzar és més ràpida. Una,
 convertint la llista en conjunt i tornant-la a convertir en llista.
 L'altra, fent una funció que fa una còpia de la llista, i creant una
 nova llista escollint el mínim i traient tots els elements de la
@@ -469,10 +469,10 @@ La primera funció:
 def unic1(llist):
     cllist = copy(llist)
     nllist = []
-    while (len(cllist) > 0):
+    while len(cllist) > 0:
         a = min(cllist)
         nllist.append(a)
-        while (a in cllist):
+        while a in cllist:
             cllist.remove(a)
     return nllist
 ```
@@ -484,7 +484,7 @@ def unic2(llist):
 	return list(set(llist))
 ```
 
-Creem una llista a l'atzar de 1000 nombres del 1 al 30
+Creem una llista a l'atzar de 1000 nombres l'1 al 30
 
 
 ```sage
