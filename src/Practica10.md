@@ -81,143 +81,8 @@ print(len(L))
 -- end hide
 
 
+
 # Exercici 2
-
-Considereu les successions determinades, donats dos nombres positius $a$, $b$, per
-$$
-S_{k}= \sqrt[k]{a^{k}+b^{k}},\qquad T_{k}=\frac{a^{k}-b^{k}}{a^{k}+b^{k}}
-$$
-Per tal de poder experimentar amb els seus valors definiu dues funcions de tres arguments $(a,b,k)$ que donin, respectivament, els valors de $S_{k}$ i $T_{k}$ per a un parell $(a,b)$ donat. A continuació feu una llista dels $25$ primers termes d'aquestes dues successions triant $2$ o $3$ parelles $(a,b)$ diferents. Finalment, després dels resultats dels experiments, quin límit conjectureu que tenen cada una d'aquestes dues successions?
-
--- begin hide
-```sage
-def Sk(a,b,k):
-    return ((a**k+b**k)**(1/k)).n()
-def Tk(a,b,k):
-    return ((a**k-b**k)/(a**k+b**k)).n()
-```
-
-O bé amb notació lambda:
-
-```sage
-Sk = lambda a, b, k : (a**k + b**k)**(1/k)
-Tk = lambda a, b, k : (a**k-b**k)/(a**k+b**k)
-```
-
-```sage
-a=2.0
-b=3.0
-[Sk(a,b,k) for k in srange(1,25)]
-```
-
-```sage
-[Tk(a,b,k) for k in srange(1,25)]
-```
-
-De fet només m'interessa l'últim element de la llista.
-
-```sage
-a = 2.0
-b = 5.0
-[Sk(a,b,k) for k in srange(1,25)][-1]
-```
-
-```sage
-[Tk(a,b,k) for k in srange(1,25)][-1]
-```
-
-```sage
-a = 5.0
-b = 11.0
-[Sk(a,b,k) for k in srange(1,25)][-1]
-```
-
-```sage
-[Tk(a,b,k) for k in srange(1,25)][-1]
-```
-
-```sage
-a = 11.0
-b = 5.0
-Sk(a,b,24)
-```
-
-```sage
-Tk(a,b,24)
-```
-
-Observeu que no ens cal calcular tots els elements de la llista per a trobar l'últim!
-
-
-Podem deduïr "experimentalment" que $S_k$ tendeix al major dels dos nombres, mentre que $T_k$ tendeix a -1 si $a<b$ i a 1 si $a>b$.
-
-
--- end hide
-
-# Exercici 3
-
-
-Considereu la successió $a_{k}$ definida per les condicions
-$$
-a_{0}=3,\ a_{k+1}=\frac{a_{k}^{2}-1}{2 a_{k}-3}
-$$
-Feu una llista prou llarga dels seus valors per tal de poder conjecturar quin serà el seu límit.
-Què passa si canvieu el valor inicial $a_{0}$?
-
--- begin hide
-El que he fet ha estat anar repetint fins que la diferència entre un i l'anterior sigui $<10^{-10}$. El primer valor $a0$ és per tal que es superi la condició del `while`.
-
-```sage
-a = 3.
-a0 = a+1
-A = [a]
-while abs(a-a0) > 10^-10:
-    a0 = a
-    a = (a^2-1) / (2*a-3)
-    A.append(a)
-A
-```
-
-Una altra opció, més curta. Observeu que hem de començar amb una llista de dos elements.
-```sage
-def itera(x0, tol=10^-10):
-    A = [x0+1, x0]
-    while abs(A[-1] - A[-2]) > tol:
-        A.append((A[-1]^2-1) / (2*A[-1] - 3))
-    return A
-```
-
-Podeu comprovar que el darrer valor és una solució de l'equació $(x-1)^2-x$:
-
-```sage
-a = A[-1]
-(a-1)^2-a
-```
-
-```sage
-A = itera(-2.)
-A
-```
-
-```sage
-a = A[-1]
-(a-1)^2-a
-```
-
-```sage
-a = itera(5.)[-1]
-(a-1)^2-a
-```
-
-Podeu veure que la resposta és sempre una arrel de (x-1)^2-x, si es comença amb un nombre més gran que 3/2 ens dona la gran, i si és més petit dona la petita (si es comença amb 1.5 dona error (o infinit))
-
-```sage
-itera(1.5)
-```
-
--- end hide
-
-# Exercici 4
 
 
 Les parelles de primers bessons són parelles de primers de la forma $(p,p+2)$. Definiu una funció que permeti fer una llista de les parelles de primers bessons menors que un màxim donat.
@@ -253,7 +118,7 @@ primersbessons(12/2)
 -- end hide
 
 
-# Exercici 5
+# Exercici 3
 
 
 La conjectura de Goldbach afirma que tot enter parell més gran que 2 es pot escriure com la suma de dos primers. Per exemple, $6=3+3$, $12=7+5$ o $64=17+47$. Aquestes particions com a suma de dos primers s'anomenen particions de Goldbach.  Creeu una funció Goldbach(n) que retorni totes les possibles particions de Goldbach de $n$ (sense importar l'ordre). Si denotem per $r(2k)$ el nombre de particions de Goldbach de $2k$, la conjectura afirma que $r(2k)>0$ per a tot $k>1$. Representeu en un gràfic els valors $(k,r(2k))$ per a $k\in [2,2000]$.
@@ -305,7 +170,7 @@ Goldbach(10)
 ```
 -- end hide
 
-# Exercici 6
+# Exercici 4
 
 
 Donat $k\in \mathbb{N}$, la funció phi d'Euler, $\varphi(k)$ és una funció que es defineix fàcilment en termes aritmètics, i que es pot calcular com $$\varphi(k)=\prod_{i=1}^r (p_i-1)\,p_i^{\alpha_i-1}$$ on $k=p_1^{\alpha_1}\cdots p_r^{\alpha_r}$ és la descomposició de $k$ en primers diferents. 
@@ -383,7 +248,7 @@ Unaaltrephi(n)
 -- end hide
 
 
-# Exercici 7
+# Exercici 5
 
 
 Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,...) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
@@ -484,7 +349,7 @@ print(total)
 ```
 -- end hide
 
-# Exercici 8
+# Exercici 6
 
 En aquest exercici veurem que és possible treballar amb relacions d'equivalència i quocients per a conjunts finits. Considerarem un conjunt finit (de *Python*, o sigui construït via `{ }` o be via `set( )`). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
 
