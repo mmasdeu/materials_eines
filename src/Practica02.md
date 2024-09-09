@@ -9,7 +9,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 9.6
+    display_name: SageMath 10.4
     language: sage
     name: sagemath
 ---
@@ -17,10 +17,10 @@ jupyter:
 # Més Manipulacions Bàsiques
 
 
-## Més coses sobre Jupyter Notebook
+## Més coses sobre Jupyter Lab
 
 L'entorn **SageMath** té dues parts que cal diferenciar
-bé: Una és Jupyter NoteBook, que és la interfície web on escrivim
+bé: Una és el notebook de Jupyter, que és la interfície web on escrivim
 instruccions de **SageMath**. L'altra és el
 *kernel*, que és el motor computacional que executa les ordres. Cada
 notebook té un kernel executant-se al darrera, independent dels altres
@@ -51,7 +51,7 @@ En el menú `File` del notebook hi ha diverses ordres similars:
 -   `Rename...` només canvia el nom del fitxer que està obert. El kernel
     segueix funcionant. No queda guardat res amb el nom anterior. És el
     que podem utilitzar d'entrada per començar la sessió: Després de
-    `New -> SageMath`, feu `Rename...` i poseu `Practica02` o el que
+    `New -> Notebook`, feu `Rename...` i poseu `Practica02` o el que
     vulgueu.
 
 
@@ -99,13 +99,6 @@ anglès *Home*. Típicament, en Windows és el directori
 `C:\Users\nom_usuari`, i en Linux o MacOS és `/home/nom_usuari`. La
 Jupyter no ens deixarà sortir d'aquest directori i els seus
 subdirectoris.
-
-Si ens interessa que el directori base de *Jupyter* sigui un altre, per
-exemple, `D:\Mates`, cal obrir des del menú inici el `SageMath Shell`, i
-escriure, a la consola que s'obre, l'ordre `sage-sethome 'D:\Mates'`.
-
-Després tanquem tot el que tinguem obert relacionat amb el
-**SageMath** i el proper cop tindrà efecte el canvi.
 
 
 ## La instrucció `expand`

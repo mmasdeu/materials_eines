@@ -9,7 +9,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 9.6
+    display_name: SageMath 10.4
     language: sage
     name: sagemath
 
@@ -19,10 +19,10 @@ jupyter:
 
 ## Posada en marxa
 
-Arrenqueu `SageMath Notebook`, des del menú inici o de la manera
+Arrenqueu `SageMath Notebook` o `Jupyter Lab` de la manera
 adequada segons la vostra instal·lació. S'obrirà el navegador d'internet per
 omissió que tinguem a l'ordinador (o es crearà una nova pestanya si ja
-estava obert). Dins el navegador veureu funcionant *Jupyter Notebook*, que és un programari per editar i executar *notebooks*.
+estava obert). Dins el navegador veureu funcionant *Jupyter Lab*, que és un programari per editar i executar *notebooks*.
 
 Els notebooks són com llibretes on podem escriure instruccions i
 comentaris, i que després podrem guardar en fitxers.
@@ -33,10 +33,10 @@ fitxers del nostre directori base (*Home*), que en Linux és típicament
 guardats en el directori base o algun dels seus subdirectoris, els podem
 obrir des d'aquest panel.
 
-Creeu un notebook nou anant a `New -> SageMath` en el panel del Jupyter,
-a dalt a la dreta, i començarem a treballar.
+Creeu un notebook nou anant a `New -> Notebook` en el panel del Jupyter Lab,
+a dalt a la dreta, i començarem a treballar escollint com a *Kernel* el **Sage 10.4**.
 
-Haureu observat que just abans d'obrir-se el Jupyter, s'ha obert també
+Haureu observat que just abans d'obrir-se el Jupyter Lab, s'ha obert també
 el que s'anomena una *consola* o *terminal*, una petita finestra on van
 apareixent informacions que de moment no ens interessen. No hem de tancar
 aquesta consola fins que no acabem de treballar amb el

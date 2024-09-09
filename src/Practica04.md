@@ -9,7 +9,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 9.6
+    display_name: SageMath 10.4
     language: sage
     name: sagemath
 ---
@@ -695,14 +695,13 @@ valors. De fet la funció amb un yield el que retorna és un iterador.
 
 Anem a veure un exemple: farem una funció que retorni els nombres
 primers acabat en 1 entre $n$ i $m$, però enlloc de ser una llista serà
-un iterador (he utilitzat `xsrange()` per assegurar que el
-**SageMath** em retorni un iterador):
+un iterador:
 
 ```sage
 def primers_acabats_en_1(n,m):
-    for p in xsrange(n+1,m):
-        if p.is_prime() and (p%10)==1:
-            yield p 
+    for p in srange(n+1,m):
+        if p.is_prime() and p % 10 == 1:
+            yield p
 ```
 
 ```sage
