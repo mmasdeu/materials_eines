@@ -27,13 +27,13 @@ estava obert). Dins el navegador veureu funcionant *Jupyter Lab*, que és un pro
 Els notebooks són com llibretes on podem escriure instruccions i
 comentaris, i que després podrem guardar en fitxers.
 
-El que ens ensenya Jupyter d'entrada és un panel amb una llista de
+El que ens ensenya Jupyter d'entrada és un panell amb una llista de
 fitxers del nostre directori base (*Home*), que en Linux és típicament
 `/home/usuari` i en Windows `C:\Users\usuari`. Si ja tenim notebooks
 guardats en el directori base o algun dels seus subdirectoris, els podem
-obrir des d'aquest panel.
+obrir des d'aquest panell.
 
-Creeu un notebook nou anant a `New -> Notebook` en el panel del Jupyter Lab,
+Creeu un notebook nou anant a `File -> New -> Notebook` en el panell del Jupyter Lab,
 a dalt a la dreta, i començarem a treballar escollint com a *Kernel* el **Sage 10.4**.
 
 Haureu observat que just abans d'obrir-se el Jupyter Lab, s'ha obert també
@@ -48,7 +48,7 @@ directoris (*directory tree*) d'un ordinador.
 
 ## SageMath com a calculadora
 
-Al fer `New -> SageMath` se'ns obre una pestanya nova, que conté el
+Al clicar la icona (a l'apartat de Notebooks) que diu `SageMath` se'ns obre una pestanya nova, que conté el
 notebook que estem creant. Escriurem instruccions en el rectangle on
 posa `In [ ]`. Per executar una instrucció hem de fer **Shift** + **Enter**. Si fem
 simplement **Enter**, generem una línia nova per escriure més instruccions, que
@@ -351,7 +351,7 @@ reset('a b')
 
 **Atenció:** Es pot aplicar `reset()` a més d'una variable,
 fent `reset('a,b')`, amb una coma entre les variables o amb un espai,
-fent fent `reset('a b')`, però no amb una coma i un espai:
+fent `reset('a b')`, però no amb una coma i un espai:
 `reset('a, b')` no funciona.
 
 ```sage
@@ -473,7 +473,7 @@ E(a=-1, b=2, c=4)
 Anem a guardar la feina feta i tancar el SageMath de manera neta. El més
 ràpid és fer el següent:
 
--   `File -> Save and checkpoint`
+-   `File -> Save`
 
 -   `File -> Close and Halt`
 
