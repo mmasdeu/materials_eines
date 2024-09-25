@@ -357,7 +357,7 @@ valors que conceptualment considerem relacionats d'alguna manera o tenen
 una identitat comuna. Per exemple, la llista `A = [cos(t), sin(t), t]`
 podria representar les tres coordenades d'una partícula que es mou en
 l'espai, en funció del temps $t$. (Marginalment, quina figura descriu
-aquesta particula?)
+aquesta partícula?)
 
 Es pot accedir individualment a cada element d'una llista a través de la
 seva posició a la llista: `A[k]` selecciona l'element $k$-èssim. Però
@@ -692,7 +692,7 @@ prova = { 1 : 'a' , 'x' : [1, 2], (4,5) : { 1, 2 } }
 
 
 assigna al número $1$ la lletra $a$, a la lletra $x$ la llista $[1,2]$ i
-a la tupla $(1,5)$ el conjunt $\{1,2\}$. Per accedir als valors només cal posar
+a la tupla $(4,5)$ el conjunt $\{1,2\}$. Per accedir als valors només cal posar
 `prova[1]` i respon `'a'`, i posar `prova['x']` i respon `[1,2]`, etc.
 
 Les *keys* poden ser números, cadenes (strings), tuples de números o
@@ -701,15 +701,12 @@ valors s'hi pot posar qualsevol cosa.
 
 
 Podem modificar el valor d'un diccionari com en el cas de les llistes.
-Per exemple, si posem
+Per exemple, observem el resultat del següent bloc:
 
 ```sage
 prova[(4,5)] = {1,2,3}
 print(prova)
 ```
-
-ens imprimirà
-$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\} \}.$$
 
 
 També podem afegir més elements a un diccionari:
@@ -719,17 +716,14 @@ També podem afegir més elements a un diccionari:
 prova[2] = 'z'
 ```
 
-Si volem afegir tots els elements d'un altre diccionari, podem fer servir `update`. Per exemple
+Si volem afegir tots els elements d'un altre diccionari, podem fer servir `update`. Per exemple,
+observem en el següent bloc que el valor en el $2$ es sobreescriu:
 
 
 ```sage
 prova.update({2 : 'b', 7 : 'c'})
 print(prova)
 ```
-
-ens imprimirà
-$$\{ 1 \ : \  ' a' \  , \   'x'\ : \ [1,2] \ , \ (4,5) \ : \ \{1,2,3\}, 2:'b', 7:'c' \}.$$
-(i observem que ha sobreescrit el valor de $2$ anterior)
 
 
 Si fem un bucle indexat en un diccionari, la variable es mou en la
@@ -903,12 +897,11 @@ print(len(L))
 -- end hide
 
 - Feu dues llistes, a partir dels elements de `L`, una amb els
-  elements de les tirades parells i l'altre amb els de les tirades
-  imparells.
+  resultats parells i l'altra amb els senars.
 
 -- begin hide
 ```sage
 Lp = [o for o in L if o % 2 == 0]
-Li = [o for o in L if o % 2 == 1]
+Ls = [o for o in L if o % 2 == 1]
 ```
 -- end hide
