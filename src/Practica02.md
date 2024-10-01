@@ -507,7 +507,8 @@ print(T[-1])
 T[-1]=10
 ```
 a part d'imprimir 5 ens surt un error que diu "'tuple' object does not
-support item assignment". En canvi, amb llistes el següent bloc
+support item assignment". En canvi, observeu que amb llistes
+no obtenim cap error:
 
 ```sage
 L=[1,2,3,4,5]
@@ -515,7 +516,6 @@ print(L[-1])
 L[-1]=10
 print(L)
 ```
-ens imprimirà $5$ i $[1,2,3,4,10]$.
 
 Com que les tuples són immutables, podrieu pensar que no podem posar una
 cosa mutable dins una tupla. Però si que és pot sense problemes: una
@@ -905,3 +905,40 @@ Lp = [o for o in L if o % 2 == 0]
 Ls = [o for o in L if o % 2 == 1]
 ```
 -- end hide
+
+# Exercici 7
+
+Construïu els següents objectes:
+
+- Una llista dels primers entre 100 i 300 acabats en 1.
+
+```sage
+-- begin hide
+L = [p for p in srange(100, 300) if p.is_prime() and p % 10 == 1]
+-- end hide
+```
+
+- Una llista dels divisors senars de 400.
+
+```sage
+-- begin hide
+L = [d for d in divisors(400) if d % 2 == 1]
+-- end hide
+```
+
+- El conjunt de nombres entre 1 i 100 que són suma d'un cub i un quadrat.
+
+```sage
+-- begin hide
+S = set((n^2 + m^3 for n in range(100) for m in range(5))).intersect(set(range(1,101)))
+-- end hide
+```
+
+- Un diccionari que assigni a cada enter $n$ entre $40$ i $50$ la llista de tuples de naturals $(a,b)$ tals que $n=a^2+b^2$.
+
+```sage
+-- begin hide
+D = {n : list(set([(a,b) for a in range(9) for b in range(9) if a^2+b^2 == n])) for n in range(40,51)}
+-- end hide
+```
+
