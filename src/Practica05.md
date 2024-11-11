@@ -194,10 +194,7 @@ with open('llista.txt', 'r', encoding='utf-8') as f:
         print(line)
 ```
 
-## Classes
-
-
-### Preliminars: zip
+## Preliminars: zip
 
 
 La funció zip s'aplica a n llistes o tuples o cadenes, i en fa un iterable de n-tuples, agafant el ièssim de cada llista, des de i=0 fins que s'acaba alguna tupla.
@@ -227,6 +224,8 @@ list(zip(*[(1, 1, 2), (2, 3, 4)]))
 ```sage
 list(zip((1, 1, 2), (2, 3, 4)))
 ```
+
+## Classes
 
 
 Una classe (a Python) és una manera de poder agrupar dades i funcions
@@ -261,7 +260,7 @@ Dins de la mateixa classe podem definir funcions aplicades al objecte.
 Per exemple, en aquest cas la funció `area` calcula l'àrea del triangle
 donat pels tres vèrtexs. ``
 
-## Una classe per treballar amb triangles
+### Una classe per treballar amb triangles
 
 Considerem el següent codi:
 ```sage
