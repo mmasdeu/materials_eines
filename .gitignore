@@ -1,0 +1,6 @@
+output/
+\#*\#
+*.log
+src/.ipynb_checkpoints/
+*.out
+
