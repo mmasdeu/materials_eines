@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title: 'Pràctica 5: Complements a la programació en Python'
+  title: 'Pràctica 5: Complements a la programacio en Python'
   authors:
   - name: Marc Masdeu
   - name: Xavier Xarles
@@ -219,6 +219,10 @@ Si apliques `zip(*llista)` on `llista` és una llista, el que fa és "esborrar" 
 
 ```sage
 list(zip(*[(1, 1, 2), (2, 3, 4)]))
+```
+
+```sage
+list(zip([(1, 1, 2), (2, 3, 4)]))
 ```
 
 ```sage

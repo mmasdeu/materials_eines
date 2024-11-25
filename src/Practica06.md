@@ -287,8 +287,8 @@ Es pot millorar el resultat anterior afegint una opció a la instrucció
 que farà que el resultat sigui una representació de totes les solucions.
 
 ```sage
-solve(sin(x)==1/2, x, to_poly_solve='force')
-show(_)
+sol = solve(sin(x)==1/2, x, to_poly_solve='force')
+show(sol)
 ```
 
 Els $z$ amb subíndex que apareixen s'han d'interpretar com nombres

@@ -912,33 +912,40 @@ Construïu els següents objectes:
 
 - Una llista dels primers entre 100 i 300 acabats en 1.
 
-```sage
 -- begin hide
+```sage
 L = [p for p in srange(100, 300) if p.is_prime() and p % 10 == 1]
--- end hide
 ```
+-- end hide
 
 - Una llista dels divisors senars de 400.
 
-```sage
 -- begin hide
+```sage
 L = [d for d in divisors(400) if d % 2 == 1]
--- end hide
 ```
+-- end hide
+
 
 - El conjunt de nombres entre 1 i 100 que són suma d'un cub i un quadrat.
 
-```sage
 -- begin hide
-S = set((n^2 + m^3 for n in range(100) for m in range(5))).intersect(set(range(1,101)))
--- end hide
+```sage
+S = {n^2 + m^3 for n in range(10) for m in range(5)}.intersect(set(range(1,101)))
+S1 = {n^2 + m^3 for n in range(10) for m in range(5) if 0 < n^2+m^3 < 101}
+S2 = {n for n in srange(1,101) if any({(n-a^3).is_square() for a in range(n)})}
 ```
+-- end hide
 
 - Un diccionari que assigni a cada enter $n$ entre $40$ i $50$ la llista de tuples de naturals $(a,b)$ tals que $n=a^2+b^2$.
 
-```sage
 -- begin hide
+```sage
 D = {n : list(set([(a,b) for a in range(9) for b in range(9) if a^2+b^2 == n])) for n in range(40,51)}
--- end hide
+D1 = {n : [(a,b) for a in range(9) for b in range(9) if a^2+b^2 == n] for n in range(40,51)}
+D2 = {n : [(a,sqrt(n-a^2)) for a in srange(9) if (n-a^2).is_square()] for n in srange(40,51)}
 ```
+-- end hide
 
+
+ 
