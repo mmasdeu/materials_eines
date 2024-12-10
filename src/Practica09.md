@@ -410,7 +410,7 @@ instrucció `Zmod()`. Per exemple, podem assignar com valor a la variable
 $\mathbb{Z}/26\mathbb{Z}$:
 
 ```sage
-Z26 = Zmod(26) # És equivalent a Integer(26)
+Z26 = Zmod(26) # És equivalent a Integers(26)
 Z26
 ```
 
