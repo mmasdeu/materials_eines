@@ -9,7 +9,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 10.4
+    display_name: SageMath 10.6
     language: sage
     name: sagemath
 ---
