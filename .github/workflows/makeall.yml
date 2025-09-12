@@ -6,7 +6,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main, curs_25-26 ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,10 +15,11 @@ jobs:
       options: --user root
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout branch
         uses: actions/checkout@v3
         with:
           fetch-depth: "0"
+          ref: "curs_25-26"
         
       - name: Create a temporary artifact downloads folder
         run: mkdir -p output
