@@ -132,13 +132,13 @@ Per tal de comprovar el funcionament d'aquestes instruccions en
 diferents situacions, canvieu el `a = 3` per `a = -pi`, per `a = 0` o per un
 `var(’a’)` i noteu com canvien els resultats.
 
-## Iteracions/repeticions/bucles
+## Iteracions, repeticions i bucles
 
 Una altra estructura bàsica de programació és la de les iteracions
 (repetició d'un bloc d'instruccions un cert nombre de cops, utilitzant
 els valors obtingut en cada repetició per tal de realitzar els càlculs
 en la següent,...). Ja hem vist que per a generar llistes podem
-utilitzarel `for`. Fem primer un exemple calculant la suma dels quadrats
+utilitzar el `for`. Fem primer un exemple calculant la suma dels quadrats
 de 1 a 100:
 
 ```sage
@@ -181,8 +181,8 @@ sum(a^2 for a in srange(101) if a.is_prime())
 ```
 
 Observeu que quan assigneu un valor enter a una variable,
-**SageMath** el considera un enter de Sage i no de
-Python, però en canvi la funció `range` retorna enters de Python.
+**SageMath** el considera un enter de **SageMath** i no de
+**Python**, però en canvi la funció `range` retorna enters de **Python**.
 
 
 En altres situacions, el bloc d'instruccions que s'ha de repetir, en
@@ -331,7 +331,7 @@ print(p)
 optimitzada i per tant és molt més ràpida).
 
 
-**Exercici:** Proveu de fer el mateix per a trobar el nombre primer immediatement
+**Exercici:** Proveu de fer el mateix per a trobar el nombre primer immediatament
 superior a `a = 524`, o sigui el més petit dels que són més grans que
 `524`. La funció de **SageMath** corresponent és
 `next_prime`.
@@ -412,7 +412,7 @@ def primer3(n):
 ```
 
 De fet, com que dins del condicional hi ha unes funcions que ja donen un
-booleà, encara ho podriem fer més concís escrivint simplement 
+booleà, encara ho podríem fer més concís escrivint simplement 
 
 ```sage
 def primer3(n):
@@ -463,7 +463,7 @@ print(f'{ret = }')
 ```
 
 Un altre exemple més sofisticat per a fer els càlculs de les iteracions
-de la funció cosinus que ja han aparegut anteriorment defininint una
+de la funció cosinus que ja han aparegut anteriorment definint una
 funció designada com `ICos`. Aquesta funció acceptarà tres arguments (el
 primer serà el punt inicial de les iteracions, el segon el control de
 precisió i el tercer el nombre màxim d'iteracions que es preveuen), va
@@ -608,8 +608,8 @@ la funció.
 ## Més sobre les funcions de Python
 
 Una funció ben definida en Python hauria de tenir un
-docstring, o sigui un text explicatiu, que descrigui què fa la funció.
-És estàndard escriure una frase a la línia després de def amb tres `"` o `'`
+*docstring*, o sigui un text explicatiu, que descrigui què fa la funció.
+És estàndard escriure una frase a la línia després de `def` amb tres `"` o `'`
 a cada banda. Si té més d'una línia es posen tres `"` o `'` en una línia a part.
 
 Per a definir una funció de Python amb `def` podeu, si voleu, posar
@@ -654,12 +654,12 @@ També podem executar:
 ```sage
 valor = ICos(pi/3,0.00001,30)
 ```
-Observeu també com hem escrit el "docstring" al inici.
+Observeu també com hem escrit el *docstring* a l'inici.
 
 De fet, aquesta funció no seria considerada gaire ben feta per un 
 programador experimentat, doncs no cal que una funció imprimeixi els 
 resultats intermedis un cop ja funciona, i a més ens hauria de donar retornar 
-també si el resultat té o no la precisió adecuada. Així que seria millor 
+també si el resultat té o no la precisió adequada. Així que seria millor 
 la següent funció: 
 
 ```sage
@@ -691,7 +691,7 @@ Una comanda més que es pot utilitzar amb les funcions enlloc del
 retorna un valor oblida tot el que ha passat dins de la funció, amb el
 `yield` la funció recorda els valors que tenia, de manera que quan la
 tornes a cridar recorda exactament on estava executant i amb quins
-valors. De fet la funció amb un yield el que retorna és un iterador.
+valors. De fet la funció amb un `yield` el que retorna és un iterador.
 
 Anem a veure un exemple: farem una funció que retorni els nombres
 primers acabat en 1 entre $n$ i $m$, però enlloc de ser una llista serà
@@ -751,8 +751,8 @@ l'adequat) o `ValueError` (si el valor no és adequat), o altres tipus
 d'errors (`PrecisionError`, `RuntimeError`,...) (el tipus d'error és una cosa que decidiu vosaltres, però es bo
 que sigui el que correspon).
 
-Per exemple, abans hem fet la funció tresxmesun que ens imprimia un error 
-quan no es complien certes condicions. Una manera més adecuada de fer-ho és 
+Per exemple, abans hem fet la funció `tresxmesun` que ens imprimia un error 
+quan no es complien certes condicions. Una manera més adequada de fer-ho és 
 que surti un missatge d'error. 
 
 ```sage
@@ -768,7 +768,7 @@ def tresxmesun(k):
         llista.append(valor)
     return llista
 ```
-Vegem que surt quan posem un nombre no adecuat en cada cas. 
+Vegem que surt quan posem un nombre no adequat en cada cas. 
 ```sage
 tresxmesun(12/2)
 ```
@@ -779,7 +779,7 @@ tresxmesun(0)
 Una altra possibilitat que ens ofereix el Python és utilitzar el
 `assert`: es tracta de demanar que una certa condició ha de ser
 satisfeta per seguir amb la funció, sinó retorna un error (de `assert`).
-Per exemple, el codi anterior es pot fer amb asserts com:
+Per exemple, el codi anterior es pot fer amb `assert`s, com:
 
 ```sage
 def tresxmesun(k):
@@ -803,7 +803,7 @@ el tipus d'error.
 tresxmesun(12/2)
 ```
 
-En general, el `assert` només s'hauria de usar per
+En general, el `assert` només s'hauria d'utilitzar en
 casos que un no espera que passin mai però que es vol assegurar per
 evitar que el programa funcioni malament. En canvi el `raise` es pot
 utilitzar per casos que es poden donar i així avisar de què ha passat a
@@ -854,6 +854,183 @@ sinc(0)
 El que fa la funció és provar d'avaluar $sin(x) / x$, i, si pot, retorna
 el resultat, però si té un error `ZeroDivisionError` (de dividir per
 zero), llavors retorna $1$.
+
+
+# Complements a la programació en Python
+
+
+## Optimització
+
+A vegades és important aconseguir que una funció s'executi el màxim de ràpid possible.
+En aquests casos, potser ens cal triar entre dues o més possibles implementacions,
+i per fer-ho és útil poder mesurar el temps que es triga en executar un bloc de codi.
+
+La manera més fàcil de veure el temps que triga una certa funció és la comanda `%time`,
+que podem posar davant de qualsevol càlcul. Per exemple:
+
+```sage
+%time 2 + 2
+```
+
+Observem que ens mostra quatre nombres diferents. La primera fila ("CPU times")
+ens diu quant temps li ha dedicat el processador, repartit entre la part que es dedica
+a realment el càlcul i la part que es dedica a gestionar la interacció amb el sistema.
+La segona fila ("Wall time") ens diu el temps "de rellotge de paret" que ha passat. Aquest temps
+sempre serà més gran que el "CPU time", perquè el nostre ordinador a més de fer el càlcul que li
+hem demanat també està fent altres coses (per exemple, potser esteu escoltant música, o mirant
+una pel·lícula,...).
+
+Una variant d'aquesta comanda és `%timeit`, que executa la instrucció diverses vegades i fa un promig.
+
+```sage
+%timeit 2 + 2
+```
+
+Pot ser que vulguem veure aquesta informació dins d'una funció que estem programant. Aleshores
+podem fer servir les funcions `cputime()` i `walltime()`, que tenen el mateix funcionament
+però tracten un o l'altre recompte de temps com abans. Ho veurem amb un exemple. Primer, simularem
+que tenim una classe molt gran (amb un milió d'alumnes), cadascun amb el seu NIU. Desarem les
+notes en una llista els elements de la qual seran tuples `(NIU, nota)`.
+
+```sage
+notes_eines = [(randint(0, 10**7),randint(0,10)) for _ in range(10**6)]
+```
+
+Fem una funció que ens digui quina nota ha tret un alumne amb un NIU donat:
+
+```sage
+def quina_nota(NIU_alumne):
+    for NIU, nota in notes_eines:
+        if NIU_alumne == NIU:
+            return nota
+    raise ValueError(f"El {NIU_alumne = } no s'ha trobat.")
+```
+
+```sage
+quina_nota(1234567)
+```
+
+```sage
+quina_nota(notes_eines[50000][0])
+```
+
+Suposem ara que volem fer una funció que ens digui la mitjana de les notes de 10 alumnes a l'atzar. Ho podríem fer així:
+
+```sage
+def mitjana(n = 10): # Valor per defecte
+    suma = 0
+    total_notes = 0
+    while total_notes < n:
+        try:
+            suma += quina_nota(randint(0, 10**7))
+            total_notes += 1
+        except ValueError:
+            pass
+    return RR(suma) / n
+```
+
+```sage
+%time mitjana()
+```
+
+Per millorar les funcions anteriors, podem mirar el temps que triga la funció `quina_nota` a cada iteració. Modificarem la funció `mitjana` de la següent manera.
+
+
+```sage
+def mitjana(n = 10): # Valor per defecte
+    suma = 0
+    total_notes = 0
+    t0 = cputime() # Es desa un enter que indica el temps
+    while total_notes < n:
+        try:
+            suma += quina_nota(randint(0, 10**7))
+            total_notes += 1
+            t1 = cputime()
+            print(f"L'última crida ha durat {1000*(t1 - t0)} milisegons. Notes acumulades: {total_notes}.")
+            t0 = t1
+        except ValueError:
+            pass
+    return RR(suma) / n
+```
+
+```sage
+mitjana()
+```
+
+Una altra funcionalitat que ens pot ser útil és `%prun` (de *profiler run*). Ens mostra un informe que ens diu quantes vegades s'ha cridat cada funció, i quin temps s'hi ha trigat.
+
+```sage
+%prun mitjana()
+```
+
+Si ens fixem en la sortida de la comanda anterior, podem veure que la funció `quina_nota` no és gaire ràpida. Podem intentar-la millorar i, de fet, n'hi ha prou amb fer servir un diccionari per accedir ràpidament a les notes:
+```sage
+dict_notes = dict(notes_eines)
+def quina_nota(NIU_alumne):
+    try:
+        return dict_notes[NIU_alumne]
+    except KeyError:
+        raise ValueError(f"El {NIU_alumne = } no s'ha trobat.")
+```
+
+Podem veure el resultat:
+
+```sage
+mitjana()
+```
+
+## Fitxers
+
+A vegades no volem escriure els resultats per pantalla, sino que els necessitem en un fitxer (per poder-los enviar a algú, o per afegir-los a un document que estem escrivint, per exemple). També ens pot convenir llegir un fitxer on hi tenim dades que volem estudiar. Una primera manera és amb les funcions `load()` i `save()` que ens proporciona el **SageMath**. Suposem que tenim una llista (o qualsevol objecte de **SageMath**):
+
+```sage
+L = [5,3,4,1,6,7,1,9,4,3,2]
+```
+
+La podem desar amb:
+```sage
+save(L, 'lamevallista')
+```
+
+Aquesta comanda crea un fitxer anomenat `lamevallista.sobj`. Quan vulguem el podem recuperar amb:
+
+```sage
+M = load('lamevallista')
+```
+
+L'extensió `.sobj` indica que es tracta d'un "objecte Sage". Alguns objectes ens permeten desar-los com a imatge (per exemple el resultat d'una funció `plot`). Això ho podem fer especificant una extensió vàlida (`.png`, `.pdf`, `.svg`, ...):
+
+```sage
+G = plot(sin(x), 0, 2*pi)
+save(G, 'sinus.png')
+```
+
+Ara bé, aquestes imatges han perdut la informació que venia del **SageMath**, i per tant no les podrem tornar a convertir a objectes de **SageMath**.
+
+Encara que el format `.sobj` és útil per desar informació de **SageMath** quan aturem el Kernel, no és un format útil per compartir, ja que sense el **SageMath** no el podrem llegir. Tornant al cas de la llista, ens podria interessar escriure un fitxer de text (o una fulla excel,...) amb la informació que hi tenim. D'alguna manera, volem poder "imprimir" en el fitxer, igual que la funció `print` ens imprimeix en pantalla. Això es pot aconseguir de la manera següent:
+
+```sage
+f = open('llista.txt', 'w', encoding='utf-8') # 'w' indica que volem escriure (write).
+for i in L:
+    f.write(f'{i}\n') # Cal un String
+f.close()
+```
+
+La primera línia obre el fitxer en mode escriptura. Li hem d'indicar la codificació (`utf-8`) perquè els caràcters especials s'escriguin bé. Ens retorna un objecte (`f`) de tipus "file", que té mètodes com ara el `.write()`, que és el que de fet escriu. Quan acabem, hem de tancar el fitxer (si no, es poden perdre dades). Això és fa amb el mètode `.close()`.
+
+És molt important tancar els fitxers, i a vegades pot passar que ens en descuidem, o que abans de tancar-los es produeixi un error i no arribem a la instrucció de tancar. Per evitar problemes, hi ha una estructura millor que ens garanteix que passi el que passi el fitxer es tancarà. L'exemple anterior es faria:
+```sage
+with open('llista2.txt', 'w', encoding='utf-8') as f:
+    for i in L:
+        f.write(f'{i}\n') # Cal un String
+```
+
+Per llegir un fitxer, ho fem de manera semblant:
+```sage
+with open('llista.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        print(line)
+```
 
 
 ## Exercicis
