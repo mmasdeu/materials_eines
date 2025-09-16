@@ -34,7 +34,7 @@ guardats en el directori base o algun dels seus subdirectoris, els podem
 obrir des d'aquest panell.
 
 Creeu un notebook nou anant a `File -> New -> Notebook` en el panell del Jupyter Lab,
-a dalt a la dreta, i començarem a treballar escollint com a *Kernel* el **Sage 10.4**.
+a dalt a la dreta, i començarem a treballar escollint com a *Kernel* el **Sage 10.6**.
 
 Haureu observat que just abans d'obrir-se el Jupyter Lab, s'ha obert també
 el que s'anomena una *consola* o *terminal*, una petita finestra on van
