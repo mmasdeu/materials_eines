@@ -454,11 +454,6 @@ print(expr)
 reset('a b')
 ```
 
-**Atenció:** Es pot aplicar `reset()` a més d'una variable,
-fent `reset('a,b')`, amb una coma entre les variables o amb un espai,
-fent `reset('a b')`, però no amb una coma i un espai:
-`reset('a, b')` no funciona.
-
 ```sage
 a
 ```
@@ -1312,8 +1307,17 @@ paràbola $y= 9-x^2$ (de color vermell).
 
 ```sage
 recta = plot(-3*x+5, -3, 5, color='green'); recta
-parabola=plot(9-x^2, -3, 5, color='red'); parabola
-interseccio=point([(-1,8), (4,-7)], color='blue', marker="*", size=100)
+```
+
+```sage
+parabola = plot(9-x^2, -3, 5, color='red'); parabola
+```
+
+```sage
+interseccio = point([(-1,8), (4,-7)], color='blue', marker="*", size=100); interseccio
+```
+
+```sage
 (recta+parabola+interseccio).show(xmin=-15, xmax=15, aspect_ratio=1)
 ```
 

@@ -184,7 +184,7 @@ L[-1] = 10
 print(L)
 ```
 
-Com que les tuples són immutables, podrieu pensar que no podem posar una
+Com que les tuples són immutables, podríeu pensar que no podem posar una
 cosa mutable dins una tupla. Però si que és pot sense problemes: una
 tupla, per tant, pot contenir una llista, i aquesta és pot modificar
 sense problemes. El problema és que una tupla com aquesta no seria
@@ -362,7 +362,7 @@ assigna al número $1$ la lletra $a$, a la lletra $x$ la llista $[1,2]$ i
 a la tupla $(4,5)$ el conjunt $\{1,2\}$. Per accedir als valors només cal posar
 `prova[1]` i respon `'a'`, i posar `prova['x']` i respon `[1,2]`, etc.
 
-Les *keys* poden ser números, cadenes (strings), tuples de números o
+Les *keys* poden ser números, cadenes (*strings*), tuples de números o
 de cadenes, però no poden ser ni llistes ni altres conjunts. En canvi als
 valors s'hi pot posar qualsevol cosa.
 
@@ -473,7 +473,7 @@ print('hola ' + 'adeu.')
 
 ## Cadenes amb format
 
-Molt sovint volem construïr cadenes a partir de variables que tenim declarades.
+Molt sovint volem construir cadenes a partir de variables que tenim declarades.
 Igual que fa la funció `print()`, **SageMath** sap convertir qualsevol objecte en
 una cadena, i podem forçar-lo a fer-ho amb `str()`:
 
