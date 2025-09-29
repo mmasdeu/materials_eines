@@ -14,7 +14,7 @@ jupyter:
     name: sagemath
 ---
 
-## Llistes
+# Llistes
 
 Una col·lecció d'expressions separades per comes i delimitades per
 claudàtors (parèntesis quadrats, *square brackets*) és el que en
@@ -159,8 +159,20 @@ len(quadrats_primers)
 
 I el resultat ens diu que hi ha 10 nombres primers entre 2 i 29.
 
+**Nota:** La funció `range(...)` retorna enters de Python (de tipus `int`), que no són els mateixos
+que els `Integer` servir el *SageMath*. En particular, els mètodes que són vàlids pels enters de tipus
+`Integer` no estan disponibles pels enters de tipus `int`. En particular, la comanda
+`[k^2 for k in range(2,30) if k.is_prime()]` no funcionarà. Per solucionar aquest problema, *SageMath*
+proporciona la funció `srange(...)`, que funciona de manera idèntica a `range(...)` però retorna enters
+de tipus `Integer`. Així, el següent codi sí que funciona:
 
-## Tuples
+```sage
+quadrats_primers = [ k^2 for k in srange(2,30) if k.is_prime() ]
+
+```
+
+
+# Tuples
 
 Una tupla $(a_1,a_2,\dots,a_n)$ és similar a una llista, però té algunes diferències
 importants que cal remarcar. La més important, i de fet la
@@ -203,17 +215,17 @@ poder-la manipular sense canviar la llista particular s'ha de posar
 ```sage
 L = [1, 2, 3]
 M = L
-print(f'{L = }, {M = }')
+print('L =', L, 'M = ', M)
 M[1] = 1000
-print(f'{L = }, {M = }')
+print('L =', L, 'M = ', M)
 ```
 
 ```sage
 L = [1, 2, 3]
 M = copy(L) # També es pot fer M = L[:]
-print(f'{L = }, {M = }')
+print('L =', L, 'M = ', M)
 M[1] = 1000
-print(f'{L = }, {M = }')
+print('L =', L, 'M = ', M)
 ```
 
 Les tuples i les llistes es poden sumar, i l'efecte és que es construeix
@@ -226,7 +238,7 @@ Un cas especial és el de les tuples de només un element: si posem
 obtenim només el número, no pas una llista. Per poder remeiar això cal posar `T = (2,)`.
 
 
-## Conjunts
+# Conjunts
 
 El **SageMath** (i el Python en general) pot
 treballar amb conjunts. La diferencia entre un conjunt i una llista o
@@ -317,7 +329,7 @@ varem fer en les llistes. Per exemple, podem trobar el conjunt dels
 residus mòdul 17 dels quadrats
 
 ```sage
-{ a^2 % 17 for a in srange(17) }
+{ a^2 % 17 for a in range(17) }
 ```
 
 
@@ -341,7 +353,7 @@ pi in Z
 Compte però que treballant amb conjunts infinits podeu provocar
 fàcilment que us quedeu sense memòria.
 
-## Diccionaris
+# Diccionaris
 
 Una construcció molt més general que la de conjunt i la de llista és la
 de diccionari: un diccionari és com un conjunt de claus (*keys*, que
@@ -403,7 +415,7 @@ for k in prova:
 
 que ens imprimirà cada clau i el seu valor.
 
-## Cadenes
+# Cadenes
 
 Una cadena (*string*) és una successió de caràcters, que podem especificar com `'hola'` o `"hola"`, per exemple.
 
@@ -471,7 +483,7 @@ Com amb les llistes, podem sumar-les i obtenim la concatenació:
 print('hola ' + 'adeu.')
 ```
 
-## Cadenes amb format
+# Cadenes amb format
 
 Molt sovint volem construir cadenes a partir de variables que tenim declarades.
 Igual que fa la funció `print()`, **SageMath** sap convertir qualsevol objecte en
@@ -536,9 +548,9 @@ print('Per fer un salt de línia cal escriure \\n al mig de la cadena')
 ```
 
 
-## Exercicis
+# Exercicis
 
-### Exercici 1
+## Exercici 1
 
 La funció `randint()` genera un nombre enter (`int` de **Python**) a l'atzar en el rang
 marcat pels arguments. Per exemple, cada cop que s'executa la
@@ -582,7 +594,7 @@ Ls = [o for o in L if o % 2 == 1]
 ```
 -- end hide
 
-### Exercici 2
+## Exercici 2
 
 Construïu els següents objectes:
 
@@ -625,7 +637,7 @@ D2 = {n : [(a,sqrt(n-a^2)) for a in srange(9) if (n-a^2).is_square()] for n in s
 
 
 
-### Exercici 3
+## Exercici 3
 
 Feu una llista amb les coordenades dels sis vèrtexs
 	de l'hexàgon regular inscrit en la circumferència de radi $1$, que són
@@ -635,15 +647,15 @@ Feu una llista amb les coordenades dels sis vèrtexs
 	hexàgon (Tingueu en compte que també és molt possible que existeixi una
     instrucció del tipus `polygon`).
 
-### Exercici 4
+## Exercici 4
 
 Definiu un diccionari on les claus siguin els nombres enters
    des de 2 fins a 10, i els valors els seus quadrats.
 
-### Exercici 5
+## Exercici 5
 
 Expliqueu com ho faríeu per crear una nova llista d'una llista `L` que tingui els mateixos elements que `L` però sense repeticions.
 
-### Exercici 6
+## Exercici 6
 
 Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt cada lletra? Proveu-ho per `C='Mississipi'`.
