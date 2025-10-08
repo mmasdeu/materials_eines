@@ -159,6 +159,33 @@ len(quadrats_primers)
 
 I el resultat ens diu que hi ha 10 nombres primers entre 2 i 29.
 
+Per saber si un element determinat es troba en una llista ho fem la instrucció `in`:
+
+```sage
+25 in quadrats_primers
+```
+
+```sage
+16 in quadrats_primers
+```
+
+El mètode `index()` ens diu en quin lloc apareix per primer cop un valor:
+
+```sage
+quadrats_primers.index(25)
+```
+
+Cal tenir en compte que això pot ser molt ineficient: si la llista és llarga i el valor que busquem
+es troba al final de la llista, l'ordinador ha de recórrer tots els elements de la llista per saber aquest índex.
+
+Finalment, també podem comptar quantes vegades apareix un determinat element a una llista:
+
+```sage
+L = [1, 3, 2, 2, 1, 2, 2, 3, 2]
+L.count(2)
+```
+
+
 **Nota:** La funció `range(...)` retorna enters de Python (de tipus `int`), que no són els mateixos
 que els `Integer` servir el *SageMath*. En particular, els mètodes que són vàlids pels enters de tipus
 `Integer` no estan disponibles pels enters de tipus `int`. En particular, la comanda
@@ -404,17 +431,6 @@ prova.update({2 : 'b', 7 : 'c'})
 print(prova)
 ```
 
-
-Si fem un bucle indexat en un diccionari, la variable es mou en la
-llista de claus. D'aquesta manera, podem fer:
-
-```sage
-for k in prova:
-	print(k, prova[k])
-```
-
-que ens imprimirà cada clau i el seu valor.
-
 # Cadenes
 
 Una cadena (*string*) és una successió de caràcters, que podem especificar com `'hola'` o `"hola"`, per exemple.
@@ -640,22 +656,51 @@ D2 = {n : [(a,sqrt(n-a^2)) for a in srange(9) if (n-a^2).is_square()] for n in s
 ## Exercici 3
 
 Feu una llista amb les coordenades dels sis vèrtexs
-	de l'hexàgon regular inscrit en la circumferència de radi $1$, que són
-	els punts de la forma
-	$$\big(\cos(\tfrac{2k\pi}{6}),\sin(\tfrac{2k\pi}{6})\big), \quad\text{per a $k=0,\dots,5$}\ .$$
-	Utilitzant la llista anterior i una instrucció `line`, dibuixeu aquest
-	hexàgon (Tingueu en compte que també és molt possible que existeixi una
-    instrucció del tipus `polygon`).
+de l'hexàgon regular inscrit en la circumferència de radi $1$, que són
+els punts de la forma
+$$\big(\cos(\tfrac{2k\pi}{6}),\sin(\tfrac{2k\pi}{6})\big), \quad\text{per a $k=0,\dots,5$}\ .$$
+
+Utilitzant la llista anterior i una instrucció `line`, dibuixeu aquest
+hexàgon (Tingueu en compte que també és molt possible que existeixi una
+instrucció del tipus `polygon`).
+
+--- begin hide
+```sage
+L = [(cos(2*k*pi / 6), sin(2*k*pi / 6)) for k in range(6)]
+line(L + L[:1])
+```
+--- end hide
 
 ## Exercici 4
 
 Definiu un diccionari on les claus siguin els nombres enters
-   des de 2 fins a 10, i els valors els seus quadrats.
+des de 2 fins a 10, i els valors els seus quadrats.
+
+--- begin hide
+```sage
+D = { k : k^2 for k in [2..10] }
+```
+-- end hide
 
 ## Exercici 5
 
 Expliqueu com ho faríeu per crear una nova llista d'una llista `L` que tingui els mateixos elements que `L` però sense repeticions.
 
+--- begin hide
+```
+L = [1, 2, 4, 1, 3, 2, 1]
+L_sense_reps = list(set(L))
+```
+--- end hide
+
 ## Exercici 6
 
 Donada una cadena `C`, expliqueu com crear un conjunt que contingui les lletres de `C`. Podeu fer un diccionari tal que les claus siguin les lletres de `C` i els valors el nombre de vegades que hi surt cada lletra? Proveu-ho per `C='Mississipi'`.
+
+--- begin hide
+```sage
+C = 'Mississipi'
+D = { c : C.count(c) for c in set(C) }
+D1 = { c : len([c for a in C if a == c]) for c in set(C) }
+```
+--- end hide

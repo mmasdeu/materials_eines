@@ -18,7 +18,7 @@ jupyter:
 
 ## Elements d'un *programa*
 
-Hi ha moltes situacions en les que una funció del tipus anterior
+Hi ha moltes situacions en les que una funció com les de la Pràctica 1
 (`x -> f(x)`) no és suficient per al problema que s'està tractant. És
 força normal que per tal d'obtenir un resultat es necessitin una sèrie
 d'instruccions encadenades, que produeixen alguns valors intermedis (que
@@ -75,8 +75,8 @@ a = 4
 if a == 4:
     b = a + 1
     print("Modificant b")
-print(f'{a=}')
-print(f'{b=}')
+print(f'{a = }')
+print(f'{b = }')
 ```
 
 es veu com apareix el text `Modificant b` i el valor de `b` passa a ser
@@ -228,15 +228,15 @@ d'implementar aquest càlcul pot ser el següent:
 
 ```sage
 
-di=1e-8 # Grau d'aproximacio entre iteracions consecutives que es busca
+di = 1e-8 # Grau d'aproximacio entre iteracions consecutives que es busca
 s = 0. # Valor inicial
 sa = s+1 # Valor inicial per a l'aproximacio anterior
          # (arbitrari i lluny del valor inicial)
-k = 0 #Variable que controla el nombre de repeticions
+k = 0 # Variable que controla el nombre de repeticions
 
 while abs(s-sa) > di:
     k += 1
-    sa , s = s , cos(s)
+    sa, s = s, cos(s)
     print(f'Iteració {k}, {s = }')
 print(f'Els valors finals són {sa=} i {s= }')
 ```
@@ -250,15 +250,15 @@ tots els valors intermedis.
 
 ```sage
 di = 1e-8
-s=0.
+s = 0.
 sa = s+1
-k=0
+k = 0
 
 mxi = 20 # Nombre màxim de repeticions del proces
 
 while abs(s-sa) > di and k < mxi:
     k += 1
-    sa , s = s , cos(s)
+    sa, s = s, cos(s)
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
@@ -281,7 +281,7 @@ mxi = 50
 
 while abs(s-sa) > di and k < mxi:
     k += 1
-    sa , s = s , cos(s)
+    sa, s = s, cos(s)
 
 # Es controla si s'han esgotat les repeticions previstes
 if k == mxi:
@@ -373,7 +373,7 @@ combinar més d'una instrucció, combinar blocs en els que hi hagi
 condicionals, repeticions o es necessitin variables temporals per
 guardar resultats que s'han d'utilitzar en alguna fase posterior
 d'aquesta avaluació, el mecanisme de les funcions simbòliques
-(`f(x)=.....`) és clarament insuficient (i, de fet, tampoc es pot
+(`f(x) = ...`) és clarament insuficient (i, de fet, tampoc es pot
 incloure de forma obvia un condicional `if` dins la definició d'una
 funció). En aquestes situacions cal generar objectes de tipus programa
 utilitzant l'estructura `def`.
@@ -431,7 +431,7 @@ primer3 = lambda n : n.is_prime() and n % 3 == 1
 ```
 
 
-Cal dir que aquesta funció es podria optimitzar per tal que comproves
+Cal dir que aquesta funció es podria optimitzar per tal que comprovés
 primer si el valor de `n` és un nombre enter de **SageMath**, i retornés `False`
 o un error si no ho fos; això es pot fer usant la funció `type`, que
 retorna el "tipus" del valor passat: en el cas que ens interessa,
@@ -476,15 +476,13 @@ intermedis i el resum final, el **resultat** o **valor** de la funció
 corresponent als arguments que heu utilitzat és el valor de `s`.
 
 ```sage
-reset()
-
 def ICos(origen, precisio, maxit):
     s = origen.n()
     sa = s+1
     k = 0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-        sa , s = s , cos(s)
+        sa, s = s, cos(s)
     if k == maxit:
         print("S'ha arribat al maxim d'iteracions previstes!!!")
         print("No es segur que el valor sigui prou ajustat")
@@ -507,7 +505,7 @@ sol dir que són variables *locals*.). Per exemple, `k`, `s`, `sa` i
 assignat, no canvia. Per exemple 
 
 ```sage
-k=10
+k = 10
 print(ICos(2,0.001,20))
 print(k)
 ```
@@ -571,7 +569,7 @@ parells i senars surten,...).
 
 La funció de l'exemple següent permet experimentar amb els valors d'una
 funció $f$ qualsevol a prop d'un punt qualsevol $x_{0}$ generant una
-llista de parells de la forma $(x_{0}+1/k, f(x_{0}+1/k))$ per al $k$
+llista de parells de la forma $(x_{0} + 1/k, f(x_{0}+1/k))$ per al $k$
 entre $1$ i un número qualsevol que també formarà part dels arguments. A
 més, segons el valor d'un argument que utilitzarem com a control, es pot
 presentar com resultat aquesta llista directament o un gràfic amb dels
@@ -624,23 +622,22 @@ dieu res, per defecte es facin $10$ iteracions. Podem redefinir-la de la
 següent manera:
 
 ```sage
-reset()
 def ICos(origen, precisio, maxit=10):
     """ Itera la funció cos(s) fins que dos valors consecutius
     estan a distància menor que precisio i com a màxim maxit iteracions
     (per defecte maxit=10)"""
-    s=origen.n()
-    sa=s+1
-    k=0
+    s = origen.n()
+    sa = s + 1
+    k = 0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-        sa , s = s , cos(s)
+        sa, s = s, cos(s)
     if k == maxit:
         print("S'ha arribat al maxim d'iteracions previstes!!!")
         print("No es segur que el valor sigui prou ajustat")
         print("El resultat correspon a l'ultim valor obtingut.")
     else:
-        print(f"Després de {k} iteracions,les dues ultimes ")
+        print(f"Després de {k} iteracions, les dues últimes")
         print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
     return s
 ```
@@ -663,26 +660,25 @@ també si el resultat té o no la precisió adequada. Així que seria millor
 la següent funció: 
 
 ```sage
-reset()
 def ICos(origen, precisio, maxit=10):
-    """ Itera la funció cos(s) fins que dos valors consecutius
+    """Itera la funció cos(s) fins que dos valors consecutius
     estan a distància menor que precisio i com a màxim maxit iteracions
     (per defecte maxit=10). i retorna el valor i si la precisió es compleix"""
-    s=origen.n()
-    sa=s+1
-    k=0
+    s = origen.n()
+    sa = s+1
+    k = 0
     while abs(s-sa) > precisio and k < maxit:
         k += 1
-        sa , s = s , cos(s)
+        sa, s = s, cos(s)
     return s, abs(s-sa) <= precisio
 ```
 Per exemple, repetint els càlculs anteriors surt: 
 
 ```sage
 valor, certesa  = ICos(pi / 3, 0.00001)
-print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+print(f'El resultat és {valor = }. Es verifica la precisió? {certesa}')
 valor, certesa = ICos(pi/3,0.00001,30)
-print(f'El resultat és {valor=}. Es verifica la precisió? {certesa}')
+print(f'El resultat és {valor = }. Es verifica la precisió? {certesa}')
 ```
 
 
@@ -768,10 +764,13 @@ def tresxmesun(k):
         llista.append(valor)
     return llista
 ```
+
 Vegem que surt quan posem un nombre no adequat en cada cas. 
+
 ```sage
 tresxmesun(12/2)
 ```
+
 ```sage
 tresxmesun(0)
 ```
@@ -964,6 +963,7 @@ Una altra funcionalitat que ens pot ser útil és `%prun` (de *profiler run*). E
 ```
 
 Si ens fixem en la sortida de la comanda anterior, podem veure que la funció `quina_nota` no és gaire ràpida. Podem intentar-la millorar i, de fet, n'hi ha prou amb fer servir un diccionari per accedir ràpidament a les notes:
+
 ```sage
 dict_notes = dict(notes_eines)
 def quina_nota(NIU_alumne):
@@ -988,6 +988,7 @@ L = [5,3,4,1,6,7,1,9,4,3,2]
 ```
 
 La podem desar amb:
+
 ```sage
 save(L, 'lamevallista')
 ```
@@ -1019,6 +1020,7 @@ f.close()
 La primera línia obre el fitxer en mode escriptura. Li hem d'indicar la codificació (`utf-8`) perquè els caràcters especials s'escriguin bé. Ens retorna un objecte (`f`) de tipus "file", que té mètodes com ara el `.write()`, que és el que de fet escriu. Quan acabem, hem de tancar el fitxer (si no, es poden perdre dades). Això és fa amb el mètode `.close()`.
 
 És molt important tancar els fitxers, i a vegades pot passar que ens en descuidem, o que abans de tancar-los es produeixi un error i no arribem a la instrucció de tancar. Per evitar problemes, hi ha una estructura millor que ens garanteix que passi el que passi el fitxer es tancarà. L'exemple anterior es faria:
+
 ```sage
 with open('llista2.txt', 'w', encoding='utf-8') as f:
     for i in L:
@@ -1026,6 +1028,7 @@ with open('llista2.txt', 'w', encoding='utf-8') as f:
 ```
 
 Per llegir un fitxer, ho fem de manera semblant:
+
 ```sage
 with open('llista.txt', 'r', encoding='utf-8') as f:
     for line in f:
@@ -1076,12 +1079,14 @@ sum(p for p in srange(100) if p.is_prime() and p % 4 == 1)
 ```
 
 Una solució on directament prenem els enters mòdul 4:
+
 ```sage
 sum(p for p in srange(1,100,4) if p.is_prime())
 ```
 -- end hide
 
 ### Exercici 2
+
 Recordeu que la successió de Fibonacci, $(F_n)_n$, es defineix de
 forma iterativa a partir de $F_0=0$, $F_1=1$ i la regla
 $$F_k=F_{k-1}+F_{k-2}\quad \text{ per a tot }k\geq 2.$$
@@ -1122,6 +1127,7 @@ plot(llistaFib(20))
 -- end hide
 
 ### Exercici 3
+
 Suposeu que, sigui on sigui, tenim 100 portes tancades i numerades.
 Fem una passada per totes les portes d'una en una i les anem obrint.
 Després fem una altra passada i anem tancant cada 2 portes (la 2, la
@@ -1249,6 +1255,7 @@ print(len(llista))
 
 
 ### Exercici 5
+
 Com podeu comprovar, el fet que el procés iteratiu $x\to \cos(x)$
 que heu usat anteriorment convergeixi cap a una solució de
 $x=\cos(x)$ no es pot generalitzar a qualsevol altra funció.
@@ -1533,6 +1540,7 @@ funció $f(x)=2.9\,x\,(1-x)$.
 
 
 ### Exercici 6
+
 Feu una funció de **SageMath** de manera que, si li passem una funció $f(x)$
 d'una variable, valors $a$ i $b$ reals, amb $a<b$, i un nombre de
 passos $n\ge 1$, divideixi el interval $[a,b]$ en $n$ intervals
