@@ -177,12 +177,13 @@ la instrucció és `while`.
 
 
 Per exemple, si volem fer una llista `L` amb els termes 1, 2, 2, 3, 3, 3, 4, 4, 4, 4...
-de llargada podem fer:
+de llargada aproximadament 100 podem fer:
 ```sage
 L = []
 a = 1
 while len(L) < 100:
     L.extend(a * [a])
+    a += 1
 ```
 
 **Pregunta:** quina llargada té la llista resultant?
@@ -429,11 +430,12 @@ Cal dir que aquesta funció es podria optimitzar per tal que comprovés
 primer si el valor de `n` és un nombre enter de **SageMath**, i retornés `False`
 o un error si no ho fos; això es pot fer usant la funció `type`, que
 retorna el "tipus" del valor passat: en el cas que ens interessa,
-ha de ser de tipus `Integer`.
+ha de ser de tipus `Integer` o `int`.
 
 ```sage
 def primer3(n):
-    if type(n) != Integer:
+    if type(n) not in [int, Integer]:
+        print(f'Error, {n = } no és enter')
         return False
     return n.is_prime() and n % 3 == 1
 ```
@@ -443,7 +445,8 @@ primers menors que 100 i amb resta 1 al dividir per 3:
 
 
 ```sage
-L = [n for n in range(100) if primer3(n)]
+L = [n for n in srange(100) if primer3(n)]
+L
 ```
 
 Les funcions, en principi, poden no necessitar cap dada inicial ni tant
@@ -470,7 +473,7 @@ intermedis i el resum final, el **resultat** o **valor** de la funció
 corresponent als arguments que heu utilitzat és el valor de `s`.
 
 ```sage
-def ICos(origen, precisio, maxit):
+def ICos(origen, precisio, maxit=100):
     s = origen.n()
     sa = s+1
     k = 0
@@ -486,8 +489,13 @@ def ICos(origen, precisio, maxit):
         print(f"aproximacions difereixen en {abs(s-sa).n(digits=3)}, i són: {sa}, {s}")
     return s
 ```
+
+**Nota:** Observeu que un dels paràmetres, `maxit`, té assignat un *valor per defecte*,
+en aquest cas `100`. Això permet cridar la funció sense especificar aquest valor i,
+en aquest cas, es farà servir el valor per defecte.
+
 ```sage
-valor = ICos(pi/3, 0.000001, 100)
+valor = ICos(pi/3, 0.000001) # maxit valdrà 100
 valor
 ```
 
@@ -570,7 +578,7 @@ presentar com resultat aquesta llista directament o un gràfic amb dels
 punts.
 
 ```sage
-def aprox(func,xini,it,grafic=False): # Especifiquem el valor per defecte
+def aprox(func, xini, it, grafic = False): # Especifiquem el valor per defecte
     llista = [(xini+1/k,func(xini+1/k)) for k in [1..it]]
     return points(llista) if grafic else llista
 ```
