@@ -70,7 +70,6 @@ En aquest cas es veu que, en ser el valor de `a` igual a 3, no es
 produeix cap canvi. Mentre que en aquesta altra situació
 
 ```sage
-var('a b')
 a = 4
 if a == 4:
     b = a + 1
@@ -137,8 +136,7 @@ diferents situacions, canvieu el `a = 3` per `a = -pi`, per `a = 0` o per un
 Una altra estructura bàsica de programació és la de les iteracions
 (repetició d'un bloc d'instruccions un cert nombre de cops, utilitzant
 els valors obtingut en cada repetició per tal de realitzar els càlculs
-en la següent,...). Ja hem vist que per a generar llistes podem
-utilitzar el `for`. Fem primer un exemple calculant la suma dels quadrats
+en la següent,...). Fem primer un exemple calculant la suma dels quadrats
 de 1 a 100:
 
 ```sage
@@ -158,31 +156,18 @@ tipus `[a..b]`.
 **Nota:** Ja existeix una funció específica (`sum`) per a sumar una
 llista:
 ```sage
+sum([a^2 for a in range(101)])
+```
+De fet, la funció `sum` pot sumar *generadors*, que són expressions com l'anterior
+però delimitades per parèntesis, i són una mica més eficients, ja que Python s'estalvia
+de definir la llista sencera:
+```sage
+sum((a^2 for a in range(101)))
+```
+Cal remarcar, sobre això, que en aquest cas podem obviar un dels parèntesis:
+```sage
 sum(a^2 for a in range(101))
 ```
-
-**Nota2:** Sovint quan treballem amb
-**SageMath** és millor utilitzar la funció
-`srange` que la funció `range`: la diferència és que la primera produeix
-enters de **SageMath** i la segona enters de
-**Python**.  Amb els enters de Python no hi ha definits certs mètodes per
-decidir, per exemple, si un nombre és primer, o per factoritzar-lo. Per
-exemple, si volem la suma dels quadrats dels nombres primers entre 1 i
-100 i posem
-
-```sage
-sum(a^2 for a in range(101) if a.is_prime())
-```
-
-no funciona, però sí si posem
-
-```sage
-sum(a^2 for a in srange(101) if a.is_prime())
-```
-
-Observeu que quan assigneu un valor enter a una variable,
-**SageMath** el considera un enter de **SageMath** i no de
-**Python**, però en canvi la funció `range` retorna enters de **Python**.
 
 
 En altres situacions, el bloc d'instruccions que s'ha de repetir, en
@@ -191,8 +176,21 @@ algun dels càlculs que s'estan realitzant. En aquests casos utilitzarem
 la instrucció és `while`.
 
 
-Per exemple, si volem fer una llista `L` dels primers menors que 20 en
-ordre invers (de gran a petit) podem fer
+Per exemple, si volem fer una llista `L` amb els termes 1, 2, 2, 3, 3, 3, 4, 4, 4, 4...
+de llargada podem fer:
+```sage
+L = []
+a = 1
+while len(L) < 100:
+    L.extend(a * [a])
+```
+
+**Pregunta:** quina llargada té la llista resultant?
+
+**Exercici:** Construïu la llista dels primers menors que 20 en ordre invers, fent servir
+primer un `while`, després un `for` i finalment comprehensió de llistes.
+
+-- begin hide
 
 ```sage
 L = []
@@ -204,10 +202,6 @@ while a > 0:
 print(L)
 ```
 
-**Exercici:** Podeu pensar alguna manera de fer això amb un simple
-`for`? I amb comprensió de llistes?
-
--- begin hide
 ```sage
 L = []
 for p in srange(20,1,-1):
