@@ -1577,3 +1577,272 @@ valorsf(1/x,-2,2,4)
 Podeu observar que per x=0 no l'ha avaluat
 
 -- end hide
+
+
+
+### Exercici 7
+
+
+Comproveu quina de les dues maneres
+d'eliminar repeticions d'una llista de nombres a l'atzar és més ràpida. Una,
+convertint la llista en conjunt i tornant-la a convertir en llista.
+L'altra, fent una funció que fa una còpia de la llista, i creant una
+nova llista escollint el mínim i traient tots els elements de la
+còpia de la llista repetits, fins que la llista sigui buida.
+
+
+-- begin hide
+
+
+```sage
+reset()
+```
+
+La primera funció:
+
+```sage
+def unic1(llist):
+    cllist = copy(llist)
+    nllist = []
+    while len(cllist) > 0:
+        a = min(cllist)
+        nllist.append(a)
+        while a in cllist:
+            cllist.remove(a)
+    return nllist
+```
+
+La segona:
+
+```sage
+def unic2(llist):
+	return list(set(llist))
+```
+
+Creem una llista a l'atzar de 1000 nombres l'1 al 30
+
+
+```sage
+llist = [randint(1,30) for i in range(1000)]
+```
+
+Processem la llista amb la primera funció comptant el temps
+
+```sage
+%time V = unic1(llist)
+```
+
+El mateix amb el segon mètode
+
+```sage
+%time W = unic2(llist)
+```
+
+-- end hide
+
+### Exercici 8
+
+Genereu un fitxer que contingui tres columnes (separades amb tabulador), amb $n$, $n^2$ i $n^3$ per $n$ des de $1$ fins a $500$. Feu una funció prengui com a paràmetre el nom d'un fitxer, i comprovi que ha estat generat de la forma indicada anteriorment.
+
+-- begin hide
+
+Per generar l'arxiu podem fer-ho amb el següent bloc de codi:
+
+```sage
+with open('out.txt','w') as f:
+    for n in [1,2..500]:
+        f.write(f'{n}\t{n**2}\t{n**3}')
+```
+
+La funció següent comprova un fitxer, i si és incorrecte en retorna també el motiu.
+```sage
+def comprova(fname):
+    with open(fname,'r') as f:
+        for i, line in enumerate(f):
+            V = line.split('\t')
+            if len(V) != 3:
+                return False, f"La línia {i} = \"{line}\" no té el nombre correcte d'entrades"
+            if sage_eval(V[0]) != i+1:
+                return False, f'A la línia {i} = "{line}" la primera entrada és incorrecta'
+            if sage_eval(V[1]) != (i+1)**2:
+                return False, f'A la línia {i} = "{line}" la segona entrada és incorrecta'
+            if sage_eval(V[2]) != (i+1)**3:
+                return False, f'A la línia {i} = "{line}" la tercera entrada és incorrecta'
+    if i != 500:
+        return False, f'El fitxer no té el nombre correcte de línies, en té {i} en comptes de 500'
+    return True, None
+```
+
+-- end hide
+
+### Exercici 9
+
+
+Donats dos vectors $u=(u_1,\dots,u_n)$ i $v=(v_1,\dots,v_n)$ de
+$\mathbb{R}^n$, diem que $u\le v$ en l'ordre lexicogràfic, si, o bé
+són iguals, o bé $u_1 < v_1$, o bé existeix un $i\le n$ tal que
+$u_j=v_j$ per a tot $j < i$ i $u_i < v_i$. Feu una funció `ordlex(u,v)`
+que comprovi que $u$ i $v$ són vectors de la mateixa llargada, i si
+no ho són doni un error `TypeError` i si ho són retorni `True` si
+$u\le v$ en l'ordre lexicogràfic, i si no retorni `False`.
+
+
+-- begin hide
+Una possible manera. Ho he fet amb "llistes de nombres", no vectors
+
+```sage
+def ordlex(u,v):
+    '''Retorna cert si u <= v en ordre lexicogràfic'''
+    if type(u) != list or type(v)!=list:
+        raise TypeError('No són llistes de nombres')
+    if len(u) != len(v):
+        raise TypeError('No tenen la mateixa llargada')
+    # Amb una sola línia:
+    # return next((ui < vi for ui, vi in zip(u,v) if ui != vi), True)
+    # Amb for i ifs:
+    for ui, vi in zip(u, v):
+        if ui < vi:
+            return True
+        if ui > vi:
+            return False
+    return True
+```
+
+Observeu que es compleix el que es demana, ja que si $u[1] < v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j < i$ i $u[i] < v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
+
+```sage
+u = [1,1,1,1]
+v = [1,1,1,2]
+```
+
+```sage
+ordlex(u,v)
+```
+
+```sage
+u = [1,1,1,1]
+v = [1,1,1,1]
+ordlex(u,v)
+```
+
+```sage
+u = [1,1,1]
+v = [1,1,1,1]
+ordlex(u,v)
+```
+
+```sage
+u = (1,1,1,1)
+v = [1,1,1,1]
+ordlex(u,v)
+```
+-- end hide
+
+### Exercici 10
+
+
+Definiu una funció tal que, donades dues parelles de punts diferents
+del pla $\mathbb{R}^2$, $\{p_1,p_2\}$ i $\{q_1,q_2\}$, determini si
+el segment obert $r_1$ entre la primera parella talla o no el
+segment obert $r_2$ entre la segona parella. La funció ha d'acceptar
+com a dades dos conjunts formats per dos elements cadascun, i els
+elements han de ser punts de $\mathbb{R}^2$ (com a llistes, o com a
+tuples, etc). La resposta he de ser True si tallen, False si no.
+
+Indicació: Per a fer-ho podeu utilitzar que els punts del segment
+obert que uneix dos punts del pla $p_1$ i $p_2$ són els de la forma
+$tp_1+(1-t)p_2$, on $0 < t < 1$. Per tant, si tenim ara una altre
+parella de punts $p_3$ i $p_4$, volem comprovar si hi ha o no
+$0 < s,t < 1$ de manera que $$tp_1+(1-t)p_2=sp_3+(1-s)p_4.$$ Utilitzant
+la regla de Cramer això es tradueix a una desigualtat entre
+determinants: el determinant $A$ de la matriu que té com a columnes
+(o files) $p_1-p_2$ i $p_4-p_3$ ha de ser diferent de $0$ (per tal
+que no siguin parał.els o coincidents), i, si denotem per $B$ el
+determinant de la matriu que té com a columnes (o files) $p_4-p_2$ i
+$p_4-p_3$ i per $C$ el mateix però amb columnes (o files) $p_1-p_2$
+i $p_4-p_2$, llavors $$0 < \frac{B}{A} < 1 \text{ i } 0<\frac{C}{A} < 1$$
+(doncs aquests quocients corresponen a la $t$ i la $s$ de la
+equació).
+
+-- begin hide
+
+He fet una funció que comprova si les dades són conjunts, si tenen dos elements, si cada elements té llargada 2 i després he convertit els "punts" a vectors de $\mathbb{R^2}$. He calculat els determinants i comprovo si $A=0$, després si tenen el mateix signe tots (amb la funció `sign`), i si els quocients són $\ge 1$, i si es compleix alguna d'elles la resposta és `False`, i sino la resposta és `True`.
+
+
+```sage
+def EsTallen(S,T):
+    '''Donats dos conjunts de dos punts del pla,
+    determina si les rectes que formen es tallen o no
+    '''
+    if type(S) != set or type(T) != set:
+        raise TypeError('No són conjunts')
+    if len(S) != 2 or len(T) != 2:
+        raise TypeError('Els conjunts no tenen dos elements')
+    if any(len(v)!= 2 for v in S.union(T)):
+        raise TypeError('Han de tenir dues coordenades')
+    E = RR^2
+    V = [E(v) for v in S] + [E(v) for v in T]
+    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
+    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
+    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
+    if A == 0:
+        return False
+    elif A.sign() != B.sign() or A.sign() != C.sign():
+        return False
+    elif B/A >= 1 or C/A >= 1:
+        return False
+    t = B/A
+    return True
+```
+
+A més he fet una funció Tallen que a més a més retorni el punt de tall (o bé `None` si no)
+
+```sage
+def Tallen(S,T):
+    '''Donats dos conjunts de dos punts del pla,
+    determina si les rectes que formen es tallen o no
+    '''
+    if type(S) != set or type(T) != set:
+        raise TypeError('No són conjunts')
+    if len(S) != 2 or len(T) != 2:
+        raise TypeError('Els conjunts no tenen dos elements')
+    if any(len(v)!= 2 for v in S.union(T)):
+        raise TypeError('Han de tenir dues coordenades')
+    E = RR^2
+    V = [E(v) for v in S] + [E(v) for v in T]
+    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
+    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
+    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
+    if A == 0:
+        return False, None
+    elif A.sign()!=B.sign() or A.sign()!=C.sign():
+        return False, None
+    elif B/A >= 1 or C/A >= 1:
+        return False, None
+    t = B/A
+    return True, t*V[0]+(1-t)*V[1]
+```
+
+Un exemple
+
+```sage
+S = {(2.1,2),(2.3,1)}
+T = {(2.1,1),(2.3,2)}
+b, pt = Tallen(S,T)
+```
+
+```sage
+line(S) + line(T) + point(pt,color='red',size=30)
+```
+
+```sage
+S = {(2.1,2),(2.3,2)}
+T = {(2.1,1),(2.3,1)}
+b, pt = Tallen(S,T)
+b
+```
+
+```sage
+line([v for v in S])+line([v for v in T])
+```
+-- end hide

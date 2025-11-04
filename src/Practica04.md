@@ -12,557 +12,592 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.14.0
   kernelspec:
-    display_name: SageMath 9.7
+    display_name: SageMath 10.6
     language: sage
     name: sagemath
 
 ---
 
 
-## Classes
+# Programació Orientada a Objectes
 
+Fins ara hem vist com programar amb Python amb el què s'anomena el model *imperatiu*: el programa és
+un seguit d'instruccions que l'ordinador ha de realitzar. L'objectiu d'aquesta pràctica és introduir un model de programació
+basat en diferents *objectes* i com interactuen entre ells.
 
-Una classe (a Python) és una manera de poder agrupar dades i funcions
-alhora, creant un nou tipus d'objecte i les formes de manipular-lo (i
-per tant forma part del que s'anomena programació orientada objectes).
-El **SageMath** i el **Python** són, de
-fet, en el llenguatge de la programació orientada a objectes. Ja hem
-vist molts exemples en els capítols anteriors: per exemple, els enters
-de Sage són una classe, i tenen molts atributs i mètodes associats com
-.factors(), .is_prime(), etc. Un altre exemple que hem vist és la classe
-de les matrius, la classe dels vectors, i tants d'altres.
+## Plantejament
 
-En aquesta secció veurem com podem crear nosaltres mateixos una classe
-(senzilla), i com podem assignar-los atributs i mètodes amb ella.
+Suposem que volem treballar amb els nombres *diàdics*: es tracta d'aquells racionals que es poden escriure
+com $a/b$ amb $b$ una potència de $2$. Per exemple, tot enter és un diàdic, però també ho són $-1/2$, $3/8$,
+o $-27/64$. Observem que la suma i producte de diàdics segueix essent un diàdic.
 
-El que farem serà crear la classe dels triangles en el pla. Primer de
-tot hem de pensar com donarem un triangle. Hem optat per a definir-lo
-com un conjunt de tres punts del pla $\mathbb{R}^2$ (això inclourà els
-triangles "degenerats" formats per tres punts alineats, però en principi
-no ens causarà problemes).
+Fixem-nos que tot diàdic es pot representar de manera única com un parell $(a,n)$ on $a$ és un enter senar i $n$ és un enter qualsevol:
+la parella $(a,n)$ es correspon al racional $a\cdot 2^n$.
 
-Així un triangle es crearà donant tres punts, com `T1 = Triangle([0,0],[0,12],[16,12])`.
-
-Per a definir una classe posem `class` i el nom de la classe. Per
-exemple, per a definir la classe `Triangle` utilitzarem `class`
-`Triangle`. Després cal inicialitzar la classe amb `__init__` cal dir el
-nom que utilitzarem internament a la classe (tradicionalment s'utilitza
-self, però no caldria!), i les dades que les defineixen (els tres
-punts).
-
-Dins de la mateixa classe podem definir funcions aplicades al objecte.
-Per exemple, en aquest cas la funció `area` calcula l'àrea del triangle
-donat pels tres vèrtexs. ``
-
-
-### Preliminars: zip
-
-
-La funció zip s'aplica a n llistes o tuples o cadenes, i en fa un iterable de n-tuples, agafant el ièssim de cada llista, des de i=0 fins que s'acaba alguna tupla.
+Podríem definir doncs:
 
 ```sage
-print([x for x in zip([1,2],[3,4])])
+def inicialitza_diadic(x):
+    x = QQ(x)
+    a, b = x.numerator(), x.denominator()
+    n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+    if n == 0: # Resulta que tenim un enter
+        n = a.valuation(2)
+        a /= 2**n
+    return (a, n)
+
+def producte_diadics(x, y):
+    a, n = x
+    b, m = y
+    return a * b, n + m
 ```
+
+Escriviu el codi per la suma de diàdics:
 
 ```sage
-print([x for x in zip([1,2,5],[3,4])])
+def suma_diadics(x,y):
+    pass
 ```
+
+I ara les podem fer servir així:
 
 ```sage
-print([x for x in zip([1,2],[3,4],[5,6])])
+D = inicialitza_diadic(3/8)
+E = inicialitza_diadic(-1/4)
+F = producte_diadics(D, E)
+print(f'El diàdic {D[0]} · 2^{D[1]} multiplicat pel diàdic {E[0]} · 2^{E[1]} dona el diàdic {F[0]} · 2^{F[1]}.')
 ```
+
+Ja veiem que seria útil tenir una funció que ens retorni la representació d'un diàdic preparada per imprimir:
 
 ```sage
-print([x for x in zip('abc',[1,2,3])])
+def repr_diadic(x):
+    return f'{x[0]} · 2^{x[1]}'
 ```
 
-Si apliques `zip(*llista)` on `llista` és una llista, el que fa és "esborrar" els parèntesis de la llista per poder fer-li el zip. (S'utilita per desfer un zip, per exemple.) Fixeu-vos la diferència entre fer un zip amb `*` o sense `*`
+Ara ho podem provar:
 
 ```sage
-list(zip(*[(1, 1, 2), (2, 3, 4)]))
+print(f'El diàdic {repr_diadic(D)} multiplicat pel diàdic {repr_diadic(E)} dona el diàdic {repr_diadic(F)}.')
 ```
+
+Hem triat de representar un diàdic com a tupla, perquè així no es pot modificar. Un inconvenient, però, és que
+no tenim desat enlloc què significa cadascun dels camps. Ho podríem solucionar amb un diccionari. Els camps $a$ i $n$
+els podem anomenar *mantissa* i *exp*onent (al segon semestre veureu per què hem triat aquests noms...):
 
 ```sage
-list(zip([(1, 1, 2), (2, 3, 4)]))
+D = {'mantissa': 3, 'exp': 3}
+E = {'mantissa': -1, 'exp': 2}
+
+def inicialitza_diadic(x):
+    x = QQ(x)
+    a, b = x.numerator(), x.denominator()
+    n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+    if n == 0: # Resulta que tenim un enter
+        n = a.valuation(2)
+        a /= 2**n
+    return {'mantissa' : a, 'exp' : n}
+    
+def repr_diadic(x):
+    return f'{x['mantissa']} * 2^{x['exp']}'
+
+def producte_diadics(x, y):
+    return {'mantissa' : x['mantissa'] * y['mantissa'], 'exp' : x['exp'] + y['exp']}
 ```
 
-```sage
-list(zip((1, 1, 2), (2, 3, 4)))
-```
+Desavantatges que podem trobar en aquesta implementació:
 
-### Una classe per treballar amb triangles
+- El diccionari és mutable. Quan el manipulem podem canviar les dades sense voler.
+- Ens cal documentar en algun lloc les claus que farà servir el diccionari (i vigilar amb els *typos*)
+- A la funció `producte_diadics()` hi ha moltes paraules repetides...
 
+## Classes i objectes
 
-Considerem el següent codi:
-```sage
-class Triangle:
-    def __init__(self, punt1,punt2,punt3):
-        self._p1 = punt1
-        self._p2 = punt2
-        self._p3 = punt3
-        self.vertexs = (punt1, punt2, punt3)
+Python ens dona una manera de crear els nostres propis tipus. Els diccionaris
+són un tipus genèric, però si Python ens proporcionés un tipus `Diadic` que contingués tota la funcionalitat dels diàdics,
+encara seria millor. Aquesta és la funció de les classes.
 
-    def baricentre(self):
-        return tuple(sum(a)/3 for a in zip(*self.vertexs))
-```
-
-```sage
-T = Triangle((0,0), (0,12), (16,12))
-print(f'{T.vertexs = }')
-print(f'{T.baricentre() = }')
-```
-
-El que hem fet ha estat crear un triangle format pels vèrtexs a $(0,0)$,
-$(0,12)$ i $(16,12)$, i hem calculat el seu baricentre.
-
-
-A part de calcular l'àrea podem incorporar moltes altres funcions. Per a
-fer-ho primer crearem una funció per a calcular la distància entre dos
-punts de $\mathbb{R}^n$:
-
-
-```sage
-def distancia(P, Q):
-    '''Calcula la distància entre dos punts de R^n'''
-    return((sum((xi-yi)**2 for xi, yi in zip(P, Q))**0.5))
-```
-
-```sage
-distancia((1,2),(2,3))
-```
-
-Ara definirem de nou la classe dels `Triangle`:
+**Nota:** Podem pensar una classe com un *plànol*, a partir de la qual es creen *objectes* o
+*instàncies*. Cadascun d'aquests objectes contindrà dades diferents, però estaran
+estructurades tal i com dicti la classe.
 
 
 ```sage
-class Triangle:
-    def __init__(self, punt1,punt2,punt3):
-        self._p1 = punt1
-        self._p2 = punt2
-        self._p3 = punt3
-        self.vertexs = (punt1, punt2, punt3)
+class Diadic:
+    pass  
 
-    def area(self):
-        p1 = self._p1
-        p2 = self._p2
-        p3 = self._p3
-        p123 = (p2[0] - p1[0]) * (p3[1] - p1[1])
-        p132 = (p2[1] - p1[1]) * (p3[0] - p1[0])
-        return abs((p123-p132) / 2)
+def inicialitza_diadic(x):
+    x = QQ(x)
+    a, b = x.numerator(), x.denominator()
+    n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+    if n == 0: # Resulta que tenim un enter
+        n = a.valuation(2)
+        a /= 2**n
+    d = Diadic()
+    d.mantissa = a
+    d.exp = n
+    return d
 
-    def costats(self):
-        p = self.vertexs
-        pp = [[a for a in p if a != b] for b in p]
-        return sorted([distancia(*a) for a in pp])
+def repr_diadic(x):
+    return f'{x.mantissa} · 2^{x.exp}'
 
-    def perimetre(self):
-        return sum(self.costats())
-
-    def baricentre(self):
-        p = self.vertexs
-        return tuple(sum(a)/3 for a in zip(*p))
-
-    def inradi(self):
-        return 2 * self.area() / self.perimetre()
-
-    def circumradi(self):
-        return prod(self.costats()) / (4 * self.area())
-
-    def __eq__(self, other):
-        return self.costats() == other.costats()
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
+def producte_diadics(x, y):
+    d = Diadic()
+    d.mantissa = x.mantissa * y.mantissa
+    d.exp = x.exp + y.exp
+    return d
 ```
 
 ```sage
-T1 = Triangle([0,0],[0,12],[16,12])
-print(f'{T1.vertexs = }')
-print(f'{T1.costats() = }')
-print(f'{T1.perimetre() = }')
-print(f'{T1.area() = }')
-print(f'{T1.baricentre() = }')
-print(f'{T1.inradi() = }')
-print(f'{T1.circumradi() = }')
+D = inicialitza_diadic(3/8)
+E = inicialitza_diadic(-1/4)
+F = producte_diadics(D, E)
+print(f'El diàdic {repr_diadic(D)} multiplicat pel diàdic {repr_diadic(E)} dona el diàdic {repr_diadic(F)}.')
 ```
 
-Hem definit també igualtat de triangles; comprovem-ho amb un triangle traslladat
+**Nota:** Per convenció, els noms de les classes s'escriuen en Majúscula. Les excepcions
+són les classes que Python ja ens dona: `list`, `tuple`, `int`, `dict`,...
+
+
+El codi anterior no és gaire *Pythonic*: encara que hem donat nom als *atributs*
+que conformen un diàdic, els hem d'assignar manualment. Una millor versió seria
+la següent, que fa servir el mètode especial `__init__`:
 
 ```sage
-T11 = Triangle([1,0],[1,12],[17,12])
-T11 == T1
-```
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self.mantissa = a
+        self.exp = n
 
+def repr_diadic(x):
+    return f'{x.mantissa} · 2^{x.exp}'
 
-Una de les propietats interessants de les classes en Python és
-l'herència. Així, un pot definir una classe a partir d'una classe
-prèviament definida. Per exemple, podem definir una nova classe dels
-triangles rectangles donant només els dos catets (que situarem amb un
-vèrtex a l'origen).
-
-
-Definim triangle rectangle com una classe a partir de la classe dels triangles
-
-```sage
-class TriangleRectangle(Triangle):
-    def __init__(self, catet1, catet2):
-        Triangle.__init__(self,(0,0), (0,catet1), (catet2,catet1))
-        self._catet1 = catet1
-        self._catet2 = catet2
-    def catets(self):
-        return self._catet1, self._catet2
-    def hipotenusa(self):
-        c1, c2 = self.catets()
-        return (c1**2 + c2**2)**.5
+def producte_diadics(x, y):
+    d = Diadic()
+    d.mantissa = x.mantissa * y.mantissa
+    d.exp = x.exp + y.exp
+    return d
 ```
 
 ```sage
-T2 = TriangleRectangle(12,16)
-print(T2.vertexs)
+D = Diadic(3/8)
+E = Diadic(-1/4)
+F = producte_diadics(D, E)
+print(f'El diàdic {repr_diadic(D)} multiplicat pel diàdic {repr_diadic(E)} dona el diàdic {repr_diadic(F)}.')
+```
+
+Una altra avantatge d'aquest punt de vista és l'*encapsulació*: tot el que estigui
+relacionat amb els diàdics hauri de pertanyer a la classe `Diadic`.
+Per exemple, podem controlar errors:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self.mantissa = a
+        self.exp = n
+
+def repr_diadic(x):
+    return f'{x.mantissa} · 2^{x.exp}'
 ```
 
 ```sage
-print(T1.vertexs == T2.vertexs)
+A = Diadic(5/20)
+print(f'Hem definit el diàdic {repr_diadic(A)}')
+```
+
+I aquest hauria de donar error:
+
+```sage
+B = Diadic(3/20)
+```
+
+Seguim amb la idea d'encapsulació: fixem-nos que la feina de generar
+un `str` amb dades del diàdic també la podem delegar a la classe, amb el mètode especial `__str__`:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self.mantissa = a
+        self.exp = n
+
+    def __str__(self):
+        return f'{self.mantissa} · 2^{self.exp}'
 ```
 
 ```sage
-T1 == T2
+A = Diadic(5/20)
+print(f'Acabem de definir el diàdic {A}')
+```
+
+Els *mètodes* `__init__()` i `__str__` els proporciona Python per defecte, i són especials. Per
+això porten la doble barra baixa (*double under* o *dunder* en anglès). Però també
+podem inventar-nos els nostres propis mètodes. Per exemple, podem convertir un diàdic a un racional així:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self.mantissa = a
+        self.exp = n
+
+    def __str__(self):
+        return f'{self.mantissa} · 2^{self.exp}'
+
+    def racional(self):
+        return QQ(self.mantissa * 2**self.exp)
 ```
 
 ```sage
-print('Hipotenusa =', T2.hipotenusa())
+A = Diadic(3/8)
+print(f'{A = } és el racional {A.racional()}')
 ```
+
+**Atenció:** Les classes tenen *atributs* (no pas variables) i *mètodes* (no pas funcions). És
+simplement terminologia. Per exemple, la classe `Diadic` té atributs `mantissa` i `exp`, i mètode `racional()`, entre altres.
+
+
+## Propietats
+
+Encara que ens hem esforçat a fer les comprovacions d'errors quan creem una instància
+de `Diadic`, els atributs de la classe es poden modificar a qualsevol lloc del
+programa. Per exemple:
 
 
 ```sage
-print('Hipotenusa =', T1.hipotenusa())
+D = Diadic(3/8)
+D.mantissa = 4 # Això funciona, i aleshores D no representa un diàdic!!
+print(D)
 ```
 
-Tot i que tenen els mateixos vèrtexs, i de fet són iguals (com a triangles), el triangle `T1` no té definida la hipotenusa, ja que no està definit com a triangle rectangle.
+Aquest comportament és indesitjable, i hi ha una manera fàcil de millorar-ho.
+Es tracta d'afegir mètodes que modifiquin els
+atributs, i amagar d'alguna manera els propis atributs. Hi ha dues maneres de fer-ho:
+
+1. Escriure mètodes `get_...()` i `set_...()`.
+2. Fent servir el decorador `property`.
+
+El codi queda així, fent servir les dues variants. Primer, amb `get_...` i `set_...`:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self._mantissa = a
+        self._exp = n
+
+    def set_mantissa(self, a):
+        if a % 2 == 1:
+            raise ValueError('La mantissa ha de ser senar')
+        self._mantissa = a
+
+    def get_mantissa(self):
+        return self._mantissa
+
+    def set_exp(self, n):
+        self._exp = ZZ(n) # Cal que sigui un enter
+
+    def get_exp(self):
+        return self._exp
+
+    def __str__(self):
+        return f'{self.get_mantissa()} · 2^{self.get_exp()}'
+
+    def racional(self):
+        return QQ(self.get_mantissa() * 2**self.get_exp())
+```
+
+```sage
+D = Diadic(2/3)
+D.set_mantissa(4) # Dona error
+```
+
+Ara amb el decorador:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self._mantissa = a
+        self._exp = n
 
 
+    @property
+    def mantissa(self):
+        return self._mantissa
 
-### Observacions
-
-- Les variables `_p1`, `_p2` i `_p3` són variables
-privades (no s'haurien de fer servir fora de la classe), tot i que a **Python** es considera que tothom és adult i sap què fa, així que no estan amagades del tot. Les podem fer "més privades" amb un doble guió baix (`__p1`, etc) i aleshores el seu nom real canvia a `__Triangle_p1`, fet que les fa més difícils d'utilitzar accidentalment.
-
-- Per definició dos objectes són iguals si estan formats per les mateixes
-dades. Si volem donar una altra definició d'igualtat dins d'una classe
-(el que de fet vindria a ser matemàticament com definir una relació
-d'equivalència en el conjunt de les classes donades), es pot fer
-expressament definint `__eq__` (i `__ne__` per a diferent).
-
-- Per exemple, podem voler considerar que dos triangles són el mateix
-triangle si coincideixen al moure un a sobre de l'altre (i girar-lo o
-fer el simètric si cal). Això és equivalent a definir la igualtat entre
-triangles si tenen els mateixos costats (com a llista ordenada de menor
-a major), que és el què hem implementat.
+    @mantissa.setter
+    def mantissa(self, a):
+        a = ZZ(a) # Cal que sigui un enter...
+        if a % 2 == 1: # ...senar
+            raise ValueError('La mantissa ha de ser senar')
+        self._mantissa = a
 
 
+    @property
+    def exp(self):
+        return self._exp
 
-## Referències
+    @exp.setter
+    def exp(self, n):
+        self._exp = ZZ(n) # Cal que sigui un enter
 
-Si voleu tenir més informació sobre programació amb Python podeu
-consultar
+    def __str__(self):
+        return f'{self.mantissa} · 2^{self.exp}' # més net a l'hora de cridar
 
-[How to Think Like a Computer Scientist: Learning with Python
-3](http://openbookproject.net/thinkcs/python/english3e/) de Peter
-Wentworth, Jefrey Elkner, Allen B. Downey i Chris Meyers.
+    def racional(self):
+        return QQ(self.mantissa * 2**self.exp) # més net a l'hora de cridar
+```
+
+
+**Atenció:** Els mètodes i atributs que comencen amb `_` es consideren privats. Hi ha llenguatges
+de programació que no permeten accedir als mètodes/atributs privats des de fora la classe.
+Python funciona amb un *pacte de cavallers*: si el programador de la classe hi ha posat
+una `_`, vol dir *no ho toquis*. Si hi posa dues barres baixes `__` vol dir que
+*no ho toquis, de veritat*. Però en ambdós casos s'assumeix que l'usuari de la classe
+és una adult responsable, i no *Python* no s'hi posa.
+
+
+**Nota:** L'avantatge de fer servir `attribute` i `setter`  és que si la classe ja s'estava utilitzant
+no haurem de canviar res del codi. Diem que l'API de la nostra classe no canvia. D'altra
+banda, hem d'anar amb compte amb ells *getters* i els *setters*. Quan l'usuari assigna o llegeix un atribut,
+no espera que hi pugui haver errors i per tant no programarà els `try...except` corresponents. Això
+vol dir que hem de ser molt curosos amb el codi que hi posem, o acabarem causant més problemes dels
+què hem resolt. Si el codi fa moltes comprovacions que poden ser problemàtiques, sovint
+és més expressiu implementar mètodes de la forma `get_...()` i `set_...()`.
+
+## Sobrecàrrega d'operadors
+
+Fixem-nos que hi ha funcions que són ben pròpies dels diàdics que encara no hem incorporat a la classe.
+Quan volem operar amb diàdics, ens aniria bé poder fer servir els operadors habituals `+` i `*`. Això ho podem fer
+amb certs mètodes especials, com són `__add__` i `__mul__`:
+
+```sage
+class Diadic:
+    def __init__(self, x):
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+        if b != 2**-n:
+            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(2)
+            a /= 2**n
+        self._mantissa = a
+        self._exp = n
+
+
+    @property
+    def mantissa(self):
+        return self._mantissa
+
+    @mantissa.setter
+    def mantissa(self, a):
+        a = ZZ(a) # Cal que sigui un enter...
+        if a % 2 == 1: # ...senar
+            raise ValueError('La mantissa ha de ser senar')
+        self._mantissa = a
+
+    @property
+    def exp(self):
+        return self._exp
+
+    @exp.setter
+    def exp(self, n):
+        self._exp = ZZ(n) # Cal que sigui un enter
+
+    def __str__(self):
+        return f'{self.mantissa} · 2^{self.exp}' # més net a l'hora de cridar
+
+    def racional(self):
+        return QQ(self.mantissa * 2**self.exp) # més net a l'hora de cridar
+    
+    def __add__(self, other):
+        return Diadic(sef.racional() + other.racional()) # Penseu una implementació millor
+    
+    def __mul__(self, other):
+        return Diadic(self.mantissa * other.mantissa, self.exp + other.exp)
+```
+
+```sage
+D = Diadic(5/20)
+E = Diadic(3/8)
+print(f'{D = }, {E = }')
+print(f'Suma: {D} * {E} = {D + E}')
+print(f'Producte: {D} * {E} = {D * E}')
+```
+
+Hi ha molts altres mètodes *especials* com aquest. Se'ls anomena **mètodes màgics**, o **dunder**
+(de **d**ouble under), i es poden trobar [aquí](https://docs.python.org/3/reference/datamodel.html#special-method-names).
+
+## Herència
+
+Fixem-nos que en comptes de permetre potències de $2$ en el denominador ("invertim el $2$") també podríem permetre potències
+d'un primer qualsevol ("invertim un primer $p$"). Per exemple, si invertim el $5$, obtenim els nombres que es poden representar
+com $(a,n)$, on $a$ és un enter no divisible per $5$, i $n$ és un enter qualsevol. La parella $(a,n)$ representa llavors el racional $a\cdot 5^n$.
+
+Podem anomenar a aquesta classe els *Adics*:
+
+
+```sage
+class Adic:
+    def __init__(self, x, p = 2):
+        self.p = p
+        x = QQ(x)
+        a, b = x.numerator(), x.denominator()
+        n = -b.valuation(p) # Estem suposant que el denominador és potència de p
+        if b != p**-n:
+            raise ValueError(f'{x} no és un àdic, perquè té denominador {b} que no és potència de {p}')
+        if n == 0: # Resulta que tenim un enter
+            n = a.valuation(p)
+            a /= p**n
+        self._p = p
+        self._mantissa = a
+        self._exp = n
+
+    @property
+    def p(self):
+        return self._p
+    
+    @p.setter
+    def p(self, p):
+        p = ZZ(p)
+        if not p.is_prime():
+            raise ValueError('p ha d eser primer')
+        self._p = p
+
+    @property
+    def mantissa(self):
+        return self._mantissa
+
+    @mantissa.setter
+    def mantissa(self, a):
+        a = ZZ(a) # Cal que sigui un enter...
+        if a % self.p != 0:
+            raise ValueError('La mantissa no pot ser divisible per p')
+        self._mantissa = a
+
+    @property
+    def exp(self):
+        return self._exp
+
+    @exp.setter
+    def exp(self, n):
+        self._exp = ZZ(n) # Cal que sigui un enter
+
+    def __str__(self):
+        return f'{self.mantissa} · {self.p}^{self.exp}'
+
+    def racional(self):
+        return QQ(self.mantissa * self.p**self.exp)
+    
+    def __add__(self, other):
+        return Diadic(sef.racional() + other.racional()) # Penseu una implementació millor
+    
+    def __mul__(self, other):
+        return Diadic(self.mantissa * other.mantissa, self.exp + other.exp)
+```
+
+```sage
+D = Adic(13, 7)
+E = Adic(6/14, 7)
+print(f'{D = }, {E = }')
+print(f'Suma: {D} * {E} = {D + E}')
+print(f'Producte: {D} * {E} = {D * E}')
+```
+
+Ens interessa mantenir la classe `Diadic`, i per evitar repetir codi podem fer que aquesta *heredi* de la classe `Adic`.
+
+```sage
+class Diadic(Adic)
+    def __init__(self, x):
+        super().__init__(self, x, 2)
+
+    def semisuma(self, other): # Pot tenir mètodes propis
+        return (self + other) / 2
+```
+
+Qualsevol mètode que accepti objectes de tipus `Adic` podrà treballar amb objectes `Diadic`. Això és
+el què es coneix com a *polimorfisme*.
+
+## Mètodes de classe
+
+Observem la funció que hem fet servir abans, que ens demana dos diàdics i imprimeix la suma i el producte.
+Clarament està relacionada amb els diàdics, i per tant potser la volem incloure la classe. D'altra banda,
+no té massa sentit haver de crear un diàdic "de mentida" per accedir al mètode en qüestió.
+
+Els mètodes de classe s'utilitzen quan el mètode que volem implementar no depèn de les
+dades de l'objecte en concret, sinó que és comú a tots els objectes. La variable `self`
+no hi és, i el primer paràmetre s'anomena `cls` i és la pròpia classe. Queda així:
+
+```sage
+class Diadic(Adic)
+    def __init__(self, x):
+        super().__init__(self, x, 2)
+
+    def semisuma(self, other): # Pot tenir mètodes propis
+        return (self + other) / 2
+
+    @classmethod
+    def exemple(cls, D, E):
+        D = cls(D)
+        E = cls(E)
+        print(f'{D = }, {E = }')
+        print(f'Suma: {D} * {E} = {D + E}')
+        print(f'Producte: {D} * {E} = {D * E}')
+```
+
+```sage
+Diadic.exemple(-1/2, 3/8)
+```
+
 
 ## Exercicis
 
 
 ### Exercici 1
-
-
-Comproveu quina de les dues maneres
-d'eliminar repeticions d'una llista de nombres a l'atzar és més ràpida. Una,
-convertint la llista en conjunt i tornant-la a convertir en llista.
-L'altra, fent una funció que fa una còpia de la llista, i creant una
-nova llista escollint el mínim i traient tots els elements de la
-còpia de la llista repetits, fins que la llista sigui buida.
-
-
--- begin hide
-
-
-```sage
-reset()
-```
-
-La primera funció:
-
-```sage
-def unic1(llist):
-    cllist = copy(llist)
-    nllist = []
-    while len(cllist) > 0:
-        a = min(cllist)
-        nllist.append(a)
-        while a in cllist:
-            cllist.remove(a)
-    return nllist
-```
-
-La segona:
-
-```sage
-def unic2(llist):
-	return list(set(llist))
-```
-
-Creem una llista a l'atzar de 1000 nombres l'1 al 30
-
-
-```sage
-llist = [randint(1,30) for i in range(1000)]
-```
-
-Processem la llista amb la primera funció comptant el temps
-
-```sage
-%time V = unic1(llist)
-```
-
-El mateix amb el segon mètode
-
-```sage
-%time W = unic2(llist)
-```
-
--- end hide
-
-### Exercici 2
-
-Genereu un fitxer que contingui tres columnes (separades amb tabulador), amb $n$, $n^2$ i $n^3$ per $n$ des de $1$ fins a $500$. Feu una funció prengui com a paràmetre el nom d'un fitxer, i comprovi que ha estat generat de la forma indicada anteriorment.
-
--- begin hide
-
-Per generar l'arxiu podem fer-ho amb el següent bloc de codi:
-
-```sage
-with open('out.txt','w') as f:
-    for n in [1,2..500]:
-        f.write(f'{n}\t{n**2}\t{n**3}')
-```
-
-La funció següent comprova un fitxer, i si és incorrecte en retorna també el motiu.
-```sage
-def comprova(fname):
-    with open(fname,'r') as f:
-        for i, line in enumerate(f):
-            V = line.split('\t')
-            if len(V) != 3:
-                return False, f"La línia {i} = \"{line}\" no té el nombre correcte d'entrades"
-            if sage_eval(V[0]) != i+1:
-                return False, f'A la línia {i} = "{line}" la primera entrada és incorrecta'
-            if sage_eval(V[1]) != (i+1)**2:
-                return False, f'A la línia {i} = "{line}" la segona entrada és incorrecta'
-            if sage_eval(V[2]) != (i+1)**3:
-                return False, f'A la línia {i} = "{line}" la tercera entrada és incorrecta'
-    if i != 500:
-        return False, f'El fitxer no té el nombre correcte de línies, en té {i} en comptes de 500'
-    return True, None
-```
-
--- end hide
-
-### Exercici 3
-
-
-Donats dos vectors $u=(u_1,\dots,u_n)$ i $v=(v_1,\dots,v_n)$ de
-$\mathbb{R}^n$, diem que $u\le v$ en l'ordre lexicogràfic, si, o bé
-són iguals, o bé $u_1 < v_1$, o bé existeix un $i\le n$ tal que
-$u_j=v_j$ per a tot $j < i$ i $u_i < v_i$. Feu una funció `ordlex(u,v)`
-que comprovi que $u$ i $v$ són vectors de la mateixa llargada, i si
-no ho són doni un error `TypeError` i si ho són retorni `True` si
-$u\le v$ en l'ordre lexicogràfic, i si no retorni `False`.
-
-
--- begin hide
-Una possible manera. Ho he fet amb "llistes de nombres", no vectors
-
-```sage
-def ordlex(u,v):
-    '''Retorna cert si u <= v en ordre lexicogràfic'''
-    if type(u) != list or type(v)!=list:
-        raise TypeError('No són llistes de nombres')
-    if len(u) != len(v):
-        raise TypeError('No tenen la mateixa llargada')
-    # Amb una sola línia:
-    # return next((ui < vi for ui, vi in zip(u,v) if ui != vi), True)
-    # Amb for i ifs:
-    for ui, vi in zip(u, v):
-        if ui < vi:
-            return True
-        if ui > vi:
-            return False
-    return True
-```
-
-Observeu que es compleix el que es demana, ja que si $u[1] < v[1]$, llavors retorna True a la primera iteració, si $u[j]=v[j]$ per tot $j < i$ i $u[i] < v[i]$, llavors retorna True a la iteració número $j$, si fa totes les iteracions i surt del for és que $u=v$, i retorna True, i si no passa res d'això retorna False
-
-```sage
-u = [1,1,1,1]
-v = [1,1,1,2]
-```
-
-```sage
-ordlex(u,v)
-```
-
-```sage
-u = [1,1,1,1]
-v = [1,1,1,1]
-ordlex(u,v)
-```
-
-```sage
-u = [1,1,1]
-v = [1,1,1,1]
-ordlex(u,v)
-```
-
-```sage
-u = (1,1,1,1)
-v = [1,1,1,1]
-ordlex(u,v)
-```
--- end hide
-
-### Exercici 4
-
-
-Definiu una funció tal que, donades dues parelles de punts diferents
-del pla $\mathbb{R}^2$, $\{p_1,p_2\}$ i $\{q_1,q_2\}$, determini si
-el segment obert $r_1$ entre la primera parella talla o no el
-segment obert $r_2$ entre la segona parella. La funció ha d'acceptar
-com a dades dos conjunts formats per dos elements cadascun, i els
-elements han de ser punts de $\mathbb{R}^2$ (com a llistes, o com a
-tuples, etc). La resposta he de ser True si tallen, False si no.
-
-Indicació: Per a fer-ho podeu utilitzar que els punts del segment
-obert que uneix dos punts del pla $p_1$ i $p_2$ són els de la forma
-$tp_1+(1-t)p_2$, on $0 < t < 1$. Per tant, si tenim ara una altre
-parella de punts $p_3$ i $p_4$, volem comprovar si hi ha o no
-$0 < s,t < 1$ de manera que $$tp_1+(1-t)p_2=sp_3+(1-s)p_4.$$ Utilitzant
-la regla de Cramer això es tradueix a una desigualtat entre
-determinants: el determinant $A$ de la matriu que té com a columnes
-(o files) $p_1-p_2$ i $p_4-p_3$ ha de ser diferent de $0$ (per tal
-que no siguin parał.els o coincidents), i, si denotem per $B$ el
-determinant de la matriu que té com a columnes (o files) $p_4-p_2$ i
-$p_4-p_3$ i per $C$ el mateix però amb columnes (o files) $p_1-p_2$
-i $p_4-p_2$, llavors $$0 < \frac{B}{A} < 1 \text{ i } 0<\frac{C}{A} < 1$$
-(doncs aquests quocients corresponen a la $t$ i la $s$ de la
-equació).
-
--- begin hide
-
-He fet una funció que comprova si les dades són conjunts, si tenen dos elements, si cada elements té llargada 2 i després he convertit els "punts" a vectors de $\mathbb{R^2}$. He calculat els determinants i comprovo si $A=0$, després si tenen el mateix signe tots (amb la funció `sign`), i si els quocients són $\ge 1$, i si es compleix alguna d'elles la resposta és `False`, i sino la resposta és `True`.
-
-
-```sage
-def EsTallen(S,T):
-    '''Donats dos conjunts de dos punts del pla,
-    determina si les rectes que formen es tallen o no
-    '''
-    if type(S) != set or type(T) != set:
-        raise TypeError('No són conjunts')
-    if len(S) != 2 or len(T) != 2:
-        raise TypeError('Els conjunts no tenen dos elements')
-    if any(len(v)!= 2 for v in S.union(T)):
-        raise TypeError('Han de tenir dues coordenades')
-    E = RR^2
-    V = [E(v) for v in S] + [E(v) for v in T]
-    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
-    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
-    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
-    if A == 0:
-        return False
-    elif A.sign() != B.sign() or A.sign() != C.sign():
-        return False
-    elif B/A >= 1 or C/A >= 1:
-        return False
-    t = B/A
-    return True
-```
-
-A més he fet una funció Tallen que a més a més retorni el punt de tall (o bé `None` si no)
-
-```sage
-def Tallen(S,T):
-    '''Donats dos conjunts de dos punts del pla,
-    determina si les rectes que formen es tallen o no
-    '''
-    if type(S) != set or type(T) != set:
-        raise TypeError('No són conjunts')
-    if len(S) != 2 or len(T) != 2:
-        raise TypeError('Els conjunts no tenen dos elements')
-    if any(len(v)!= 2 for v in S.union(T)):
-        raise TypeError('Han de tenir dues coordenades')
-    E = RR^2
-    V = [E(v) for v in S] + [E(v) for v in T]
-    A = matrix([V[0]-V[1],V[3]-V[2]]).det()
-    B = matrix([V[3]-V[1],V[3]-V[2]]).det()
-    C = matrix([V[0]-V[1],V[3]-V[1]]).det()
-    if A == 0:
-        return False, None
-    elif A.sign()!=B.sign() or A.sign()!=C.sign():
-        return False, None
-    elif B/A >= 1 or C/A >= 1:
-        return False, None
-    t = B/A
-    return True, t*V[0]+(1-t)*V[1]
-```
-
-Un exemple
-
-```sage
-S = {(2.1,2),(2.3,1)}
-T = {(2.1,1),(2.3,2)}
-b, pt = Tallen(S,T)
-```
-
-```sage
-line(S) + line(T) + point(pt,color='red',size=30)
-```
-
-```sage
-S = {(2.1,2),(2.3,2)}
-T = {(2.1,1),(2.3,1)}
-b, pt = Tallen(S,T)
-b
-```
-
-```sage
-line([v for v in S])+line([v for v in T])
-```
--- end hide
-
-### Exercici 5
-
-Definiu una classe `Isosceles`, formada per triangles isòsceles donats
-per la base i l'altura, definida a partir de la classe `Triangle`
-definida a dalt.
-
--- begin hide
-```sage
-class TriangleIsosceles(Triangle):
-    def __init__(self, base, altura):
-        Triangle.__init__(self, (0, 0), (0, base), (altura, base/2))
-        self.base = base
-        self.altura = altura
-    def area(self):
-        return(self.base * self.altura)
-
-T = TriangleIsosceles(10,10)
-show(T.area())
-```
--- end hide
-
-
-### Exercici 6
 
 
 Definiu una classe dels Quadrilàters (convexos), determinada donant
