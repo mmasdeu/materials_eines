@@ -15,9 +15,7 @@ jupyter:
     display_name: SageMath 10.6
     language: sage
     name: sagemath
-
 ---
-
 
 # Programació Orientada a Objectes
 
@@ -165,24 +163,68 @@ la següent, que fa servir el mètode especial `__init__`:
 
 ```sage
 class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
+    def __init__(self, a, n):
         self.mantissa = a
         self.exp = n
+
+def inicialitza_diadic(x):
+    x = QQ(x)
+    a, b = x.numerator(), x.denominator()
+    n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+    if n == 0: # Resulta que tenim un enter
+        n = a.valuation(2)
+        a /= 2**n
+    d = Diadic(a, n)
+    return d
 
 def repr_diadic(x):
     return f'{x.mantissa} · 2^{x.exp}'
 
 def producte_diadics(x, y):
-    d = Diadic()
-    d.mantissa = x.mantissa * y.mantissa
-    d.exp = x.exp + y.exp
+    mantissa = x.mantissa * y.mantissa
+    exp = x.exp + y.exp
+    d = Diadic(mantissa, exp)
     return d
+```
+
+```sage
+D = inicialitza_diadic(3/8)
+E = inicialitza_diadic(-1/4)
+F = producte_diadics(D, E)
+print(f'El diàdic {repr_diadic(D)} multiplicat pel diàdic {repr_diadic(E)} dona el diàdic {repr_diadic(F)}.')
+```
+
+Una altra avantatge d'aquest punt de vista és l'*encapsulació*: tot el que estigui
+relacionat amb els diàdics hauri de pertànyer a la classe `Diadic`.
+Per exemple, podem incloure `inicialitza_diadic` a la inicialització, i aprofitar per controlar errors:
+
+```sage
+class Diadic:
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self.mantissa = ZZ(a)
+        self.exp = ZZ(n)
+
+def producte_diadics(x, y):
+    mantissa = x.mantissa * y.mantissa
+    exp = x.exp + y.exp
+    d = Diadic(mantissa, exp)
+    return d
+
+def repr_diadic(x):
+    return f'{x.mantissa} · 2^{x.exp}'
 ```
 
 ```sage
@@ -190,28 +232,6 @@ D = Diadic(3/8)
 E = Diadic(-1/4)
 F = producte_diadics(D, E)
 print(f'El diàdic {repr_diadic(D)} multiplicat pel diàdic {repr_diadic(E)} dona el diàdic {repr_diadic(F)}.')
-```
-
-Una altra avantatge d'aquest punt de vista és l'*encapsulació*: tot el que estigui
-relacionat amb els diàdics hauri de pertanyer a la classe `Diadic`.
-Per exemple, podem controlar errors:
-
-```sage
-class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self.mantissa = a
-        self.exp = n
-
-def repr_diadic(x):
-    return f'{x.mantissa} · 2^{x.exp}'
 ```
 
 ```sage
@@ -226,23 +246,28 @@ B = Diadic(3/20)
 ```
 
 Seguim amb la idea d'encapsulació: fixem-nos que la feina de generar
-un `str` amb dades del diàdic també la podem delegar a la classe, amb el mètode especial `__str__`:
+un `str` amb dades del diàdic també la podem delegar a la classe, amb el mètode especial `__repr__`:
 
 ```sage
 class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self.mantissa = a
-        self.exp = n
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self.mantissa = ZZ(a)
+        self.exp = ZZ(n)
 
-    def __str__(self):
+    def __repr__(self):
         return f'{self.mantissa} · 2^{self.exp}'
 ```
 
@@ -251,25 +276,30 @@ A = Diadic(5/20)
 print(f'Acabem de definir el diàdic {A}')
 ```
 
-Els *mètodes* `__init__()` i `__str__` els proporciona Python per defecte, i són especials. Per
+Els *mètodes* `__init__()` i `__repr__` els proporciona Python per defecte, i són especials. Per
 això porten la doble barra baixa (*double under* o *dunder* en anglès). Però també
 podem inventar-nos els nostres propis mètodes. Per exemple, podem convertir un diàdic a un racional així:
 
 ```sage
 class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self.mantissa = a
-        self.exp = n
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self.mantissa = ZZ(a)
+        self.exp = ZZ(n)
 
-    def __str__(self):
+    def __repr__(self):
         return f'{self.mantissa} · 2^{self.exp}'
 
     def racional(self):
@@ -284,6 +314,181 @@ print(f'{A = } és el racional {A.racional()}')
 **Atenció:** Les classes tenen *atributs* (no pas variables) i *mètodes* (no pas funcions). És
 simplement terminologia. Per exemple, la classe `Diadic` té atributs `mantissa` i `exp`, i mètode `racional()`, entre altres.
 
+
+## Sobrecàrrega d'operadors
+
+Fixem-nos que hi ha funcions que són ben pròpies dels diàdics que encara no hem incorporat a la classe.
+Quan volem operar amb diàdics, ens aniria bé poder fer servir els operadors habituals `+` i `*`. Això ho podem fer
+amb certs mètodes especials, com són `__add__` i `__mul__`:
+
+```sage
+class Diadic:
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self.mantissa = ZZ(a)
+        self.exp = ZZ(n)
+
+    def __repr__(self):
+        return f'{self.mantissa} · 2^{self.exp}' # més net a l'hora de cridar
+
+    def racional(self):
+        return QQ(self.mantissa * 2**self.exp) # més net a l'hora de cridar
+    
+    def __add__(self, other):
+        return Diadic(self.racional() + other.racional()) # Penseu una implementació millor
+    
+    def __mul__(self, other):
+        return Diadic(self.mantissa * other.mantissa, self.exp + other.exp)
+```
+
+```sage
+D = Diadic(5/20)
+E = Diadic(3/8)
+print(f'{D = }, {E = }')
+print(f'Suma: {D + E = }')
+print(f'Producte: {D * E = }')
+```
+
+Hi ha molts altres mètodes *especials* com aquest. Se'ls anomena **mètodes màgics**, o **dunder**
+(de **d**ouble under), i es poden trobar [aquí](https://docs.python.org/3/reference/datamodel.html#special-method-names).
+
+## Herència
+
+Fixem-nos que en comptes de permetre potències de $2$ en el denominador ("invertim el $2$") també podríem permetre potències
+d'un primer qualsevol ("invertim un primer $p$"). Per exemple, si invertim el $5$, obtenim els nombres que es poden representar
+com $(a,n)$, on $a$ és un enter no divisible per $5$, i $n$ és un enter qualsevol. La parella $(a,n)$ representa llavors el racional $a\cdot 5^n$.
+
+Podem anomenar a aquesta classe els *Adics*:
+
+
+```sage
+class Adic:
+    def __init__(self, p, a, n = None):
+        p = ZZ(p)
+        if not p.is_prime():
+            raise ValueError('p ha de ser primer')
+        self.p = p
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(p) # Estem suposant que el denominador és potència de p
+            if b != p**-n:
+                raise ValueError(f'{x} no és un àdic, perquè té denominador {b} que no és potència de {p}')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(p)
+                a /= p**n        
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % p == 0:
+                raise ValueError(f'{a = } no pot ser divisible per {p = }')
+        self.mantissa = ZZ(a)
+        self.exp = ZZ(n)
+
+    def __repr__(self):
+        return f'{self.mantissa} · {self.p}^{self.exp}'
+
+    def racional(self):
+        return QQ(self.mantissa * self.p**self.exp)
+    
+    def __add__(self, other):
+        if self.p != other.p:
+            raise ValueError('No es poden sumar àdics de diferents p')
+        return Adic(self.p, self.racional() + other.racional()) # Penseu una implementació millor
+    
+    def __mul__(self, other):
+        if self.p != other.p:
+            raise ValueError('No es poden multiplicar àdics de diferents p')
+        return Adic(self.p, self.mantissa * other.mantissa, self.exp + other.exp)
+```
+
+```sage
+D = Adic(7, 13)
+E = Adic(7, 6/14)
+print(f'{D = }, {E = }')
+print(f'Suma: {D + E = }')
+print(f'Producte: {D * E = }')
+```
+
+Ens interessa mantenir la classe `Diadic`, i per evitar repetir codi podem fer que aquesta *heredi* de la classe `Adic`.
+A més això ens permet tenir mètodes que només pertanyen a la classe especial (en aquest cas, a `Diadic`). També
+podem canviar mètodes de la classe general. Per exemple, aquí canviarem la representació (en comptes de fer servir `·` farem servir `*`):
+
+```sage
+class Diadic(Adic):
+    def __init__(self, x, n = None):
+        super().__init__(2, x, n)
+
+    def __repr__(self):
+        return f'{self.mantissa} * 2^{self.exp}'
+
+    def semisuma(self, other): # Pot tenir mètodes propis
+        d = self + other
+        d.exp -= 1
+        return d
+```
+
+Qualsevol mètode que accepti objectes de tipus `Adic` podrà treballar amb objectes `Diadic`. Això és
+el què es coneix com a *polimorfisme*.
+
+```sage
+A = Adic(2, 3/8)
+D1 = Diadic(11/8)
+D2 = Diadic(1/4)
+print(f'{A = }')
+print(f'{D1 = }')
+print(f'{D2 = }')
+print(f'{A + D1 = }')
+print(f'{D1 + A = }')
+print(f'{D1 + D2 = }')
+```
+
+Fixeu-vos que el resultat de la suma sempre és un `Adic`. Si volem que ens retorni un `Diadic` haurem de reimplementar
+els mètodes `__add__` i `__mul__`.
+
+## Mètodes de classe
+
+Observem la funció que hem fet servir abans, que ens demana dos diàdics i imprimeix la suma i el producte.
+Clarament està relacionada amb els diàdics, i per tant potser la volem incloure la classe. D'altra banda,
+no té massa sentit haver de crear un diàdic "de mentida" per accedir al mètode en qüestió.
+
+Els mètodes de classe s'utilitzen quan el mètode que volem implementar no depèn de les
+dades de l'objecte en concret, sinó que és comú a tots els objectes. La variable `self`
+no hi és, i el primer paràmetre s'anomena `cls` i és la pròpia classe. Queda així:
+
+```sage
+class Diadic(Adic):
+    def __init__(self, x, n = None):
+        super().__init__(2, x, n)
+
+    def semisuma(self, other): # Pot tenir mètodes propis
+        d = self + other
+        d.exp -= 1
+        return d
+
+    @classmethod
+    def exemple(cls, x, y):
+        D = cls(x)
+        E = cls(y)
+        print(f'{D = }, {E = }')
+        print(f'Suma: {D + E = }')
+        print(f'Producte: {D * E = }')
+```
+
+```sage
+Diadic.exemple(-1/2, 3/8)
+```
 
 ## Propietats
 
@@ -305,24 +510,30 @@ atributs, i amagar d'alguna manera els propis atributs. Hi ha dues maneres de fe
 1. Escriure mètodes `get_...()` i `set_...()`.
 2. Fent servir el decorador `property`.
 
-El codi queda així, fent servir les dues variants. Primer, amb `get_...` i `set_...`:
+El codi queda així (tornem a la classe inicial, sense herència de la classe `Adic`, per simplificar),
+fent servir les dues variants. Primer, amb `get_...` i `set_...`:
 
 ```sage
 class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self._mantissa = a
-        self._exp = n
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self._mantissa = ZZ(a)
+        self._exp = ZZ(n)
 
     def set_mantissa(self, a):
-        if a % 2 == 1:
+        if a % 2 == 0:
             raise ValueError('La mantissa ha de ser senar')
         self._mantissa = a
 
@@ -335,7 +546,7 @@ class Diadic:
     def get_exp(self):
         return self._exp
 
-    def __str__(self):
+    def __repr__(self):
         return f'{self.get_mantissa()} · 2^{self.get_exp()}'
 
     def racional(self):
@@ -343,7 +554,13 @@ class Diadic:
 ```
 
 ```sage
-D = Diadic(2/3)
+D = Diadic(2/8)
+print('D abans de canviar la mantissa:', D)
+D.set_mantissa(3)
+print('D després de canviar la mantissa:', D)
+```
+
+```sage
 D.set_mantissa(4) # Dona error
 ```
 
@@ -351,18 +568,22 @@ Ara amb el decorador:
 
 ```sage
 class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self._mantissa = a
-        self._exp = n
-
+    def __init__(self, a, n = None):
+        if n is None:
+            x = QQ(a)
+            a, b = x.numerator(), x.denominator()
+            n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
+            if b != 2**-n:
+                raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
+            if n == 0: # Resulta que tenim un enter
+                n = a.valuation(2)
+                a /= 2**n
+        else:
+            a, n = ZZ(a), ZZ(n)
+            if a % 2 == 0:
+                raise ValueError(f'{a = } ha de ser senar')
+        self._mantissa = ZZ(a)
+        self._exp = ZZ(n)
 
     @property
     def mantissa(self):
@@ -371,10 +592,9 @@ class Diadic:
     @mantissa.setter
     def mantissa(self, a):
         a = ZZ(a) # Cal que sigui un enter...
-        if a % 2 == 1: # ...senar
+        if a % 2 == 0: # ...senar
             raise ValueError('La mantissa ha de ser senar')
         self._mantissa = a
-
 
     @property
     def exp(self):
@@ -384,20 +604,32 @@ class Diadic:
     def exp(self, n):
         self._exp = ZZ(n) # Cal que sigui un enter
 
-    def __str__(self):
+    def __repr__(self):
         return f'{self.mantissa} · 2^{self.exp}' # més net a l'hora de cridar
 
     def racional(self):
         return QQ(self.mantissa * 2**self.exp) # més net a l'hora de cridar
 ```
 
+```sage
+D = Diadic(2/8)
+print('D abans de canviar la mantissa:', D)
+D.mantissa = 3
+print('D després de canviar la mantissa:', D)
+```
+
+```sage
+D.mantissa = 4 # Dona error
+```
+
+
 
 **Atenció:** Els mètodes i atributs que comencen amb `_` es consideren privats. Hi ha llenguatges
 de programació que no permeten accedir als mètodes/atributs privats des de fora la classe.
 Python funciona amb un *pacte de cavallers*: si el programador de la classe hi ha posat
 una `_`, vol dir *no ho toquis*. Si hi posa dues barres baixes `__` vol dir que
-*no ho toquis, de veritat*. Però en ambdós casos s'assumeix que l'usuari de la classe
-és una adult responsable, i no *Python* no s'hi posa.
+*no ho toquis, de veritat* (i ho amaga una mica més). Però en ambdós casos s'assumeix que l'usuari de la classe
+és una adult responsable, i *Python* no s'hi posa si decidim saltar-nos la convenció.
 
 
 **Nota:** L'avantatge de fer servir `attribute` i `setter`  és que si la classe ja s'estava utilitzant
@@ -408,197 +640,11 @@ vol dir que hem de ser molt curosos amb el codi que hi posem, o acabarem causant
 què hem resolt. Si el codi fa moltes comprovacions que poden ser problemàtiques, sovint
 és més expressiu implementar mètodes de la forma `get_...()` i `set_...()`.
 
-## Sobrecàrrega d'operadors
-
-Fixem-nos que hi ha funcions que són ben pròpies dels diàdics que encara no hem incorporat a la classe.
-Quan volem operar amb diàdics, ens aniria bé poder fer servir els operadors habituals `+` i `*`. Això ho podem fer
-amb certs mètodes especials, com són `__add__` i `__mul__`:
-
-```sage
-class Diadic:
-    def __init__(self, x):
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(2) # Estem suposant que el denominador és potència de 2
-        if b != 2**-n:
-            raise ValueError(f'{x} no és un diàdic, perquè té denominador {b} que no és potència de 2')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(2)
-            a /= 2**n
-        self._mantissa = a
-        self._exp = n
-
-
-    @property
-    def mantissa(self):
-        return self._mantissa
-
-    @mantissa.setter
-    def mantissa(self, a):
-        a = ZZ(a) # Cal que sigui un enter...
-        if a % 2 == 1: # ...senar
-            raise ValueError('La mantissa ha de ser senar')
-        self._mantissa = a
-
-    @property
-    def exp(self):
-        return self._exp
-
-    @exp.setter
-    def exp(self, n):
-        self._exp = ZZ(n) # Cal que sigui un enter
-
-    def __str__(self):
-        return f'{self.mantissa} · 2^{self.exp}' # més net a l'hora de cridar
-
-    def racional(self):
-        return QQ(self.mantissa * 2**self.exp) # més net a l'hora de cridar
-    
-    def __add__(self, other):
-        return Diadic(sef.racional() + other.racional()) # Penseu una implementació millor
-    
-    def __mul__(self, other):
-        return Diadic(self.mantissa * other.mantissa, self.exp + other.exp)
-```
-
-```sage
-D = Diadic(5/20)
-E = Diadic(3/8)
-print(f'{D = }, {E = }')
-print(f'Suma: {D} * {E} = {D + E}')
-print(f'Producte: {D} * {E} = {D * E}')
-```
-
-Hi ha molts altres mètodes *especials* com aquest. Se'ls anomena **mètodes màgics**, o **dunder**
-(de **d**ouble under), i es poden trobar [aquí](https://docs.python.org/3/reference/datamodel.html#special-method-names).
-
-## Herència
-
-Fixem-nos que en comptes de permetre potències de $2$ en el denominador ("invertim el $2$") també podríem permetre potències
-d'un primer qualsevol ("invertim un primer $p$"). Per exemple, si invertim el $5$, obtenim els nombres que es poden representar
-com $(a,n)$, on $a$ és un enter no divisible per $5$, i $n$ és un enter qualsevol. La parella $(a,n)$ representa llavors el racional $a\cdot 5^n$.
-
-Podem anomenar a aquesta classe els *Adics*:
-
-
-```sage
-class Adic:
-    def __init__(self, x, p = 2):
-        self.p = p
-        x = QQ(x)
-        a, b = x.numerator(), x.denominator()
-        n = -b.valuation(p) # Estem suposant que el denominador és potència de p
-        if b != p**-n:
-            raise ValueError(f'{x} no és un àdic, perquè té denominador {b} que no és potència de {p}')
-        if n == 0: # Resulta que tenim un enter
-            n = a.valuation(p)
-            a /= p**n
-        self._p = p
-        self._mantissa = a
-        self._exp = n
-
-    @property
-    def p(self):
-        return self._p
-    
-    @p.setter
-    def p(self, p):
-        p = ZZ(p)
-        if not p.is_prime():
-            raise ValueError('p ha d eser primer')
-        self._p = p
-
-    @property
-    def mantissa(self):
-        return self._mantissa
-
-    @mantissa.setter
-    def mantissa(self, a):
-        a = ZZ(a) # Cal que sigui un enter...
-        if a % self.p != 0:
-            raise ValueError('La mantissa no pot ser divisible per p')
-        self._mantissa = a
-
-    @property
-    def exp(self):
-        return self._exp
-
-    @exp.setter
-    def exp(self, n):
-        self._exp = ZZ(n) # Cal que sigui un enter
-
-    def __str__(self):
-        return f'{self.mantissa} · {self.p}^{self.exp}'
-
-    def racional(self):
-        return QQ(self.mantissa * self.p**self.exp)
-    
-    def __add__(self, other):
-        return Diadic(sef.racional() + other.racional()) # Penseu una implementació millor
-    
-    def __mul__(self, other):
-        return Diadic(self.mantissa * other.mantissa, self.exp + other.exp)
-```
-
-```sage
-D = Adic(13, 7)
-E = Adic(6/14, 7)
-print(f'{D = }, {E = }')
-print(f'Suma: {D} * {E} = {D + E}')
-print(f'Producte: {D} * {E} = {D * E}')
-```
-
-Ens interessa mantenir la classe `Diadic`, i per evitar repetir codi podem fer que aquesta *heredi* de la classe `Adic`.
-
-```sage
-class Diadic(Adic)
-    def __init__(self, x):
-        super().__init__(self, x, 2)
-
-    def semisuma(self, other): # Pot tenir mètodes propis
-        return (self + other) / 2
-```
-
-Qualsevol mètode que accepti objectes de tipus `Adic` podrà treballar amb objectes `Diadic`. Això és
-el què es coneix com a *polimorfisme*.
-
-## Mètodes de classe
-
-Observem la funció que hem fet servir abans, que ens demana dos diàdics i imprimeix la suma i el producte.
-Clarament està relacionada amb els diàdics, i per tant potser la volem incloure la classe. D'altra banda,
-no té massa sentit haver de crear un diàdic "de mentida" per accedir al mètode en qüestió.
-
-Els mètodes de classe s'utilitzen quan el mètode que volem implementar no depèn de les
-dades de l'objecte en concret, sinó que és comú a tots els objectes. La variable `self`
-no hi és, i el primer paràmetre s'anomena `cls` i és la pròpia classe. Queda així:
-
-```sage
-class Diadic(Adic)
-    def __init__(self, x):
-        super().__init__(self, x, 2)
-
-    def semisuma(self, other): # Pot tenir mètodes propis
-        return (self + other) / 2
-
-    @classmethod
-    def exemple(cls, D, E):
-        D = cls(D)
-        E = cls(E)
-        print(f'{D = }, {E = }')
-        print(f'Suma: {D} * {E} = {D + E}')
-        print(f'Producte: {D} * {E} = {D * E}')
-```
-
-```sage
-Diadic.exemple(-1/2, 3/8)
-```
-
 
 ## Exercicis
 
 
 ### Exercici 1
-
 
 Definiu una classe dels Quadrilàters (convexos), determinada donant
 $4$ punts del pla.
