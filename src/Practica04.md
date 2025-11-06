@@ -699,7 +699,7 @@ no ens causarà problemes). Els punts podem pensar que són tuples de la forma $
 Així un triangle es crearà donant tres punts, com per exemple `T1 = Triangle((0,0),(0,12),(16,12))`.
 Aquesta classe hauria de tenir varis mètodes, però els principals són area, que retorni l'àrea del triangle, un mètode costats, que retorni una llista de les distàncies entre els vèrtexs, ordenades de menor a major, i perímetre. 
 
-Finalment, utilitzant el mètode màgic `__eq__`, podeu redefinir que la igualtat entre triangles de manera que dos triangles són iguals si tenen els mateixos costats, o sigui si la llista retorna el mètode costats és la mateixa. 
+Finalment, utilitzant el mètode màgic `__eq__`, podeu redefinir que la igualtat entre triangles de manera que dos triangles són iguals si tenen els mateixos costats, o sigui si la llista que retorna el mètode `costats()` és la mateixa. 
 
 Així si definiu 
 `T2 = Triangle((0,0),(16,0),(16,12))`
@@ -709,8 +709,7 @@ També podeu fer un `__rep__` per tal que us mostri un triangle com la llista de
 
 -- begin hide
 
-Primer hem definit una funció per a calcular la distància entre dos
-punts de $\mathbb{R}^n$:
+Primer hem definit una funció per a calcular la distància entre dos punts de $\mathbb{R}^n$:
 
 
 ```sage
@@ -774,7 +773,7 @@ L'objectiu és definir una classe TriangleRectangle, que heredi de la classe tri
 
 La classe TriangleRectangle pot tenir com a mètode propi la hipotenusa i els catets, com una llista ordenada dels dos catets. Podeu fer si voleu que els dos  catets siguin atributs ocults. 
 
-Finalment podeu comprovar que si definim `T3 = TriangleRectangle(12,16)`, llavors la resposta de `T1 == T3` ha de sortir `True`. Però si posem `T1.hipotenusa()` us ha de donar error, mentre que `T3.hipotenusa()` ja que `T1` no està definit com a triangle rectangle. 
+Finalment podeu comprovar que si definim `T3 = TriangleRectangle(12,16)`, llavors la resposta de `T1 == T3` ha de sortir `True`. Però si posem `T1.hipotenusa()` us ha de donar error, ja que `T1` no està definit com a triangle rectangle, mentre que `T3.hipotenusa()` si que us retorna un nombre. 
 
 -- begin hide
 ```sage
