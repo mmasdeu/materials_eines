@@ -649,6 +649,7 @@ què hem resolt. Si el codi fa moltes comprovacions que poden ser problemàtique
 Feu una classe Z2, que només té dos objecte, `0` i `1`. Per crear un element es pot admetre que se li passi un enter `n` i el nombre és `n%2`. La classe ha de tenir redefinits els mètodes màgics `__rep__`, `__add__` i  `__mul__`. 
 
 -- begin hide
+
 class Z2:
     def __init__(self,i=None):
         try:
@@ -665,6 +666,7 @@ class Z2:
         return Z2(self.b * other.b)
     def __eq__(self,other):
         return self.b == other.b
+
 -- end hide
 
 
@@ -676,10 +678,12 @@ del pla $\mathbb{R}^2$, $p_1$, $p_2$ i $p_3$, retorni l'àrea del triangle que f
 Per exemple, si li passem `area ((0,0),(1,0),(0,1))`, ha de retornar el nombre $0,5$. Si voleu podeu buscar informació de com calcular l'àrea a partir de les coordenades dels seus vèrtexs.  
 
 -- begin hide
+
 def area(p1,p2,p3):
     p123 = (p2[0] - p1[0]) * (p3[1] - p1[1])
     p132 = (p2[1] - p1[1]) * (p3[0] - p1[0])
     return abs((p123-p132) / 2)
+
 -- end hide
 
 ### Exercici 3
