@@ -646,6 +646,191 @@ què hem resolt. Si el codi fa moltes comprovacions que poden ser problemàtique
 
 ### Exercici 1
 
+Feu una classe Z2, que només té dos objecte, `0` i `1`. Per crear un element es pot admetre que se li passi un enter `n` i el nombre és `n%2`. La classe ha de tenir redefinits els mètodes màgics `__rep__`, `__add__` i  `__mul__`. 
+
+-- begin hide
+class Z2:
+    def __init__(self,i=None):
+        try:
+            self.b = int(i) % 2
+        except:
+            self.b = int(bool(i))
+    def valor(self):
+        return self.b
+    def __repr__(self):
+        return str(self.b)
+    def __add__(self,other):
+        return Z2(self.b + other.b)
+    def __mul__(self,other):
+        return Z2(self.b * other.b)
+    def __eq__(self,other):
+        return self.b == other.b
+-- end hide
+
+
+### Exercici 2
+
+
+Definiu una funció `area` tal que, donats tres punts 
+del pla $\mathbb{R}^2$, $p_1$, $p_2$ i $p_3$, retorni l'àrea del triangle que formen. Podeu fer que els punts es puguin donar com a tuples de la forma $(x,y)$, o com a llistes $[x,y]$, o les dues opcions alhora. 
+Per exemple, si li passem `area ((0,0),(1,0),(0,1))`, ha de retornar el nombre $0,5$. Si voleu podeu buscar informació de com calcular l'àrea a partir de les coordenades dels seus vèrtexs.  
+
+-- begin hide
+def area(p1,p2,p3):
+    p123 = (p2[0] - p1[0]) * (p3[1] - p1[1])
+    p132 = (p2[1] - p1[1]) * (p3[0] - p1[0])
+    return abs((p123-p132) / 2)
+-- end hide
+
+### Exercici 3
+
+Definiu una classe Triangle de triangles en el pla. Un triangle vindrà donat  
+com un conjunt de tres punts del pla $\mathbb{R}^2$ (això inclourà els
+triangles "degenerats" formats per tres punts alineats, però en principi
+no ens causarà problemes). Els punts podem pensar que són tuples de la forma $(x,y)$, o com a llistes $[x,y]$ (o, millor, accepti les dues opcions alhora). 
+
+Així un triangle es crearà donant tres punts, com per exemple `T1 = Triangle((0,0),(0,12),(16,12))`.
+Aquesta classe hauria de tenir varis mètodes, però els principals són area, que retorni l'àrea del triangle, un mètode costats, que retorni una llista de les distàncies entre els vèrtexs, ordenades de menor a major, i perímetre. 
+
+Finalment, utilitzant el mètode màgic `__eq__`, podeu redefinir que la igualtat entre triangles de manera que dos triangles són iguals si tenen els mateixos costats, o sigui si la llista retorna el mètode costats és la mateixa. 
+
+Així si definiu 
+`T2 = Triangle((0,0),(16,0),(16,12))`
+llavors al  posar `T1 == T2`, hauria de retornar `True`. 
+
+També podeu fer un `__rep__` per tal que us mostri un triangle com la llista dels seus punts, o qualsevol versió que us agradi més. 
+
+-- begin hide
+
+Primer hem definit una funció per a calcular la distància entre dos
+punts de $\mathbb{R}^n$:
+
+
+```sage
+def distancia(P, Q):
+    '''Calcula la distància entre dos punts de R^n'''
+    return((sum((xi-yi)**2 for xi, yi in zip(P, Q))**0.5))
+```
+
+
+```sage
+class Triangle:
+    def __init__(self, punt1,punt2,punt3):
+        self._p1 = punt1
+        self._p2 = punt2
+        self._p3 = punt3
+        self.vertexs = (punt1, punt2, punt3)
+
+    def area(self):
+        p1 = self._p1
+        p2 = self._p2
+        p3 = self._p3
+        p123 = (p2[0] - p1[0]) * (p3[1] - p1[1])
+        p132 = (p2[1] - p1[1]) * (p3[0] - p1[0])
+        return abs((p123-p132) / 2)
+
+    def costats(self):
+        p = self.vertexs
+        pp = [[a for a in p if a != b] for b in p]
+        return sorted([distancia(*a) for a in pp])
+
+    def perimetre(self):
+        return sum(self.costats())
+
+    def __eq__(self, other):
+        return self.costats() == other.costats()
+
+    def __repr__(self):
+        return f'{self.vertexs} '
+```
+
+```sage
+T1 = Triangle([0,0],[0,12],[16,12])
+print(f'{T1.vertexs = }')
+print(f'{T1.costats() = }')
+print(f'{T1.perimetre() = }')
+print(f'{T1.area() = }')
+```
+
+```sage
+T2 = Triangle((0,0),(16,0),(16,12))
+T2 == T1
+```
+
+-- end hide
+
+
+
+### Exercici 4
+
+L'objectiu és definir una classe TriangleRectangle, que heredi de la classe triangle. Els triangles rectangles es definirien donant només els dos catets, o sigui dos nombres reals, i el triangle corresponent seria el donat pels punts $(0,0), (catet1,0), (0,catet2)$. 
+
+La classe TriangleRectangle pot tenir com a mètode propi la hipotenusa i els catets, com una llista ordenada dels dos catets. Podeu fer si voleu que els dos  catets siguin atributs ocults. 
+
+Finalment podeu comprovar que si definim `T3 = TriangleRectangle(12,16)`, llavors la resposta de `T1 == T3` ha de sortir `True`. Però si posem `T1.hipotenusa()` us ha de donar error, mentre que `T3.hipotenusa()` ja que `T1` no està definit com a triangle rectangle. 
+
+-- begin hide
+```sage
+class TriangleRectangle(Triangle):
+    def __init__(self, catet1, catet2):
+        super().__init__(self,(0,0), (catet1,0), (0,catet2))
+        self._catet1 = catet1
+        self._catet2 = catet2
+    def catets(self):
+        L = [self._catet1, self._catet2]
+        return L.sort()
+    def hipotenusa(self):
+        c1, c2 = self.catets()
+        return (c1**2 + c2**2)**.5
+```
+
+```sage
+T1 = Triangle((0,0),(0,12),(16,12))
+T3 = TriangleRectangle(12,16)
+T1 == T3
+```
+
+```sage
+print('Hipotenusa =', T3.hipotenusa())
+```
+
+```sage
+print('Hipotenusa =', T1.hipotenusa())
+```
+
+
+-- end hide
+
+
+### Exercici 5
+
+Definiu una classe `Isosceles`, formada per triangles isòsceles donats
+per la base i l'altura, que heredi de la classe `Triangle`
+definida al Exercici 3.
+
+-- begin hide
+```sage
+class TriangleIsosceles(Triangle):
+    def __init__(self, base, altura):
+        super().__init__(self, (0, 0), (0, base), (altura, base/2))
+        self.base = base
+        self.altura = altura
+    def area(self):
+        return(self.base * self.altura)
+
+T = TriangleIsosceles(10,10)
+show(T.area())
+```
+-- end hide
+
+
+
+
+
+
+
+### Exercici 6
+
 Definiu una classe dels Quadrilàters (convexos), determinada donant
 $4$ punts del pla.
 
