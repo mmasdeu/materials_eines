@@ -78,6 +78,12 @@ Ara ja podrem crear polinomis directament de la manera usual
 q = x^3+x^2+x+1
 q
 ```
+Hi ha maneres molt més simplificades de construir l'anell de polinomis, i de manera que poguem usar la variable directament. Per exemple
+
+```sage
+R.<x> = QQ[]
+R
+```
 Els polinomis es poden sumar, multiplicar, elevar a natural, multiplicar per constants, etc, usant la notació dels operadors usual, ja que els operadors corresponents han estat sobrecarregats. A més tenen funcions exclusives, com 
 
 ```sage
@@ -92,6 +98,22 @@ en que el que obtenim és una llista de tuples, on el primer element de la tupla
 ```sage
 q.roots(ring=CC)
 ```
+També poden construir l'anell de polinomis en varies variables. Per exemple, si volem l'anell de polinomis sobre els reals amb dues variables `s`i `t`, podem fer
+
+```sage
+P.<s,t> = RR[]
+P
+```
+i llavors ja podem usar-los directament:
+
+```sage
+f = s+t+3
+g = s^2-t^3+23
+f^2*g^3
+```
+
+
+
 
 ## Vectors 
 
