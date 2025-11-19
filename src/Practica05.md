@@ -840,63 +840,6 @@ zero el rang és 2, i això només passa si $k=0$. Per exemple podeu
 calcular el màxim comú divisor dels dos polinomis (ja que un zero comú
 serà un zero del mcm), i surt $k$.
 
-### Reducció pas a pas a mà d'una matriu (Opcional)
-
-### Exemple 2 (Reducció pas per pas).
-Quan interessa anar controlant
-quines operacions de reducció es fan, el mètode anterior no serveix, ja
-que només dona el resultat final. En aquests casos caldrà anar
-realitzant les operacions de forma manual, cosa que es pot aconseguir
-utilitzant: `.swap_rows()`, `.rescale_row()` i `.add_multiple_of_row()`
-(el que fa cada una d'aquestes funcions resulta obvi a partir del seu
-nom).
-
-Comencem generant una còpia de la matriu ampliada del sistema per tal de
-fer les operacions en aquesta matriu mentre mantenim el valor de la
-matriu original.
-
-```sage
-AA=copy(Am); show(AA);
-```
-
-Intercanviar files $0$ i $2$
-
-```sage
-AA.swap_rows(0,2); show(AA)
-```
-
-Canvi de signe de la primera fila (índex $0$)
-
-```sage
-AA.rescale_row(0,-1); show(AA)
-```
-
-Restar $2$ vegades la tercera fila (índex $2$) a la primera (índex $0$)
-
-```sage
-AA.add_multiple_of_row(2,0,-2);show(AA)
-```
-
-Restar 3 cops la segona fila a la tercera.
-
-```
-AA.add_multiple_of_row(2,1,-3);show(AA)
-```
-
-Dividir per 2 la segona fila.
-
-```sage
-AA.rescale_row(1,1/2);show(AA)
-```
-
-Sumar 3 cops la segona fila a primera.
-
-```sage
-AA.add_multiple_of_row(0,1,3);show(AA)
-```
-
-I, com podeu comprovar, el resultat coincideix exactament (segurament)
-amb el de la funció `echelon_form()`
 
 ## Subespais vectorials, suma i intersecció
 
@@ -1129,84 +1072,10 @@ V.intersection(V).dimension()
 
 ### Exercici 1
 
-
-Considereu les matrius $$P= \begin{pmatrix}
-\dfrac {4}{7} & \dfrac {1}{7} &  - \dfrac {1}{7} \\[10pt]
- - \dfrac {5}{21} & \dfrac {4}{21} & \dfrac {1}{7} \\[10pt]
- - \dfrac {3}{7} & \dfrac {1}{7} &  - \dfrac {1}{7}
-\end{pmatrix} \text {i } {M} =  \begin{pmatrix}
-1 & 0 & -1 \\[5pt]
-2 & 3 & 1 \\[5pt]
--1 & 3 &  - 3
-\end{pmatrix}$$ i el vector
-${v_{1}} =  (1,\ - \dfrac {11}{3},\ - 2)$ i el vector ${v_{2}} = 
-(1,\ -1,\ 2 - 2\,\sqrt{2})$. Calculeu:
-
-
--- begin hide
-```sage
-P=matrix(QQ,[[4/7,1/7,-1/7],[-5/21,4/21,1/7],[-3/7,1/7,-1/7]])
-show(P)
-```
-
-```sage
-M=matrix(QQ,[[1,0,-1],[2,3,1],[-1,3,-3]])
-show(M)
-```
-
-```sage
-v1=vector([1,-11/3,-2])
-v1
-```
-
-```sage
-v2=vector([1,-1,2-2*sqrt(2)])
-v2
-```
--- end hide
-
-- $M\cdot P$
-
-```sage
--- begin hide
-M*P
--- end hide
-```
-
-- $M\cdot v_{1}$, $M\cdot v_{2}$, $P\cdot v_{1}$ i $P\cdot v_{2}$
-
--- begin hide
-```sage
-M*v1
-```
-
-```sage
-M*v2
-```
-
-```sage
-P*v1
-```
-
-```sage
-P*v2
-```
--- end hide
-
-- $v_{1}\cdot M$ i $v_{2}\cdot M$
-
--- begin hide
-```sage
-v1*M
-```
-
-```sage
-v2*M
-```
--- end hide
-
-- Hi ha algun patró en els valors dels productes de les matrius pels
-  vectors?
+Definiu l'anell $S$ de polinomis en dues variables $a$ i $b$ amb coeficients racionals, i els elements $p = a^2+b^3+3$ i $q=4*a^2+3*a*b+7*b^2$ de $S$. 
+Comproveu que per evaluar el polinomi $p$ a $a=2$ i $b=-1$ és suficient de posar $p(2,-1)$. 
+Apliqueu el mètode .dict als dos polinomis, per tal de veure que és el diccionari associat a un polinomi. 
+Comproveu que ho heu entés bé definint un diccionari $d$ de manera que $S(d)$ us doni el polinomi $-5*a 3+4*a*b^2-7*b+13$. 
 
 ### Exercici 2
 
@@ -1438,7 +1307,7 @@ P*A
 Feu una funció de sage PAreduccio(A) de manera que, donada una
 matriu A qualsevol, retornin 2 matrius J i P, on J és la forma
 esglaonada reduïda i P invertible tal que $PA=J$. Proveu-ho amb les
-matrius dels problemes (1), (4) i (5).
+matrius dels problemes (4) i (5).
 
 -- begin hide
 
@@ -1450,24 +1319,6 @@ def PAreduccio(A):
     J=AE.matrix_from_columns([0..c-1])
     P=AE.matrix_from_columns([c..c+r-1])
     return J,P
-```
-
-Matrius del problema 1
-
-```sage
-A = matrix(QQ,[[4/7,1/7,-1/7],[-5/21,4/21,1/7],[-3/7,1/7,-1/7]])
-```
-
-```sage
-PAreduccio(A)
-```
-
-```sage
-A = matrix(QQ,[[1,0,-1],[2,3,1],[-1,3,-3]])
-```
-
-```sage
-show(PAreduccio(A))
 ```
 
 Matriu del problema 4
