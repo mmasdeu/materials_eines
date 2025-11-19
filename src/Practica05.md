@@ -24,8 +24,6 @@ jupyter:
 
 ## Polinomis
 
-## Polinomis
-
 
 
 Per poder treballar amb polinomis primer de tot ens cal crear l'anell de polinomis, especificant el cos \(o, més en general, l'anell\) on estan definits els coeficients, i també el nom que volem que tingui la variable. Per exemple, en la següent cel·la creem l'anell de polinomis en una variable `x` amb coeficients als racionals QQ.
@@ -127,8 +125,6 @@ especials per a aquests tipus d'objectes per tal d'optimitzar les
 funcions que els tractaran. Començarem, doncs, veient els mecanismes per
 a definir matrius i vectors i algunes de les instruccions que permeten
 manipular aquests objectes.
-
-## Vectors
 
 ### Construcció de vectors
 
