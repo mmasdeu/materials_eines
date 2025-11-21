@@ -809,7 +809,7 @@ print('Hipotenusa =', T1.hipotenusa())
 
 Definiu una classe `Isosceles`, formada per triangles isòsceles donats
 per la base i l'altura, que heredi de la classe `Triangle`
-definida al Exercici 3.
+definida l'Exercici 3.
 
 -- begin hide
 ```sage

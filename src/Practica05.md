@@ -26,21 +26,20 @@ jupyter:
 
 
 
-Per poder treballar amb polinomis primer de tot ens cal crear l'anell de polinomis, especificant el cos \(o, més en general, l'anell\) on estan definits els coeficients, i també el nom que volem que tingui la variable. Per exemple, en la següent cel·la creem l'anell de polinomis en una variable `x` amb coeficients als racionals QQ.
+Per poder treballar amb polinomis primer de tot ens cal crear l'anell de polinomis, especificant el cos \(o, més en general, l'anell\) on estan definits els coeficients, i també el nom que volem que tingui la variable. Per exemple, en la següent cel·la creem l'anell de polinomis en una variable `x` amb coeficients als racionals `QQ`.
 
 
 
 ```sage
 R = PolynomialRing(QQ,'x')
-
 ```
 
-Podem crear un element de l'anell de polinomis donants un número \(del cos d'on són els coeficients\), una llista o un diccionari. 
+Podem crear un element de l'anell de polinomis donant un número \(del cos d'on són els coeficients\), una llista o un diccionari. 
 
 
 
 ```sage
-p = R(3)
+p = R(3) # El polinomi constant 3, pensat com a polinomi als racionals
 p
 ```
 
@@ -73,15 +72,16 @@ type(x)
 Ara ja podrem crear polinomis directament de la manera usual 
 
 ```sage
-q = x^3+x^2+x+1
+q = x^3 + x^2 + x + 1
 q
 ```
 Hi ha maneres molt més simplificades de construir l'anell de polinomis, i de manera que poguem usar la variable directament. Per exemple
 
 ```sage
-R.<x> = QQ[]
+R.<x> = QQ[] # Triem el nom (`'x'`) de la variable, i alhora inicialitzem `x`
 R
 ```
+
 Els polinomis es poden sumar, multiplicar, elevar a natural, multiplicar per constants, etc, usant la notació dels operadors usual, ja que els operadors corresponents han estat sobrecarregats. A més tenen funcions exclusives, com 
 
 ```sage
@@ -91,12 +91,12 @@ q.factor()
 ```sage
 q.roots()
 ```
-en que el que obtenim és una llista de tuples, on el primer element de la tupla és l'arrel, i l'altre la multiplicitat. Si vols les arrels a un cos més gran, podem fer-ho així: 
+en què el que obtenim és una llista de tuples, on el primer element de la tupla és l'arrel, i l'altre la multiplicitat. Si volem les arrels a un cos més gran, podem fer-ho així: 
 
 ```sage
 q.roots(ring=CC)
 ```
-També poden construir l'anell de polinomis en varies variables. Per exemple, si volem l'anell de polinomis sobre els reals amb dues variables `s`i `t`, podem fer
+També poden construir l'anell de polinomis en diverses variables. Per exemple, si volem l'anell de polinomis sobre els reals amb dues variables `s` i `t`, podem fer
 
 ```sage
 P.<s,t> = RR[]
@@ -105,19 +105,17 @@ P
 i llavors ja podem usar-los directament:
 
 ```sage
-f = s+t+3
-g = s^2-t^3+23
-f^2*g^3
+f = s +  t + 3
+g = s^2 - t^3 + 23
+f^2 * g^3
 ```
-
-
 
 
 ## Vectors 
 
 
-Per tal de fer els càlculs relacionats amb problemes d'àlgebra lineal
-cal utilitzar vectors i matrius. Tot i que, en principi, podríeu pensar
+Per tal de fer càlculs relacionats amb problemes d'àlgebra lineal
+cal utilitzar vectors i matrius. Tot i que, en principi, podríem pensar
 que n'hi hauria prou considerant que un vector és una llista de
 coeficients i una matriu una llista de vectors (columnes o files segons
 convingui) **SageMath**  defineix unes classes
@@ -130,20 +128,18 @@ manipular aquests objectes.
 
 La instrucció per fabricar un objecte que tingui les característiques
 d'un vector és `vector()`. L'argument d'aquesta funció és una llista o
-una tupla amb les components del vector. Els vectors es tracten, en
-principi, com files, però si cal interpretar les seves components com
-una columna no caldrà fer cap transformació ja que les funcions que
-tracten els vectors ja estan preparades per fer-ho, com veurem més
-endavant.
+una tupla amb les components del vector. Per estalviar espai, els vectors
+s'imprimeixen com una fila, però es poden interpretar tant com a vectors
+fila o com a vectors columna (ho veurem més endavant).
 
 ```sage
-v=vector([1,-3,0,-4])
-u=vector((3/4,-1,1,0))
+v = vector([1,-3,0,-4])
+u = vector((3/4,-1,1,0))
 show(v)
 show(u)
 ```
 
-Per tal d'accedir a cada una de les components d'un vector, es pot fer
+Per tal d'accedir a cadascuna de les components d'un vector, es pot fer
 com si fos una llista (recordeu que la numeració de les posicions
 comença per $0$). Per tant, podem fer
 
@@ -169,8 +165,7 @@ print(f'Després, {v = }')
 ```
 
 
-Per tal de conèixer la mida d'un vector es pot utilitzar `degree` que
-actua com una *propietat* del vector.
+Per tal de conèixer la mida d'un vector es pot utilitzar amb el *mètode* `degree()`.
 
 ```sage
 print(u.degree())
@@ -180,10 +175,10 @@ print(len(v))
 Noteu que `degree` no es pot usar fent `degree(u)` però sí que podeu fer
 `len(u)`. Noteu també que la sintaxi `u.len()` tampoc és correcta.
 
-Els vectors viuen en espais vectorials. En el nostre cas viuran en el
-espai $\mathbb{Q}^d$, on $d$ és la mida del vector, i enlloc de
+Els vectors viuen en espais vectorials. En el nostre cas viuran en
+l'espai $\mathbb{Q}^d$, on $d$ és la mida del vector, i enlloc de
 $\mathbb{Q}$ pot ser el cos on estiguin definits. Recordem que el cos
-$\mathbb{Q}$ es posa `QQ` en **SageMath** . Posant
+$\mathbb{Q}$ es denota `QQ` en **SageMath** . Posant
 
 ```sage
 u.parent()
@@ -210,11 +205,16 @@ Això ho podem comprovar posant
 v.parent()
 ```
 
-Tot i així si li preguntem si està a `Q4` diu que si, doncs
+Tot i així si li preguntem si està a `Q4` diu que sí:
+```sage
+v in QQ^4
+```
+
+Això té sentit, ja que
 $\mathbb{Z}^4\subset \mathbb{Q}^4$. D'altra banda, també podem forçar
 que estigui a `Q4` posant `v = Q4(v)`, que de fet ens dona una manera
 alternativa de definir vectors: primer definir l'espai `V` on viuen i
-després posar `V(llista)`. ``
+després posar `V(llista)`.
 
 ```sage
 w = Q4([1,-5,6,2])
@@ -222,7 +222,7 @@ print(w)
 w.parent()
 ```
 
-**Molt important:**  Abans de passar a les operacions en les que intervenen vectors, cal fer notar que els  vectors i matrius  es comporten com les llistes; són mutables, i per tant modificables.  De forma que, si generem una variable nova *igualant-la* amb una que ja conté un vector, l'únic que obtindrem seran dos noms diferents per accedir al mateix contingut i qualsevol canvi que es faci a aquest contingut a través d'un d'aquests noms es reflectirà simultàniament a través de l'altre.
+**Molt important:**  Abans de passar a les operacions en les que intervenen vectors, cal fer notar que els  vectors i matrius  es comporten com les llistes; són mutables, i per tant modificables.  Per tant, si generem una variable nova *igualant-la* amb una que ja conté un vector, l'únic que obtindrem seran dos noms diferents per accedir al mateix contingut i qualsevol canvi que es faci a aquest contingut a través d'un d'aquests noms es reflectirà simultàniament a través de l'altre.
 
 Per posar un exemple, suposeu que comencem amb un vector de components $(1,2,3,4)$
 
@@ -336,8 +336,8 @@ respectius (aquí es veu un dels motius que justifiquen crear una classe
 d'objectes especial per als vectors).
 
 ```sage
-print(vector([1,2,3])+vector([-2,-1,0]))
-print([1,2,3]+[-2,-1,0])
+print(f'Suma de vectors: {vector([1,2,3]) + vector([-2,-1,0]) = }')
+print(f'Suma de llistes: {[1,2,3] + [-2,-1,0] = }')
 ```
 
 ## Matrius
@@ -423,6 +423,7 @@ show(Brc)
 Bsub = M10.submatrix(1,1,2,3) # submatriu 2x3 que comença a la posició (1,1)
 show(Bsub)
 ```
+
 ### Accedint als continguts d'una matriu
 
 Si es vol accedir al valor d'una de les posicions de la matriu n'hi
@@ -467,7 +468,7 @@ print(M10.is_square())
 ```
 
 També podem canviar les files per les columnes (transposar la matriu)
-amb la instrucció `transpose`
+amb el mètode `transpose()`:
 
 ```sage
 show(A.transpose())
@@ -555,7 +556,7 @@ show(B^(-1))
 ```
 
 Encara que, si es vol, es pot calcular la inversa d'una matriu
-utilitzant la funció específica `inverse` o l'operador `~`:
+utilitzant el mètode específic `inverse()` o l'operador `~`:
 
 ```sage
 show(A.inverse())
@@ -580,8 +581,8 @@ show(B^n)
 
 En les matrius quadrades, la traça i el determinant juguen un paper molt
 important. Per tal de calcular el determinant d'una matriu quadrada es
-pot aplicar `det` o, si no ens fa mandra escriure més lletres,
-`determinant`. Per calcular la traça, cal usar el mètode de les matrius
+pot aplicar el mètode `det()` o, si no ens fa mandra escriure més lletres,
+`determinant()`. Per calcular la traça, cal usar el mètode de les matrius
 `trace()`.
 
 ```sage
@@ -596,7 +597,6 @@ A.determinant()
 A.trace()
 ```
 
-
 Si la matriu no és quadrada ens dona un error
 
 ```sage
@@ -610,7 +610,7 @@ Mc.trace()
 
 ### Rang
 
-La instrucció que calcula el rang de les matrius és `rank`
+Per calcular el rang d'una matriu tenim el mètode `rank()`:
 
 ```sage
 B = matrix([[1,2,3],[2,1,-1],[1,-1,-4],[3,3,2]]);show(B)
@@ -618,7 +618,7 @@ B.rank()
 ```
 
 Naturalment, quan el problema del càlcul del rang està posat en una
-família de matrius depenent d'un, o més, paràmetres, la funció `rank` no
+família de matrius depenent d'un, o més, paràmetres, el mètode `rank()` no
 és capaç de distingir dins la família quins són els casos especials. Per
 exemple, si es considera la família de matrius depenent del paràmetre
 $k$ donada per
@@ -629,7 +629,7 @@ A_k=\begin{pmatrix}
 k + 2 & -1 & -1 & 2 \, k - 1
 \end{pmatrix}
 $$
-el valor de la funció `rank` aplicada a l'expressió genèrica de les matrius de la família donarà $3$.
+el valor del mètode `rank()` aplicat a l'expressió genèrica de les matrius de la família donarà $3$.
 
 ```sage
 var('k')
@@ -733,12 +733,12 @@ s'apliqui l'esglaonament usant divisions (o, alternativament, utilitzar
 
 ```sage
 A = matrix(QQ,3,5,[2,-4,0,-1,-5,0,0,2,1,5,-1,2,3,2,10]);show(A)
-B = vector([2,0,-1]);show(B)
+B = vector([2,0,-1]); show(B)
 Am = A.augment(B, subdivide=True);show(Am)
 ```
 
-Encara que $B$ sigui un vector, i per tant és una *fila*, la funció
-`augment`, que fabrica la matriu augmentada del sistema, *sap decidir*
+Encara que $B$ sigui un vector, el mètode
+`augment()`, que fabrica la matriu augmentada del sistema, *sap decidir*
 que l'ha de posar com una columna.
 
 Calculem ara la forma esglaonada del sistema.
@@ -749,10 +749,10 @@ show(Ar)
 ```
 
 A partir d'aquesta expressió tindrem els pivots (incògnites lligades) i
-les incògnites lliures de forma immediata (o a partir del resultat de
-les funcions `pivots` i `nonpivots`) i les equacions (files) en les que
+les incògnites lliures de forma immediata (o a partir del resultat dels
+mètodes `pivots()` i `nonpivots()`) i les equacions (files) en les que
 una de les incògnites lligades s'obté com a funció de les lliures i del
-terme independent corresponent (funció `pivot_rows`).
+terme independent corresponent (mètode `pivot_rows()`).
 
 ```sage
 pvts = Ar.pivots();show(pvts)
@@ -760,7 +760,7 @@ npvts = Ar.nonpivots();show(npvts)
 flspv = Ar.pivot_rows();show(flspv)
 ```
 
-I amb aquesta informació us hauria de quedar clar que les solucions són
+I amb aquesta informació hauria de quedar clar que les solucions són
 de la forma
 $$\begin{aligned}
 x_0 &= 2\, x_1+\dfrac12\, x_3+\dfrac52\, x_4+1
@@ -797,8 +797,8 @@ Veiem-ho. Si reintroduïm la matriu $Ak$ anterior
 
 ```sage
 var('k')
-Ak=matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
-AkE=Ak.echelon_form()
+Ak = matrix([[1,k+1,-1,0],[-1,2,k,1],[k+2,-1,-1,2*k-1]]);show(Ak)
+AkE = Ak.echelon_form()
 show(AkE)
 ```
 
@@ -821,7 +821,7 @@ dividit una fila o una columna per $k$.
 
 El que podem fer és treballar directament en l'anell de polinomis en una
 variable. Aleshores **SageMath**  no dividirà per
-cap polinomi de grau $>0$, ja que aquests no tenen inversos als
+cap polinomi no constant, ja que aquests no tenen inversos als
 polinomis. Si posem
 
 ```sage
@@ -834,7 +834,7 @@ show(AkE)
 Ara és evident que només quan els dos polinomis de la darrera fila són
 zero el rang és 2, i això només passa si $k=0$. Per exemple podeu
 calcular el màxim comú divisor dels dos polinomis (ja que un zero comú
-serà un zero del mcm), i surt $k$.
+serà un zero del màxim comú divicor), i surt $k$.
 
 
 ## Subespais vectorials, suma i intersecció
@@ -863,10 +863,11 @@ expressions decimals amb 53 bits de precissió. El fet de treballar
 de forma aproximada fa que la majoria de propietats d'un cos no
 siguin certes, sinó aproximadament certes. Per això, és probable que
 ens trobem amb gran quantitat de resultats inesperats i per tant, a
-no ser que sigui del tot necessari, evitarem treballar amb `RR` i `CC`.
+no ser que sigui del tot necessari, evitarem treballar amb `RR` i `CC`. També
+podem treballar amb precisió més alta, definint `RR = RealField(bits)` o `CC = ComplexField(bits)`.
 
 Per treballar de forma genèrica amb una gran varietat d'expressions
-simbòliques, **SageMath**  usa el que anomea
+simbòliques, **SageMath**  usa el que anomena
 l'anell simbòlic (*symbolic ring*), que es denota per `SR`, i que de fet
 és un cos. Tot i que no entrarem en més detalls, també podem treballar
 amb cossos més complicats, com per exemple el cos de funcions racionals
@@ -879,8 +880,8 @@ E1
 ```
 
 Donats uns vectors d'un tal espai vectorial podem construir el subespai
-vectorial generat per aquests vectors es pot utilitzar `subspace`, o bé
-span.
+vectorial generat per aquests vectors es pot utilitzar el mètode `subspace()`, o bé
+la funció `span()`.
 
 
 ```sage
@@ -998,13 +999,13 @@ V=(QQ^3).subspace([(1,1,-1)])
 ```
 
 ```sage
-F + V    #Ha de donar error
+F + V  # Ha de donar error
 ```
 
 Podem fer sumes de més d'un espai:
 
 ```sage
- span([u])+span([v])+span([w])
+ span([u]) + span([v]) + span([w])
 ```
 
 La intersecció d'espais vectorials es crea com a una propietat d'un dels
@@ -1055,13 +1056,13 @@ V.dimension()
 ```
 
 ```sage
-show((U+V).basis())
-(U+V).dimension()
+show((U + V).basis())
+(U + V).dimension()
 ```
 
 ```sage
 show(U.intersection(V).basis())
-V.intersection(V).dimension()
+U.intersection(V).dimension()
 ```
 
 ## Exercicis
