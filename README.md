@@ -9,7 +9,7 @@ Repositori que conté material per l'assignatura del grau de matemàtiques "Eine
 
 - Els únics fitxers que s'han d'editar són a `src/`
 - Dins un bloc de codi es pot inserir `# begin hide` i `# end hide`. El text
-  que hi hagi entre aquestes dues línies (incloses) no apareixierà ni al PDF ni al notebook per l'estudiant (però sí al notebook amb solucions).
+  que hi hagi entre aquestes dues línies (incloses) no apareixerà ni al PDF ni al notebook per l'estudiant (però sí al notebook amb solucions).
 - Els notebooks produïts són nets (sense sortida), però el PDF conté els resultats de l'execució.
 
 ## Passos a seguir per compilar-ho manualment
