@@ -1,6 +1,6 @@
 ---
 jupyter:
-  title : 'Pràctica 7: Càlcul infinitesimal bàsic'
+  title : 'Pràctica 7: Exercicis de consolidació'
   authors: [ "name" : "Marc Masdeu", "name" : "Xavier Xarles" ]
   jupytext:
     text_representation:
@@ -14,1013 +14,573 @@ jupyter:
     name: sagemath
 ---
 
-# Càlcul infinitesimal bàsic
+# Exercici 1
 
-## Límit d'una expressió
+1. Definiu una funció `SumaDivisorsSenars(n)` que retorni la suma dels nombres **senars** que divideixen un nombre enter de sage $n > 0$ (i escrigui un missatge d'error si $n$ no és un enter de sage $\leq 0$). Calculeu `SumaDivisorsSenars(15)` i `SumaDivisorsSenars(1890)`.
 
-Per tal de calcular límits, tant si es tracta d'expressions que depenen
-d'un índex que tendeix a infinit (successions) o d'una variable contínua
-que tendeix a un cert valor (funcions d'una variable)
-**SageMath**  proporciona la funció `limit`. La
-construcció més simple d'una instrucció `limit` serà de la forma
-`limit(expr,x=lmt)`, on `expr` és l'expressió de la qual se'n vol
-obtenir un límit, `x` la variable i `lmt` el punt cap on tendeix aquesta
-variable (pot ser infinit, que es representa per `infinity` o, si voleu
-ser curts, amb `oo`, dues `o` minúscules, amb el signe `+`/`-`
-corresponent si cal). En els exemples següents podeu veure alguns casos
-en els que obtindreu directament el resultat que, segurament, ja us
-espereu:
+2. Definiu una funció `Func(n)` per a $n>1$ un enter, que retorni la llista dels nombres enters no primers $k\leq n$ tals que `SumaDivisorsSenars(k)` és $\ge k$. Calculeu `Func(100)`.
 
-```sage
-var('k')
-
-limit(k/(k+1),k=infinity)
-```
-
-```sage
-limit(k*(sqrt(k+1)-sqrt(k-1))/sqrt(k),k=infinity)
-```
-
-```sage
-limit(k.factorial()/k^k,k=oo)
-```
-
-```sage
-limit((-1)^k*sqrt(k)*sin(k^k)/(k+1),k=oo)
-```
-
-```sage
-limit((sqrt(k+1) - sqrt(k) + 1)^sqrt(k),k=oo)
-```
-
-```sage
-limit((k^3-8*k+7)/(200*k+1024),k=-oo)
-```
-
-```sage
-limit(e^k,k=oo)
-```
-
-```sage
-limit(e^k,k=-oo)
-```
-
-I en alguns casos en què la variable no tendeix a infinit:
-
-```sage
-limit(sin(x)/x,x=0)
-```
-
-```sage
-limit((x-sin(x))/x^3,x=0)
-```
-
-```sage
-limit((1-cos(x)) / x^2,x=0)
-```
-
-```sage
-limit((x^3 + 3*x^2-x-3)/(x-1),x=1)
-```
-
-```sage
-limit(e^(-1/x^2)/x^5,x=0)
-```
-
-Probablement haureu notat que, per defecte,
-**SageMath** (ni cap altre programari de càlcul
-simbòlic) no té mecanismes *per veure* en els límits amb la variable
-tendint a infinit si el problema correspon a una variable contínua o a
-un índex enter. És per això que si calculeu una expressió del tipus
-
-```sage
-limit(cos(2 * pi * k), k=infinity)
-```
-
-pensant que els múltiples de $2\pi$ tenen el cosinus igual a $1$ i,
-per tant, esperant que el resultat sigui aquest, veureu que la resposta
-serà que no existeix tal límit ja que la suposició inicial només és
-vàlida si $k$ és un enter. Per tal de poder tractar aquestes situacions
-cal *fer suposicions* sobre el contingut de les variables o dels
-paràmetres que apareixen en el càlcul. La funció que permet fer això és
-`assume` i en l'exemple anterior es podria utilitzar de la forma
-següent:
-
-```sage
-var('k')
-assume(k,'integer')
-limit(cos(2 * pi * k),k = oo)
-```
-
-Cada cop que s'executa una instrucció `assume` s'afegeix una restricció
-nova sense oblidar les anteriors. Si es vol conèixer en qualsevol moment
-quines són les restriccions actives es pot utilitzar `assumptions()`
-(que amb una llista de variables com argument dona les restriccions
-corresponents a aquestes variables). Si s'han de modificar les
-*suposicions* que s'han fet, convé *oblidar* les que hi hagi en un
-determinat moment per tal de crear les noves. Si no es fa així, i mentre
-no s'introdueixi una suposició incompatible amb les anteriors, les
-suposicions noves s'afegeixen a les existents. Per tal d'oblidar
-**totes** les restriccions que s'han fet fins un cert moment n'hi ha
-prou amb la instrucció `forget()`, si només es vol *oblidar* algunes de
-les restriccions caldrà especificar-les individualment amb el mateix
-format que s'ha utilitzat en les instruccions `assume`.
-
-Una altra de les opcions de la funció `limit` que és important tenir en
-compte és la dels límits laterals. No és infreqüent tenir un límit que,
-estrictament parlant, no existeix encara que potser algun dels dos
-límits laterals (o tots dos) sí que està definit. Per tal de calcular
-límits per la dreta o per l'esquerra n'hi haurà prou afegint l'opció
-`dir=’+’` o `dir=’-’` (amb el significat usual) a la instrucció `limit`
-corresponent.
-
-Les línies següents mostren una situació on l'ús d'aquests mecanismes
-mostra les diferents situacions que poden aparèixer
-
-```sage
-var('a')
-
-f(x) = exp(a/x)
-
-limit(f(x),x=0)
-```
-
-```sage
-assume(a > 0)
-
-limit(f(x),x=0)
-```
-```sage
-limit(f(x),x=0,dir='+')
-```
-```sage
-limit(f(x),x=0,dir='-')
-```
-```sage
-forget(a > 0)
-assume(a < 0)
-limit(f(x),x=0)
-```
-```sage
-limit(f(x),x=0,dir='+')
-```
-```sage
-limit(f(x),x=0,dir='-')
-forget(a < 0)
-```
-
-**Nota:** Teniu en compte que el mecanisme del `assume` no és
-infal·lible. Hi ha moltes situacions en les que resulta molt difícil
-incloure dins els càlculs d'una funció concreta aquestes restriccions.
-
-## Derivades
-
-La funció `diff` permet obtenir la derivada d'una expressió qualsevol
-respecte de la variable que es vulgui. Així, per exemple, es pot fer
-
-```sage
-diff(x^3-2*x^2+4*x-5,x)
-```
-```sage
-(x^3-2*x^2+4*x-5).diff(x)
-```
-
-Encara que, en realitat, si l'expressió només conté una variable, no cal
-especificar respecte què es vol derivar ja que
-**SageMath** ja ho dedueix pel seu compte.
-
-```sage
-diff(x^3-2*x^2+4*x-5)
-```
-
-```sage
-(x^3-2*x^2+4*x-5).diff()
-```
-
-També es poden derivar *funcions* i el resultat és la *funció derivada*:
-
-```sage
-f(x)=tan(a*x^2)
-df = f.diff()
-show(df)
-```
-
-(Noteu que, com que **SageMath** *recorda* que la
-variable de la funció `f` és `x` no cal especificar-ho a la instrucció
-que calcula la derivada).
-
-
-
-Si s'han de calcular derivades d'ordre superior no cal encadenar
-instruccions `diff` com seria
-```sage
-ddf = diff(df)
-show(ddf)
-```
-
-Es pot especificar com un argument addicional després de la variable
-
-```sage
-diff(f(x),x) # Derivada,
-
-diff(f(x),x,x) # Segona derivada,
-
-diff(f(x),x,x,x) # Tercera derivada...
-```
-
-O més en general,
-
-```sage
-diff(f(x),x,2) # Segona derivada,
-```
-```sage
-diff(f(x),x,3) # Tercera derivada,
-```
-```sage
-diff(f(x),x,12) # Dotzena derivada.
-```
-
-La funció `diff` permet combinar derivades d'una funció amb més d'una
-variable. Per exemple, si tenim la funció
-$g(x,y)= y e^{2x^2+x-1}$ podem pensar que $y$ és un
-paràmetre fixat, i calcular la derivada de $g$ fent variar $x$:
-
-```sage
-g(x,y)=y*exp(2*x^2+x-1)
-diff(g(x,y),x)
-```
-
-Però si es vol pensar la $x$ com a paràmetre i derivar $g$ com a funció
-que depèn de $y$ n'hi ha prou amb:
-
-```sage
-diff(g(x,y),y)
-```
-
-Ara noteu que la idea de derivada primera o segona es pot combinar entre
-les dues variables.
-
-```sage
-diff(g(x,y),x,x)
-```
-```sage
-diff(g(x,y),y,y)
-```
-```sage
-diff(g(x,y),x,y)
-```
-```sage
-diff(g(x,y),y,x)
-```
-
-El fet que aquestes dues ultimes derivades coincideixin no és casual
-(tot i que, estrictament parlant, tampoc és sempre cert).
-
-## Estudi del gràfic d'una funció
-
-Un dels problemes típics d'una assignatura de càlcul infinitesimal
-elemental és el de determinar totes les característiques possibles del
-comportament d'una funció (asímptotes, creixement, extrems, convexitat,
-punts d'inflexió,...). En primera aproximació, el resultat d'una
-instrucció `plot` i una mica de tempteig ja és suficient per a obtenir
-resultats força satisfactoris però, en realitat, la raó de ser d'un
-exercici d'aquest tipus és el fet que sense fer alguns límits,
-solucionar algunes equacions i calcular unes quantes derivades no serà
-possible obtenir de forma precisa aquest tipus d'informació. Com heu
-vist, **SageMath** (i qualsevol eina de càlcul
-simbòlic d'un cert nivell) proporciona totes les eines necessàries per
-realitzar una tasca d'aquest tipus.
-
-
-Per tal de veure com es van utilitzant els recursos de
-**SageMath** de forma sistemàtica mirem d'obtenir
-les característiques del gràfic de la funció $f$ determinada per la
-fórmula
-$f(x)= \dfrac{x^{3} + 6 x^{2} + 12 x + 8}{x^{2} + 4  x + 3}$.
-
-*Observem primer quin és el domini màxim de definició de la funció*.
-Clarament només tindrem un problema per avaluar la funció si el que es
-troba al denominador és zero. Calculem, doncs, aquests punts i els
-guardem en una llista `disc`:
-
-```sage
-slcns = solve(x^2+4*x+3 == 0, x)
-
-disc = [x.subs(sol) for sol in slcns]
-disc
-```
-
-Observeu que l'expressió $x^{2} + 4 x + 3$ que hem hagut d'analitzar
-(corresponent al denominador) l'hem extret *manualment* de l'expressió
-de $f(x)$. Si bé es podria haver utilitzat `f(x).denominator()` per
-calcular aquest denominador, no sempre els punts que busquem vindran
-d'igualar un denominador a zero. Això fa que la tasca de sistematitzar
-el càlcul del domini màxim d'una funció necessiti, en molts casos,
-aquesta intervenció manual.
-
-
-Fixeu-vos que si tenim un polinomi de grau més gran haurem de demanar
-solucions numèriques, com a:
-```sage
-solve(x^7-2*x+1==0, x, to_poly_solve=True)
-```
-
-on en surten totes les arrels, també les arrels que no són nombres
-reals.
-
-Per evitar això podem dir-li al **SageMath** que
-la variable x només prendrà valors reals posant:
-
-```sage
-assume(x,"real")
-
-solve(x^7-2*x+1==0, x, to_poly_solve=True)
-```
-
-També li podem demanar les arrels als reals amb doble precisió (surt una
-llista de parelles (arrel, multiplicitat)):
-
-```sage
-(x^7-2*x+1).roots(ring=RDF)
-```
-
-de la que podem extreure fàcilment la llista de arrels reals.
-
-*Un cop determinat aquest domini podem calcular els límits de la funció
-quan la variable s'aproxima als seus extrems*. Les instruccions
-
-```sage
-f(x)=(x^3+6*x^2+12*x+8)/(x^2+4*x+3)
-
-print(f'{limit(f(x),x=oo) = }')
-
-print(f'{limit(f(x),x=-oo) = }')
-```
-
-mostren que no hi ha asímptotes horitzontals ja que són respectivament
-$+\infty$ i $-\infty$. No obstant, com que els límits
-
-```sage
-m1=limit(f(x)/x,x=oo)
-m2=limit(f(x)/x,x=-oo)
-print(f'{m1 = }, {m2 = }')
-```
-
-existeixen i no són zero, hi ha l'opció que existeixin asímptotes
-obliqües amb aquests valors com pendents. Per tal d'obtenir l'equació
-d'aquestes asímptotes s'hauran de calcular els límits
-
-```sage
-n1=limit(f(x)-m1*x,x=oo)
-print(f'{n1 = }')
-
-n2=limit(f(x)-m2*x,x=-oo)
-print(f'{n2 = }')
-```
-
-i, aleshores, es podrà assegurar que el gràfic és asimptòtic a la recta
-$y=m_{1} x+n_{1}$ quan $x\to +\infty$ i a la recta $y=m_{2} x+n_{2}$
-quan $x\to -\infty$. Definim, doncs, una funció que permeti guardar
-l'expressió d'aquesta recta asimptòtica amb
-
-```sage
-asob(x) = m1 * x + n1
-```
-
-Per altra banda, en els punts on no es pot avaluar la funció que s'han
-guardat a la variable `disc` i s'han determinat abans,
-
-```sage
-for a in disc:
-    print(f"Límit quan x-> {a} per la dreta = {limit(f(x), x=a, dir='+')}")
-    print(f"Límit quan x-> {a} per l'esquerra = {limit(f(x), x=a, dir='-')}")
-```
-
-mostra l'existència de les dues asímptotes verticals corresponents i el
-comportament de la funció al seu voltant.
-
-Els zeros de la funció es calcularan usant la instrucció `solve()`, que
-també permet determinar els intervals on el signe de la funció és un o
-l'altre.
-
-```sage
-solve(f(x)==0,x) # Zeros de f(x)
-```
-```sage
-solve(f(x)>0,x) # On la funció és positiva
-```
-```sage
-solve(f(x)<0,x) # On és negativa
-```
-
-*Ara, per estudiar el creixement i decreixement de la funció, és qüestió
-de repetir el mateix estudi per a la funció derivada*:
-
-```sage
-df = diff(f)
-show(df)
-show(df.simplify_full()) # Versió compacta de la derivada
-```
-
-Observeu que el domini de definició de $f'(x)$ no ha canviat respecte el
-de $f(x)$.
-
-Calculem ara els punts crítics i els intervals de creixement i
-decreixement de la funció:
-```sage
-solve(df(x) == 0,x) # Punts crítics de f(x)
-```
-```sage
-solve(df(x) > 0,x) # On la funció creix
-```
-```sage
-solve(df(x)<0,x) # On decreix
-```
-
-Observareu que hi ha tres punts crítics (màxims o mínims locals dels
-valors de la funció) que es poden guardar en una llista:
-
-```sage
-sptscrt = solve(df(x)==0,x)
-
-pcrt= [ x.subs(ss) for ss in sptscrt ]
-
-print(pcrt)
-```
-
-Per altra banda, els intervals on la funció creix o decreix estaran
-limitats per aquests punts crítics i els punts de discontinuïtat. Es pot
-fer una llista d'aquests valors amb:
-
-```sage
-cridcr = sorted(disc+pcrt)
-
-print(cridcr)
-```
-
-Per últim es pot passar a estudiar la concavitat i la convexitat de la
-funció usant la segona derivada:
-
-```sage
-ddf = diff(f,2)
-
-show(ddf)
-
-show(ddf.simplify_full())
-```
-
-De nou, el domini de definició de $f''(x)$ no ha canviat. Però si
-calculem els punts crítics de la derivada ($f''(x)=0$),
-
-```sage
-solve(ddf(x)==0,x)
-```
-
-obtenim un valor real i dos valors estranys que de fet és corresponen a
-nombres complexos; aquests valors no ens interessen! Es poden evitar els
-dos valor complexos de bon principi fent l'assumpció de que $x$ és real:
-
-```sage
-assume(x,'real')
-
-solve(ddf(x)==0,x)
-```
-```sage
-solve(ddf(x)>0,x) # On la funció és convexa
-```
-```sage
-solve(ddf(x)<0,x) # On la funció és concava
-```
-
-I es veu que el punt $x=-2$ és un punt d'inflexió. Totes aquestes propietats es poden visualitzar al gràfic de la funció:
-
-```sage
-gf=plot(f,-8,5,ymin=-10,ymax=10,detect_poles='show')
-
-ga=plot(asob,-8,5)
-
-gf+ga
-```
-
-Els valors extrems de la variable $x$ ($-8$ i $5$) així com es valors
-màxim i mínim de la $y$ s'han triat tenint en compte els resultats que
-han anat sortint al llarg dels càlculs anteriors.
-
-## Integrals
-
-El càlcul integral amb **SageMath** és prou
-intuïtiu. Donada, per exemple, la funció determinada per
-$f(x)=x\sin(x)$, per calcular la integral definida
-$\displaystyle\int_a^b f(x) dx$ es pot fer
-
-```sage
-
-f(x)=x*sin(x)
-
-var('a b')
-
-integral(f(x),x,a,b)
-```
-
-Els límits d'integració els hem introduït com una variable però,
-òbviament, els podem canviar per qualsevol valor real o expressió (també
-són vàlids $\pm\infty$).
-
-```sage
-integral(f(x),x,0,3)
-```
-```sage
-integral(f(x),x,0,3).n()
-```
-```sage
-integral(f(x),x,1.,2.)
-```
-```sage
-integral(e^(-x^2),x,-infinity,infinity)
-```
-
-Recordeu que, si $f(x)$ és una funció positiva, la integral definida
-entre $a$ i $b$ ens dona l'àrea entre la gràfica de la funció i l'eix
-$x$. Això es pot estendre a funcions amb valors negatius entenent l'àrea
-per sota de la funció com a àrea negativa.
-
-Això es pot il·lustrar usant l'opció `fill()` en una instrucció
-`plot()`. Mireu a l'ajuda les diferents possibilitats que ens ofereix.
-
-```sage
-plot(f(x),(x,0,4))+plot(f(x),(x,1,2),fill='axis')
-```
-```sage
-integral(f(x),x,1,2).n()
-```
-```sage
-plot(sin(x)/x,(x,-50,50),fill='axis')
-```
-```sage
-integral(sin(x)/x,x,-50,50).n()
-```
-
-
-Si es vol calcular una *primitiva* de $f(x)$, és a dir, una funció
-$F(x)$ tal que $F'(x)=f(x)$, simplement s'eliminen els límits
-d'integració a la sintaxi anterior.
-
-```sage
-h(x)=integral(f(x),x)
-print(h(x))
-```
-```sage
-diff(h(x),x)
-```
-
-Ara bé, noteu que el resultat obtingut no té en compte la constant
-d'integració $C$, de forma que, si el que volem és una primitiva
-concreta, l'haurem d'ajustar. Per exemple, sabem que la funció
-$F(x)=\displaystyle\int_0^x f(t) dt$ és la primitiva de $f(x)$ que
-compleix $F(0)=0$. Observem que això no és cert per a la primitiva que
-calcula **SageMath** en l'exemple anterior, però
-que es pot ajustar fàcilment.
-
-```sage
-show(h(0))
-F(x)=h(x)-h(0)
-```
-
-Es poden fer els càlculs d'algunes integrals treballant amb paràmetres,
-tot i això, en alguns casos caldrà fer suposicions sobre aquests com ves
-veu a l'exemple següent:
-
-```sage
-var('m')
-integral(x^m,x)
-```
-```sage
-assume(m != -1)
-integral(x^m,x)
-```
-```sage
-integral(x^(-1),x)
-```
-
-## Exercicis
-
-
-### Exercici 1
-
-
-Calculeu
-$$
-\lim_{k\to \infty} \left( \frac{\ln(k+1)}{\ln(k)}\right)^{(k \ln(k))}
-$$
+3. Feu una llista $L$ de longitud 15 que comenci amb `L[0]=1069` i de manera que `L[i+1]` sigui igual a  `SumaDivisorsSenars(L[i])` per a $i\ge 0$.
 
 -- begin hide
+
+#### Part 1
+
 ```sage
-var('k')
-lim((ln(k+1)/ln(k))(k*ln(k)),k=infinity)
+def SumaDivisorsSenars(n):
+    try:
+	    n = ZZ(n)
+    except TypeError:
+	    raise TypeError('n ha de ser un enter de Sage')
+	if n <= 0:
+        raise ValueError('n ha de ser positiu')
+    return sum(d for d in divisors(n) if d % 2 == 1)
+```
+
+```sage
+SumaDivisorsSenars(15)
+```
+
+```sage
+SumaDivisorsSenars(1890)
+```
+
+#### Part 2
+
+```sage
+Func = lambda n : [k for k in srange(2,n+1) if not k.is_prime() and SumaDivisorsSenars(k) >= k]
+```
+
+```sage
+Func(100)
+```
+
+#### Part 3
+
+Una manera:
+
+```sage
+L = []
+a = 1069
+for _ in range(15):
+    L.append(a)
+    a = SumaDivisorsSenars(a)
+print(L)
+print(len(L))
+```
+
+Una altra sense usar la variable auxiliar `a`:
+
+```sage
+L = [1069]
+for _ in range(14):
+    L.append(SumaDivisorsSenars(L[-1]))
+print(L)
+print(len(L))
 ```
 -- end hide
 
-### Exercici 2
 
 
-Calculeu els límits de la forma:
+# Exercici 2
 
-1. $\lim\limits_{x\to 3} \exp\left(\dfrac{a x}{x-3}\right)$
 
-2. $\lim\limits_{x\to 2} \dfrac{x-a}{|x-b|}$
-
-3. $\lim\limits_{x\to 0} \exp\left( \dfrac{a+\exp(-1/x^{2})}{x^{2}} \right)$
-
-Tenint en compte com varia el resultat segons el valor dels
-paràmetres $a$, $b$ i com són els límits laterals en cada cas.
-
+Les parelles de primers bessons són parelles de primers de la forma $(p,p+2)$. Definiu una funció que permeti fer una llista de les parelles de primers bessons menors que un màxim donat.
 
 -- begin hide
-
-
-(a) $\lim\limits_{x\to 3} \exp\left(\dfrac{a\, x}{x-3}\right)$
-
 ```sage
-forget()
-var('a x')
-assume(a>0)
-show('limit quan a>0 per la dreta =\t ',lim(exp((a*x)/(x-3)),x=3,dir='+'))
+def primersbessons(n):
+    """ Retorna la llista de parelles de primers bessons fins a n """
+	n = ZZ(n)
+    if n % 2 != 0:
+        raise ValueError("El valor donat no és un enter parell")
+    return [(p,p+2) for p in srange(3,n) if p.is_prime() and (p+2).is_prime()]
 ```
 
 ```sage
-show("limit quan a>0 per l'esquerra =\t ",lim(exp((a*x)/(x-3)),x=3,dir='-'))
+primersbessons(20)
 ```
 
 ```sage
-forget(a>0)
-assume(a<0)
-show('limit quan a<0 per la dreta =\t ', lim(exp((a*x)/(x-3)),x=3,dir='+'))
+primersbessons(100)
+```
+
+Observeu que si li passem un senar o un nombre que no sigui del tipus enter, dona un error.
+
+```sage
+primersbessons(7)
 ```
 
 ```sage
-show("limit quan a<0 per l'esquerra =\t ",lim(exp((a*x)/(x-3)),x=3,dir='-'))
-```
-
-(b) $\lim\limits_{x\to 2} \dfrac{x-a}{|x-b|}$
-
-```sage
-forget()
-var('a b x')
-show('limit quan b no és 2 =\t ',lim((x-a)/(abs(x-b)),x=2))
-```
-
-```sage
-assume(a>2)
-show('limit quan a> 2 i b és 2 =\t ',lim((x-a)/(abs(x-2)),x=2))
-```
-
-```sage
-forget()
-assume(a<2)
-show('limit quan a<2 i b és 2 = \t ',lim((x-a)/(abs(x-2)),x=2))
-```
-
-(c) $\lim\limits_{x\to 0} \exp\left( \dfrac{a+\exp(-1/x^{2})}{x^{2}} \right)$
-
-```sage
-forget()
-assume(a>0)
-show('limit quan a> 0  = \t',lim(exp((a+exp(-1/x^2))/x^2),x=0))
-```
-
-```sage
-forget()
-assume(a<0)
-show('limit quan a<0  = \t ',lim(exp((a+exp(-1/x^2))/x^2),x=0))
-```
-
-```sage
-forget()
-show('limit quan a és 0  = \t',lim(exp((exp(-1/x^2))/x^2),x=0))
-```
-
--- end hide
-
-### Exercici 3
-
-
-Considereu la funció determinada per $h(x)=\dfrac{20}{x^2+4}$.
-Calculeu la primera i segona derivades $h'(x)$ i $h''(x)$ i
-representeu conjuntament les tres funcions.
-
-Observareu que, el punt on el pendent a la gràfica de $h(x)$ és
-màxim, és en efecte un màxim de $h'(x)$ i a més s'anuł.la $h''(x)$.
-Determineu aquest punt. Sabeu com serà $h'''(x)$ en aquest punt?
-
-
--- begin hide
-
-
-```sage
-reset()
-var('x')
-h(x)=20/(x^2+4)
-```
-
-```sage
-dh=h.diff()
-ddh=dh.diff()
-show(dh)
-show(ddh)
-```
-
-```sage
-gh=plot(h,-5,5,ymin=-5,ymax=6,  legend_label='Funció f')
-gdh=plot(dh,-5,5,ymin=-5,ymax=6,color='red',legend_label='Derivada de f')
-gddh=plot(ddh,-5,5,ymin=-5,ymax=6,color='green', legend_label='Segona derivada de f')
-gh+gdh+gddh
-```
-
-```sage
-S=solve(ddh(x)==0,x)
-S=[x.subs(s) for s in S]
-show("Punts on s'anul·la la segona derivada \t ", S)
-```
-
-```sage
-dddh=ddh.diff()
-pdddh = plot(dddh,-5,5,ymin=-5,ymax=6)
-ptdddh = point([[s,dddh(s)] for s in S],color='red',title='Grafica de la tercera derivada amb els dos punts',size=25)
-pdddh+ptdddh
-```
-
-```sage
-ddddh=dddh.diff()
-show('Valor de la tercera derivada en aquests dos punts = \t', {ddddh(s) for s in S}) 
-```
-
-
--- end hide
-
-### Exercici 4
-
-
-Definiu la *funció* `h` de dues variables corresponent a
-$$h(x,y)= \frac{x e^{xy} \sin(y^{2})}{\ln(x^{2}+y^{2}+2)}$$
-i determineu
-
-1. La *funció* corresponent a la derivada de `h` respecte la
-        variable `x`.
-
-2. La *funció* corresponent a la derivada de `h` respecte la segona
-        variable (`y`).
-
-3. Els valor de la derivada de `h` respecte `x` per a `x=1`,
-        `y=1/2`.
-
-4. La *funció* que s'obté derivant `h` respecte `x` dues vegades.
-
-
--- begin hide
-
-```sage
-h(x,y) = (x*exp(x*y)*sin(y^2))/(ln(x^2+y^2+2))
-show(h)
-```
-
-La funció corresponent a la derivada de $h$ respecte la variable $x$:
-
-```sage
-show(diff(h,x))
-```
-
-La funció corresponent a la derivada de $h$ respecte la segona variable ($y$):
-
-```sage
-show(diff(h,y))
-```
-
-Els valor de la derivada de $h$ respecte $x$ per a $x=1$, $y=1/2$:
-
-```sage
-diff(h,x)(1,1/2)
-```
-
-```sage
-diff(h,x)(1.,1./2)
-```
-
-La funció que s'obté derivant $h$ respecte $x$ dues vegades:
-
-```sage
-show(diff(h,x,x).simplify())
+primersbessons(12/2)
 ```
 
 -- end hide
 
 
-### Exercici 5
-Creeu una funció de **SageMath** anomenada
-`tangent`, que accepti com a paràmetres una funció $f(x)$, un punt
-$a$ i una distància $h>0$, i doni com a resultat el gràfic de la
-funció $f(x)$ junt amb la seva recta tangent en el punt $(a,f(a))$
-en l'interval $[a-h,a+h]$.
+# Exercici 3
+
+
+La conjectura de Goldbach afirma que tot enter parell més gran que 2 es pot escriure com la suma de dos primers. Per exemple, $6=3+3$, $12=7+5$ o $64=17+47$. Aquestes particions com a suma de dos primers s'anomenen particions de Goldbach.  Creeu una funció Goldbach(n) que retorni totes les possibles particions de Goldbach de $n$ (sense importar l'ordre). Si denotem per $r(2k)$ el nombre de particions de Goldbach de $2k$, la conjectura afirma que $r(2k)>0$ per a tot $k>1$. Representeu en un gràfic els valors $(k,r(2k))$ per a $k\in [2,2000]$.
 
 -- begin hide
-```sage
-def tangent(f,a,h):
-    f=f.function(x)
-    dfa=diff(f(x),x).subs(x==a)
-    rtan(x)=dfa*(x-a)+f.subs(x==a)
-    gt=plot(rtan,a-h,a+h,color='red')
-    gf=plot(f,a-h,a+h)
-    return gt+gf
+Emetem un misstage d'error del tipus `TypeError` si no és un enter de Sage o `ValueError` si el nombre no és parell i $>4$.
 
-show(tangent(x^3,3,1))
-show(tangent(exp(x^-2),5,.5))
+```sage
+def Goldbach(n):
+    """ Retorna la llista de parelles de primers senars que sumen n """
+    if type(n) != Integer:
+        raise TypeError('Ha de ser un enter de Sage')
+    if n % 2 == 1 or n < 6:
+        raise ValueError(f'El nombre {n} ha de ser un enter parell més gran que 4')
+    return [(p,n-p) for p in prime_range(3,n//2+1) if (n-p).is_prime()]
+```
+
+```sage
+Goldbach(6)
+```
+
+```sage
+Goldbach(100)
+```
+
+```sage
+Goldbach(26)
+```
+
+```sage
+pt=[(k,len(Goldbach(2*k))) for k in srange(3,2000)]
+```
+
+```sage
+points(pt)
+```
+
+
+```sage
+Goldbach('a')
+```
+
+```sage
+Goldbach(-3)
+```
+
+```sage
+Goldbach(10)
 ```
 -- end hide
 
-### Exerici 6
+# Exercici 4
 
 
-Milloreu la informació que mostra el gràfic de la funció
-$f(x)= \dfrac{x^{3} + 6  x^{2} + 12  x + 8}{x^{2} + 4  x + 3}$
-que surt al text marcant els punts on hi ha extrems relatius i fent
-que les regions de creixement i decreixement tenguin colors
-diferents.
+Donat $k\in \mathbb{N}$, la funció phi d'Euler, $\varphi(k)$ és una funció que es defineix fàcilment en termes aritmètics, i que es pot calcular com $$\varphi(k)=\prod_{i=1}^r (p_i-1)\,p_i^{\alpha_i-1}$$ on $k=p_1^{\alpha_1}\cdots p_r^{\alpha_r}$ és la descomposició de $k$ en primers diferents. 
+
+1. Factoritzeu un enter qualsevol fent `A = factor(...)` i observeu com s'estructura `A`, mirant per exemple la factorització i el contingut de `A[1]`.
+
+2. Useu això per a construir una funció que calculi $\varphi(k)$ per a qualsevol natural $k$.
+
+3. Comproveu que el resultat coincideix amb el de la instrucció `euler\_phi(k)`.
 
 -- begin hide
+Calculo un valor del qual se la seva factorizació per veure com és el resultat d'aplicar la funció factor()
 
 ```sage
-f(x)=(x^3+6*x^2+12*x+8)/(x^2+4*x+3)
-slcns=solve(f(x).denominator()==0,x)
-disc=[x.subs(sol) for sol in slcns]
-m1=limit(f(x)/x,x=oo)
-n1=limit(f(x)-m1*x,x=oo)
-asob(x)=m1*x+n1
-df=diff(f)
-sptscrt=solve(df(x)==0,x)
-pcrt=[x.subs(ss) for ss in sptscrt]
-cridcr=sorted(disc+pcrt)
-creixement=solve(df(x)>0,x)
-decreixement=solve(df(x)<0,x)
+n = 2**3 * 3**2 * 5
+n
 ```
 
 ```sage
-show('els punts crítics (on pot canviar la derivada) són \t', cridcr)
+A = factor(n)
+A
 ```
 
 ```sage
-show('llocs on la fucnió creix  \t', creixement)
-show('llocs on la fucnió decreix \t', decreixement)
+A[0]
 ```
 
 ```sage
-show('Observem que la funció decreix del primer punt crític al últim punt crític, que són els extrems relatius')
-extrems = [cridcr[0],cridcr[-1]]
-show('Els extrems relatius són  \t  ', set(extrems))
+A[1]
 ```
 
 ```sage
-gfce=plot(f,-8,cridcr[0],ymin=-10,ymax=10,detect_poles='show',color='green')
-gfcd=plot(f,cridcr[-1],5,ymin=-10,ymax=10,detect_poles='show',color='green')
-gfd=plot(f,cridcr[0],cridcr[-1],ymin=-10,ymax=10,detect_poles='show',color='blue')
-ga=plot(asob,-8,5,color='grey')
-pcridcr=point([(s,f(s)) for s in extrems],xmin=-8, xmax=5,color='red', marker="s", size=25)
-gfce+gfcd+gfd+ga+pcridcr
+list(A)
 ```
 
+Veiem que, tot i el que ens ensenya quan li demanem que ens ho mostri, de fet la factorització d'un nombre es comporta com una llista de tuples de la forma (a,b), on a és el primer i b la potència en la que divideix el nombre.
+
+```sage
+def Lamevaphi(n):
+    """ Una versió de la fi d'Euler """
+    if type(n) != Integer:
+        raise TypeError('n ha de ser un enter de Sage')
+	if n<2:
+        raise ValueError('Ha de ser un enter més gran que 1')
+    A = factor(n)
+    ans = 1
+    for p, e in A:
+        ans *= (p-1) * p**(e-1)
+    return ans
+```
+
+```sage
+Lamevaphi(n)
+```
+
+```sage
+euler_phi(n)
+```
+
+Una altre versió més comprimida, usant la funció `prod` que té el Sage.
+
+```sage
+def Unaaltrephi(n):
+    """ Una versió de la fi d'Euler """
+    if type(n) != Integer:
+        raise TypeError('n ha de ser un enter de Sage')
+	if n<2:
+        raise ValueError('Ha de ser un enter més gran que 1')
+	return prod((p-1) * p**(e-1) for p, e in factor(n))
+```
+
+```sage
+Unaaltrephi(n)
+```
 -- end hide
 
-### Exerici 7
+
+# Exercici 5
 
 
-Realitzeu l'estudi complet de la representació gràfica de la funció
-$$g(x)= \frac{x^3-2}{x^2-3x+1}$$
+Considereu un joc d'atzar en el que es pot apostar entre dues opcions diferents igual de probables (cara o creu, parells o senars en la ruleta,...) de tal forma que cada cop que es guanya es recupera l'aposta i s'obté un premi de la mateixa quantitat (per tant, s'augmenta el capital amb un import igual a l'aposta que s'ha fet). És una creença força estesa entre els addictes al joc que l'estratègia consistent a fixar una aposta base, mantenint aquest import mentre es va guanyant i doblant l'aposta cada cop que es perd, condueix a l'èxit, ja que cada cop que es guanya després d'una ratxa dolenta es recupera tot el que s'havia perdut en les tirades anteriors i mentre es va guanyant s'acumulen beneficis. Per tal de comprovar si això és cert, feu una simulació d'aquest joc utilitzant com a model del fet de guanyar o perdre el resultat de la instrucció randint(0,1), fixant un capital inicial de $100$ unitats, una aposta base de 1 unitat i repetint el joc mentre es tinguin diners per apostar (el jugador s'arruïna) o s'arribi a acumular un capital de $1000$ unitats (moment en el qual el jugador es dona per satisfet). Per tal de veure l'evolució del joc, feu que mentre es realitza la simulació es vagi guardant en una llista el capital acumulat fins el moment, de tal forma que, al final, es pugui dibuixar un gràfic de l'evolució d'aquest capital.
+
+Un exercici més complet consisteix a repetir moltes vegades l'experiment comptant al final la proporció de vegades que s'acaba guanyant la quantitat que satisfà al jugador.
 
 -- begin hide
 
+Tenim dues opcions respecte el mètode: o bé quan dobles l'aposta la mantens si guanyes, o bé si guanyes retornes a apostar 1.
+
+Fem el primer cas (executeu-ho varies vegades per a veure com va canviant
+
 ```sage
-reset()
-assume(x,'real')
-g(x)=(x^3-2)/(x^2-3*x+1)
+ap=1
+tot=100
+T=[tot]
+while tot > ap and tot < 1000:
+    tot -= ap
+    T.append(tot)
+    tir = randint(0,1)
+    if tir == 1:
+        tot += 2*ap
+    else:
+        ap *= 2
+print(tot)
 ```
 
 ```sage
-slcns=solve(g(x).denominator()==0,x)
-disc=[x.subs(sol) for sol in slcns]
-show(disc)
+points([(i,T[i]) for i in range(len(T))])
 ```
 
 ```sage
-show(limit(g(x),x=oo))
-m1=limit(g(x)/x,x=oo)
-show(m1)
+T
+```
+
+Per a veure més casos he fet una funció aposta de manera que respon `True` si i només si es guanya la aposta, i el guany final.
+
+```sage
+def aposta():
+    ap = 1
+    tot = 100
+    while tot > ap and tot < 1000:
+        tot -= ap
+        tir = randint(0,1)
+        if tir == 1:
+            tot += 2*ap
+        else:
+            ap *= 2
+    return tot >= 1000, tot - 100
 ```
 
 ```sage
-show(limit(g(x),x=-oo))
-m2=limit(g(x)/x,x=-oo)
-show(m2)
+aposta()
 ```
+
+Ara repeteixo el joc 1000 vegades a veure el percentatge de vegades que es guanya.
 
 ```sage
-n1=limit(g(x)-m1*x,x=oo)
-n2=limit(g(x)-m1*x,x=-oo)
-show(n1)
-show(n2)
-asob(x)=m1*x+n1
+t=0
+total=0
+for k in range(1000):
+    ap, guany = aposta()
+    if ap:
+        t += 1
+    total += guany
+print(t/1000.*100)
+print(total)
 ```
+
+Em surt aproximadament entre 2% i 4%, però alguns cops es guanya diners.
+
+
+El mateix però amb la segona versió del mètode.
 
 ```sage
-dg=diff(g)
-sptscrt=solve(dg(x)==0,x)
-pcrt=[x.subs(ss) for ss in sptscrt]
-show(pcrt)
-cridcr=sorted(disc+pcrt)
-cridcr=[c.n() for c in cridcr]
-show(cridcr)
-```
+def aposta():
+    ap = 1
+    tot = 100
+    while tot > ap and tot < 1000:
+        tot -= ap
+        tir = randint(0,1)
+        if tir == 1:
+            tot += 2*ap
+            ap = 1
+        else:
+            ap *= 2
+    return tot >= 1000, tot-100
 
-```sage
-show([c.n() for c in cridcr])
+t = 0
+total = 0
+for k in range(1000):
+    ap, guany = aposta()
+    if ap:
+        t += 1
+    total += guany
+print(t/1000.*100)
+print(total)
 ```
-
-```sage
-solve(dg(x)>0,x) # On la funció creix
-```
-
-```sage
-solve(dg(x)<0,x) # On la funció decreix
-```
-
-```sage
-ddg=diff(g,2)
-show(ddg)
-show(ddg.simplify_full())
-```
-
-```sage
-solve(ddg(x)==0,x)
-```
-
-```sage
-solve(ddg(x)>0,x) # On la funció és convexa
-```
-
-```sage
-solve(ddg(x)<0,x) # On la funció és còncava
-```
-
-```sage
-gce=plot(g,-3,cridcr[0],ymin=-20,ymax=30,detect_poles='show',color='green')
-gcd=plot(g,cridcr[-1],8,ymin=-20,ymax=30,detect_poles='show',color='green')
-gd=plot(g,cridcr[0],cridcr[-1],ymin=-20,ymax=30,detect_poles='show',color='blue')
-ga=plot(asob,-3,8,color='grey')
-pcridcr=point([(s,g(s)) for s in pcrt], xmin=-3, xmax=8,color='red', marker="s", size=25)
-gce+gcd+gd+ga+pcridcr
-```
-
 -- end hide
 
-### Exercici 8
+# Exercici 6
 
-Representeu l'àrea de la regió del pla que queda entre els gràfics
-de $y=\sin(x)$ i $y=\cos(x)$ corresponent als $x$ entre $0$ i
-$2\, \pi$ en els que $\cos(x)\le\sin(x)$ dibuixant els gràfics
-d'aquestes dues funcions en $[0,2 \pi]$ i ombrejant la regió. (Cal
-que investigueu una mica en la documentació de `plot` per aconseguir
-un bon resultat).
+En aquest exercici veurem que és possible treballar amb relacions d'equivalència i quocients per a conjunts finits. Considerarem un conjunt finit (de *Python*, o sigui construït via `{ }` o be via `set( )`). Les següents funcions han de respondré un booleà que sigui `True` o `False`, depenent de la veracitat o no del que es vol comprovar.
 
-Determineu el valor de l'àrea d'aquesta regió calculant la integral
-corresponent.
+1. Recordeu que una relació en un conjunt $S$ és un subconjunt de $S^2$. Per a poder definir $S^2$ com a conjunt podeu utilitzar $$\{(a,b) \text{ for a in }S \text{ for b in }S\}.$$ Definiu una funció es\_relacio de SageMath tal que donats dos conjunts $S$ i $R$ comprovi si $R$ és una relació de $S$; de pas pot comprovar també si els dos son conjunts amb $type(S) =set$. Comproveu que `es_relacio({1},{(1,1)})` respon `True` i que `es_relacio({1},{1})` respon `False`.
+
+2. Definiu funcions  `es_reflexiva`,  `es_simetrica`, i  `es_transitiva` que comprovi primer si li passem una relació i després si la relació és reflexiva, simètrica, i transitiva respectivament. Definiu després una funció `es_equivalencia` que cridi a cadascuna de les funcions anteriors i respongui si és o no d'equivalencia.
+
+3. Definiu una funció `classe(a,S,R)` que calculi, després de comprovar si $R$ és una relació d'equivalencia de $S$, el conjunt de tots els elements de $S$ que estan a la classe de $a\in S$, i una funció `quocient(S,R)` que respongui un conjunt (subconjunt de $S$) que contingui un representant de cada classe de $S/R$.
+
+4. Definiu una funció `projeccio(S,R)` tal que, donat un conjunt `S` i una relació `R` retorni un diccionari on les claus siguin els elements de `S` i els valor sigui l'element de `quocient(S,R)` que està relacionat amb ell, després de comprovar si $R$ és una relació d'equivalència de $S$.
+
+5. Apliqueu aquestes funcions al conjunts $S=set([1..5])$ amb la relació corresponent a $a<b$ i a la relació corresponent a $a \leq b$, i al conjunt `set(Zmod(10))` amb la relació $(a,b)\in R  \Leftrightarrow 2a = 2b$.
 
 -- begin hide
 
+### Part 1
+
 ```sage
-s(x)=sin(x)
-c(x)=cos(x)
+def es_relacio(S,R):
+    """Comprova si R és un subconjunt de S^2"""
+    if type(S) != set or type(R) !=set:
+        raise TypeError('No són conjunts')
+	return all(r1 in S and r2 in S for r1, r2 in R)
 ```
 
-Primer faig la grafica per a veure aproximadament on es tallen.
+Comprovem alguns casos fàcils
 
 ```sage
-plot([s,c],0,2*pi)
+es_relacio(1,2)
 ```
 
-Calculo les x's on es tallen les gràfiques amb find_root (numèricament).
-
 ```sage
-r1=find_root(s(x)-c(x),0,1)
-r2=find_root(s(x)-c(x),3,5)
+es_relacio({1},{1})
 ```
 
-Afegeixo al plot anterior el ombrejat entre s i c entre els punts r1 i r2.
-
 ```sage
-plot([s,c],0,2*pi)+ plot(s,r1,r2, fill=c)
+es_relacio({1},{(1,1)})
 ```
 
-Determinem el valor de l'àrea d'aquesta regió:
+### Part 2
 
 ```sage
-integral(s(x)-c(x),x,r1,r2)
+def es_reflexiva(S,R):
+    """ Comprova si R es una relacio reflexiva de S"""
+    if not es_relacio(S,R):
+        print('No és una relacio')
+        return False
+	return all((a,a) in R for a in S)
+```
+
+```sage
+def es_simetrica(S,R):
+    """ Comprova si R es una relació simmètrica de S"""
+    if not es_relacio(S,R):
+        print('No es una relacio')
+        return False
+	return all((r2,r1) in R for r1, r2 in R)
+```
+
+```sage
+def es_transitiva(S,R):
+    """ Comprova si R es una relació transitiva de S"""
+    if not es_relacio(S,R):
+        print('No és una relacio')
+        return False
+	return all((a1, b2) in R for a1, a2 in R for b1, b2 in R if a2 == b1)
+```
+
+```sage
+def es_equivalencia(S,R):
+    """ Comprova si R es una relació d'equivalència de S"""
+    if not(es_relacio(S,R)):
+        print('No és una relacio')
+        return False
+    return es_reflexiva(S,R) and es_simetrica(S,R) and es_transitiva(S,R)
+```
+
+### Part 3
+
+```sage
+def classe(a,S,R):
+    """ Calcula el subconjunt de S dels equivalents a a per R"""
+    if a not in S:
+        raise ValueError("l'element no és de S")
+    if not es_equivalencia(S,R):
+        raise ValueError("No és d'equivalencia")
+    return {s2 for s1, s2 in R if s1 == a}
+```
+
+```sage
+def quocient(S,R):
+    """ Calcula un subconjunt de S que conté un element per a cada classe respecte R"""
+    if not es_equivalencia(S,R):
+        raise ValueError("No es d'equivalencia")
+    Sc = copy(S)
+    Qs = {}
+    while len(Sc) > 0:
+        a = Sc.pop()
+        ca = classe(a,S,R)
+        Qs.add(a)
+        Sc = Sc.difference(ca)
+    return Qs
+```
+
+
+### Part 4
+
+
+He fet una funció que a cada element de `S`, respon l'element del quocient que li correspon.
+
+```sage
+def representant_quocient(s,Qs,S,R):
+    """ Per a cada s de S, calcula quin element de Qs és equivalent a s"""
+	cl = classe(s,S,R) # és important definir cl fora del "for". Si no, la recalcularem moltes vegades
+    for a in Qs:
+        if a in cl:
+            return a
+```
+
+Una manera més ràpida és fer servir la funció `next`, que ens dona el primer element d'un iterador:
+
+```sage
+def representant_quocient(s,Qs,S,R):
+    """ Per a cada s de S, calcula quin element de Qs és equivalent a s"""
+	cl = classe(s,S,R)
+	return next(a for a in Qs if a in cl)
+```
+
+```sage
+def projeccio(S,R):
+    """ Retorna un diccionari on les claus és S i els valors el quocient"""
+    Qs = quocient(S,R)
+    return {s : representant_quocient(s,Qs,S,R) for s in S}
+
+```
+
+### Part 5
+
+```sage
+S = set([1..10])
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if s[0] < s[1]}
+```
+
+```sage
+es_relacio(S,R)
+```
+
+```sage
+es_reflexiva(S,R)
+```
+
+```sage
+es_simetrica(S,R)
+```
+
+```sage
+es_transitiva(S,R)
+```
+
+```sage
+es_simetrica2(S,R)
+```
+
+```sage
+S = set([1..10])
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if s[0] <= s[1]}
+```
+
+```sage
+es_relacio(S,R)
+```
+
+```sage
+es_reflexiva(S,R)
+```
+
+```sage
+es_simetrica(S,R)
+```
+
+```sage
+es_transitiva(S,R)
+```
+
+```sage
+es_simetrica2(S,R)
+```
+
+```sage
+S = set(Zmod(10))
+S2 = {(a,b) for a in S for b in S}
+R = {s for s in S2 if 2*s[0] == 2*s[1]}
+```
+
+```sage
+es_equivalencia(S,R)
+```
+
+```sage
+es_simetrica2(S,R)
+```
+
+```sage
+QS=quocient(S,R)
+QS
+```
+
+```sage
+classe(0,S,R)
+```
+
+```sage
+classe(1,S,R)
+```
+
+```sage
+[classe(a,S,R) for a in QS]
+```
+
+```sage
+PS = projeccio(S,R)
+```
+
+```sage
+PS[3]
+```
+
+```sage
+PS[5]
 ```
 
 -- end hide
