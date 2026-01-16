@@ -428,8 +428,101 @@ R(3, 1) == 15
 
 Implementeu els enters mòdul $n$, on $n$ és un natural arbitrari.
 
+--begin hide
+
+class EnterMod(Element):
+    def __init__(self, parent, a):
+        modul = parent.modul
+        self.classe = ZZ(a % modul) 
+        Element.__init__(self, parent)
+
+    def _repr_(self): 
+        return f'{self.classe}'
+
+    def enter(self):
+        return ZZ(self.classe)
+
+    def _add_(self, other): 
+        return self.__class__(self.parent(), self.classe + other.classe)
+        
+    def _mul_(self, other): 
+        return self.__class__(self.parent(), self.classe * other.classe)
+
+    def _pow_int(self, n):
+        if n<0:
+            raise ValueError('No implementat per potencies negatives')
+        return self.__class__(self.parent(), self.classe**n)
+
+    
+class EntersMod(UniqueRepresentation, Parent):
+    def __init__(self, n):
+        modul = ZZ(n)
+        self.modul = modul
+        self.element_class = EnterMod # Aquí li quin són els elements        
+        Parent.__init__(self, base = QQ)
+
+    def _repr_(self):
+        return f'EntersMod({self.modul})'
+    
+    def _element_constructor_(self, x):
+       return self.element_class(self, x)
+
+    def _coerce_map_from_(self, S):
+        # Permetem la coerció d'elements de la base (o que s'hi puguin coercionar)
+        return self.base().has_coerce_map_from(S)
+
+--end hide 
+
+
+
 ### Exercici 2
 
 Implementeu els polinomis de Laurent, que són expressions de la forma $f(x) = a_n x^n +\cdots + a_m x^m$, 
 on $n \le m$ són enters arbitraris i els $a_i$ són elements d'un cos (o anell) fixat. Tot polinomi de Laurent s'expressa de manera única com
 $f(x) = x^r g(x)$, on $g(x)$ és un polinomi (habitual) tal que $g(0) \neq 0$.
+
+--begin hide
+
+class EnterMod(Element):
+    def __init__(self, parent, a):
+        modul = parent.modul
+        self.classe = ZZ(a % modul) 
+        Element.__init__(self, parent)
+
+    def _repr_(self): 
+        return f'{self.classe}'
+
+    def enter(self):
+        return ZZ(self.classe)
+
+    def _add_(self, other): 
+        return self.__class__(self.parent(), self.classe + other.classe)
+        
+    def _mul_(self, other): 
+        return self.__class__(self.parent(), self.classe * other.classe)
+
+    def _pow_int(self, n):
+        if n<0:
+            raise ValueError('No implementat per potencies negatives')
+        return self.__class__(self.parent(), self.classe**n)
+
+    
+class EntersMod(UniqueRepresentation, Parent):
+    def __init__(self, n):
+        modul = ZZ(n)
+        self.modul = modul
+        self.element_class = EnterMod # Aquí li quin són els elements        
+        Parent.__init__(self, base = QQ)
+
+    def _repr_(self):
+        return f'EntersMod({self.modul})'
+    
+    def _element_constructor_(self, x):
+       return self.element_class(self, x)
+
+    def _coerce_map_from_(self, S):
+        # Permetem la coerció d'elements de la base (o que s'hi puguin coercionar)
+        return self.base().has_coerce_map_from(S)
+
+
+--end hide 
