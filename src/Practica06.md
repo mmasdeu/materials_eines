@@ -430,9 +430,6 @@ Implementeu els enters mòdul $n$, on $n$ és un natural arbitrari.
 
 ### Exercici 2
 
-Implementeu els polinomis de Laurent, que són expressions de la forma
-$
-f(x) = \sum_{i=n}^m a_i x^i,
-$
-on $n<=m$ són enters arbitraris. Tot polinomi de Laurent s'expressa de manera única com
-$f = x^r g$, on $g$ és un polinomi (habitual) tal que $g(0) \neq 0$.
+Implementeu els polinomis de Laurent, que són expressions de la forma $f(x) = a_n x^n +\cdots + a_m x^m$, 
+on $n \le m$ són enters arbitraris i els $a_i$ són elements d'un cos (o anell) fixat. Tot polinomi de Laurent s'expressa de manera única com
+$f(x) = x^r g(x)$, on $g(x)$ és un polinomi (habitual) tal que $g(0) \neq 0$.
