@@ -431,6 +431,10 @@ Implementeu els enters mòdul $n$, on $n$ és un natural arbitrari.
 -- begin hide
 
 ```sage
+from sage.structure.parent import Parent
+from sage.structure.element import Element
+from sage.structure.unique_representation import UniqueRepresentation
+
 class EnterMod(Element):
     def __init__(self, parent, a):
         modul = parent.modul
@@ -486,42 +490,66 @@ $f(x) = x^r g(x)$, on $g(x)$ és un polinomi (habitual) tal que $g(0) \neq 0$.
 -- begin hide
 
 ```sage
-class EnterMod(Element):
-    def __init__(self, parent, a):
-        modul = parent.modul
-        self.classe = ZZ(a % modul) 
+from sage.structure.parent import Parent
+from sage.structure.element import Element
+from sage.structure.unique_representation import UniqueRepresentation
+
+class Laurent(Element):
+    def __init__(self, parent, p,n = None):
+        # Els elements es donen com un polinomi (o un diccionari), i una potencia, o un diccionari.
+        self.base = parent.base
+        self.x = parent.x
+        self.basep = parent.basep
+        self.dic = p
+        if type(p) != dict: 
+            self.dic = p.dict()
+        self.exp = min(self.dic.keys())
+        if not(n is None): 
+            self.exp = self.exp + n
+            self.dic = {i+n:(self.dic)[i] for i in self.dic}
+        self.mantissa = self.basep({i - self.exp: (self.dic)[i] for i in self.dic})
         Element.__init__(self, parent)
-
-    def _repr_(self): 
-        return f'{self.classe}'
-
-    def enter(self):
-        return ZZ(self.classe)
-
+        
+    def _repr_(self):
+        return f'{self.mantissa} · {self.x}^{self.exp} '
+         
     def _add_(self, other): 
-        return self.__class__(self.parent(), self.classe + other.classe)
+        mi = min(self.exp,other.exp)
+        sem = self.basep({i+mi: (self.dic)[i] for i in self.dic})
+        otm = other.basep({i+mi: (other.dic)[i] for i in other.dic})
+        su = (sem+otm).dict()
+        d = min(su.keys())
+        sus = {i - d: su[i] for i in su}
+        return self.__class__(self.parent(),sus,d + mi)
         
     def _mul_(self, other): 
-        return self.__class__(self.parent(), self.classe * other.classe)
+        return self.__class__(self.parent(), self.mantissa * other.mantissa, self.exp + other.exp)
 
-    def _pow_int(self, n):
-        if n<0:
-            raise ValueError('No implementat per potencies negatives')
-        return self.__class__(self.parent(), self.classe**n)
+    def _pow_int(self, n): # Una implementació de les potències enteres
+        if n == 0:
+            return self.__class__(self.parent(), {1:0})
+        elif n < 0:
+            ValueError('No implementat')
+        mantissa = self.mantissa**n
+        exponent = n * self.exp
+        return self.__class__(self.parent(), mantissa, exponent)
 
-    
-class EntersMod(UniqueRepresentation, Parent):
-    def __init__(self, n):
-        modul = ZZ(n)
-        self.modul = modul
-        self.element_class = EnterMod # Aquí li quin són els elements        
-        Parent.__init__(self, base = QQ)
+class PolinomisLaurent(UniqueRepresentation, Parent):
+    def __init__(self, base,names):
+        self.base = base
+        self.x = names[0]
+        self.basep = PolynomialRing(base,x)
+        self.element_class = Laurent # Aquí li quin són els elements        
+        Parent.__init__(self, base )
+
+    def gens(self):
+        return self.basep.gens()
 
     def _repr_(self):
-        return f'EntersMod({self.modul})'
+        return 'PolinomisLaurent('+self.x+')'
     
-    def _element_constructor_(self, x):
-       return self.element_class(self, x)
+    def _element_constructor_(self, el):
+        return self.element_class(self, el)
 
     def _coerce_map_from_(self, S):
         # Permetem la coerció d'elements de la base (o que s'hi puguin coercionar)
