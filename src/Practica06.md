@@ -428,8 +428,9 @@ R(3, 1) == 15
 
 Implementeu els enters mòdul $n$, on $n$ és un natural arbitrari.
 
---begin hide
+-- begin hide
 
+```sage
 class EnterMod(Element):
     def __init__(self, parent, a):
         modul = parent.modul
@@ -470,8 +471,9 @@ class EntersMod(UniqueRepresentation, Parent):
     def _coerce_map_from_(self, S):
         # Permetem la coerció d'elements de la base (o que s'hi puguin coercionar)
         return self.base().has_coerce_map_from(S)
+```
 
---end hide 
+-- end hide 
 
 
 
@@ -481,8 +483,9 @@ Implementeu els polinomis de Laurent, que són expressions de la forma $f(x) = a
 on $n \le m$ són enters arbitraris i els $a_i$ són elements d'un cos (o anell) fixat. Tot polinomi de Laurent s'expressa de manera única com
 $f(x) = x^r g(x)$, on $g(x)$ és un polinomi (habitual) tal que $g(0) \neq 0$.
 
---begin hide
+-- begin hide
 
+```sage
 class EnterMod(Element):
     def __init__(self, parent, a):
         modul = parent.modul
@@ -524,5 +527,5 @@ class EntersMod(UniqueRepresentation, Parent):
         # Permetem la coerció d'elements de la base (o que s'hi puguin coercionar)
         return self.base().has_coerce_map_from(S)
 
-
---end hide 
+```
+-- end hide 
